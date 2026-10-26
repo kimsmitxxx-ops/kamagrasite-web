@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: "Bezorging - Kamagra Site",
   description:
     "Snel verzonden vanuit Nederland via PostNL en DPD. Betaling vóór 11:00 = dezelfde dag verstuurd. Discreet, met track & trace, alleen naar huisadressen.",
-  alternates: { canonical: "/bezorging" },
+  alternates: { canonical: "/bezorging/" },
 };
 
 const carriers = [

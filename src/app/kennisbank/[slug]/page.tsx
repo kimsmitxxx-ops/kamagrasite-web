@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   return {
     title: p.meta_title || p.title,
     description: p.meta_description || p.excerpt || undefined,
-    alternates: { canonical: `/kennisbank/${p.slug}` },
+    alternates: { canonical: `/kennisbank/${p.slug}/` },
     openGraph: {
       title: p.title,
       description: p.excerpt || undefined,

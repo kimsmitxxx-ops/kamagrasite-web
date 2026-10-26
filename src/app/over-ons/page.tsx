@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   title: "Over Kamagra Site - wie wij zijn en hoe wij werken",
   description:
     "Kamagra Site importeert generieke ED-medicatie rechtstreeks bij Ajanta Pharma, Centurion Laboratories en Sunrise Remedies. Lees hoe wij werken, wat wij wel en niet beloven en hoe je ons bereikt.",
-  alternates: { canonical: "/over-ons" },
+  alternates: { canonical: "/over-ons/" },
 };
 
 export const revalidate = 600;

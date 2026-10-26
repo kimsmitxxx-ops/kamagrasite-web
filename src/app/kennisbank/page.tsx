@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: "Kennisbank ED - sildenafil, tadalafil, wisselwerkingen · Kamagra Site",
   description:
     "Onafhankelijke gidsen over generieke ED-medicatie: werkingsmechanisme van sildenafil, tadalafil en vardenafil, doseringsschema's, wisselwerkingen en veiligheidsadviezen.",
-  alternates: { canonical: "/kennisbank" },
+  alternates: { canonical: "/kennisbank/" },
 };
 
 export const dynamic = "force-dynamic";

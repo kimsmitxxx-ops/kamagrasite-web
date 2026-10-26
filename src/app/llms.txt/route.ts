@@ -32,9 +32,8 @@ export async function GET() {
     lines.push("## Producten");
     lines.push("");
     for (const p of indexeerbaar) {
-      const catSlug = (p as any).categories?.slug || "winkel";
       const blurb = p.subtitle || p.description || p.name;
-      lines.push(`- [${p.name}](https://kamagrasite.nl/product/${catSlug}/${p.slug}): ${blurb}`);
+      lines.push(`- [${p.name}](https://kamagrasite.nl/product/${p.slug}): ${blurb}`);
     }
   }
   lines.push("");

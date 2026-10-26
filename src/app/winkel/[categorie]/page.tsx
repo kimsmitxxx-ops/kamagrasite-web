@@ -34,7 +34,7 @@ export async function generateMetadata({
     // Gefilterde varianten zijn facetten van dezelfde lijst: canonical naar de
     // schone URL en uit de index houden, anders indexeert Google elke
     // filtercombinatie als losse pagina.
-    alternates: { canonical: `/winkel/${cat.slug}` },
+    alternates: { canonical: `/winkel/${cat.slug}/` },
     robots: filtered ? { index: false, follow: true } : { index: true, follow: true },
     openGraph: { title: cat.name, description: cat.description || undefined, type: "website" },
   };
@@ -167,7 +167,7 @@ export default async function CategoryPage({
               <p className="text-sm text-text-muted">{products.length} producten</p>
               <div className="mt-4 grid gap-5 grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {products.map((p) => (
-                  <Link key={p.id} href={`/product/${p.categories?.slug || cat.slug}/${p.slug}`} className="block">
+                  <Link key={p.id} href={`/product/${p.slug}`} className="block">
                     <ProductCard
                       image={p.image_url || "/assets/cat-erectie.webp"}
                       name={p.name}

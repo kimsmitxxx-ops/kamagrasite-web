@@ -161,7 +161,7 @@ export default async function HomePage() {
           </div>
           <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {featured.map((p) => (
-              <Link key={p.id} href={`/product/${p.categories?.slug || "winkel"}/${p.slug}`} className="block">
+              <Link key={p.id} href={`/product/${p.slug}`} className="block">
                 <ProductCard
                   image={p.image_url || "/assets/cat-kamagra.jpg"}
                   name={p.name}
@@ -184,7 +184,7 @@ export default async function HomePage() {
           <h2 className="font-display text-3xl">Meest bestelde producten</h2>
           <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {bestsellers.map((p) => (
-              <Link key={p.id} href={`/product/${p.categories?.slug || "winkel"}/${p.slug}`} className="block">
+              <Link key={p.id} href={`/product/${p.slug}`} className="block">
                 <ProductCard
                   image={p.image_url || "/assets/cat-kamagra.jpg"}
                   name={p.name}

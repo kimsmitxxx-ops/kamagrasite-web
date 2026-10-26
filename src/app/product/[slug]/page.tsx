@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: { params: { categorie: string
   const noindex = p.noindex === true;
   // canonical_url heeft voorrang - UP producten linken naar UT-equivalent zodat
   // Google de duplicate-content niet straft. Anders default self-canonical.
-  const canonical = p.canonical_url || `/product/${params.categorie}/${params.slug}`;
+  const canonical = p.canonical_url || `/product/${params.slug}`;
   return {
     title: p.meta_title || `${p.name} kopen voor ${formatEUR(p.price_cents)}`,
     description: p.meta_description || p.subtitle || p.description || `${p.name} kopen bij Kamagra Site. Zonder recept, discreet verpakt en snel verstuurd.`,
@@ -40,12 +40,17 @@ export async function generateMetadata({ params }: { params: { categorie: string
   };
 }
 
-export default async function ProductDetailPage({ params }: { params: { categorie: string; slug: string } }) {
+export default async function ProductDetailPage({ params }: { params: { slug: string } }) {
   const p = await getProduct(params.slug) as any;
   if (!p) notFound();
 
+  // De categorie komt uit het product zelf, niet uit de URL. Het pad is plat
+  // (/product/<slug>) omdat de 40 bestaande product-URLs van kamagrasite.nl er
+  // zo uitzien; een categoriesegment zou ze allemaal laten doodlopen.
+  const catSlug = p.categories?.slug || "";
+
   const [related, reviews] = await Promise.all([
-    listProducts({ categorySlug: params.categorie, limit: 4 }),
+    listProducts({ categorySlug: catSlug, limit: 4 }),
     listProductReviews(p.id, 20),
   ]);
   const media = p.product_media?.sort((a: any, b: any) => a.sort_order - b.sort_order) || [];
@@ -66,7 +71,7 @@ export default async function ProductDetailPage({ params }: { params: { categori
     brand: p.tags?.[0] ? { "@type": "Brand", name: p.tags[0] } : undefined,
     offers: {
       "@type": "Offer",
-      url: `/product/${params.categorie}/${p.slug}`,
+      url: `/product/${p.slug}`,
       priceCurrency: "EUR",
       price: (p.price_cents / 100).toFixed(2),
       availability: p.availability === "OutOfStock" ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
@@ -99,7 +104,7 @@ export default async function ProductDetailPage({ params }: { params: { categori
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }} />
       {faqJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />}
 
-      <Link href={`/winkel/${params.categorie}`} className="inline-flex items-center gap-1 text-xs text-text-muted hover:text-text">
+      <Link href={catSlug ? `/winkel/${catSlug}` : "/winkel"} className="inline-flex items-center gap-1 text-xs text-text-muted hover:text-text">
         <ArrowLeft className="h-3 w-3" /> Terug naar {p.categories?.name || "winkel"}
       </Link>
 
@@ -207,7 +212,7 @@ export default async function ProductDetailPage({ params }: { params: { categori
           <h2 className="font-display text-2xl">Gerelateerde producten</h2>
           <div className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {related.filter((r) => r.id !== p.id).slice(0, 4).map((r) => (
-              <Link key={r.id} href={`/product/${r.categories?.slug || params.categorie}/${r.slug}`} className="block">
+              <Link key={r.id} href={`/product/${r.slug}`} className="block">
                 <ProductCard
                   image={r.image_url || "/assets/cat-erectie.webp"}
                   name={r.name}

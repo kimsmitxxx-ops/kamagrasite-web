@@ -69,7 +69,7 @@ export function PriceCompareTable({ products }: { products: Product[] }) {
           <tbody className="divide-y divide-border">
             {sorted.map((r) => {
               const p = r.product;
-              const href = `/product/${p.categories?.slug || "winkel"}/${p.slug}`;
+              const href = `/product/${p.slug}`;
               const isCheapest = r.perUnit != null && r === cheapest;
               const oos = p.availability === "OutOfStock";
               return (

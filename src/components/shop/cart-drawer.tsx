@@ -83,7 +83,7 @@ export function CartDrawer() {
                   {it.image && (
                     /* eslint-disable-next-line @next/next/no-img-element */
                     <Link
-                      href={`/product/winkel/${it.id}`}
+                      href={`/product/${it.id}`}
                       onClick={() => setOpen(false)}
                       className="shrink-0"
                       aria-label={`Open ${it.name}`}
@@ -98,7 +98,7 @@ export function CartDrawer() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2">
                       <Link
-                        href={`/product/winkel/${it.id}`}
+                        href={`/product/${it.id}`}
                         onClick={() => setOpen(false)}
                         className="font-medium text-sm text-text leading-snug line-clamp-2 hover:text-accent"
                       >

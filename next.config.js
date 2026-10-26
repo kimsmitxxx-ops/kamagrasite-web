@@ -4,6 +4,11 @@ const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://rexqfwibxa
 module.exports = {
   // Zodat een controle-build naast een draaiende dev-server kan: NEXT_DIST_DIR=.next-check
   distDir: process.env.NEXT_DIST_DIR || ".next",
+  // De WooCommerce-shop op kamagrasite.nl 301't elke URL zonder slash naar de
+  // versie met slash, dus Google kent /cenforce-200/ en /product/kamagra-100mg/.
+  // Zonder dit krijgt elke overgenomen URL eerst een 308 van Next erbij. Zie
+  // URL-OVERNAME.md.
+  trailingSlash: true,
   // Defensive: don't break build on lint/type errors during deploy
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
@@ -26,7 +31,86 @@ module.exports = {
     return [
       // Blogs die van shop-dash 'buildInternalLinks' onderzoek/-slug krijgen: op deze
       // site heten ze /kennisbank/*. Redirect zodat oude bodies niet 404 geven.
-      { source: "/onderzoek/:slug", destination: "/kennisbank/:slug", permanent: true },
+      { source: "/onderzoek/:slug", destination: "/kennisbank/:slug/", permanent: true },
+
+      // ---------------------------------------------------------------------
+      // Overname van de WooCommerce-shop op kamagrasite.nl. Onderbouwing en
+      // cijfers per URL staan in URL-OVERNAME.md; die zijn uit Search Console
+      // gehaald over 12 maanden, niet geschat.
+      //
+      // Wat hier NIET staat is even belangrijk: de 40 product-URL's en de
+      // zoekterm- en stadspagina's staan bewust niet in deze lijst. Die houden
+      // hun eigen URL, want daar zit 60% van het verkeer. Alleen wat echt
+      // verdwijnt of samenvalt wordt omgeleid.
+      // ---------------------------------------------------------------------
+
+      // Categoriepagina's: WooCommerce gebruikt /product-category/, deze site
+      // /winkel/. Waar de categorie hier niet bestaat gaat hij naar de
+      // koop-pagina die hetzelfde onderwerp dekt.
+      { source: "/product-category/kamagra", destination: "/winkel/kamagra/", permanent: true },
+      { source: "/product-category/cenforce", destination: "/winkel/cenforce/", permanent: true },
+      { source: "/product-category/vidalista", destination: "/winkel/vidalista/", permanent: true },
+      { source: "/product-category/vilitra", destination: "/winkel/vilitra/", permanent: true },
+      { source: "/product-category/sildalis", destination: "/winkel/combo-preparaten/", permanent: true },
+      // sildaforce is sildenafil in tabletvorm, zelfde schap als Cenforce
+      { source: "/product-category/sildaforce", destination: "/winkel/cenforce/", permanent: true },
+      { source: "/product-category/oral-jelly", destination: "/kamagra-jelly-kopen/", permanent: true },
+      { source: "/product-category/sildenafil", destination: "/sildenafil-100mg-bestellen/", permanent: true },
+      { source: "/product-category/viagra", destination: "/sildenafil-100mg-bestellen/", permanent: true },
+      { source: "/product-category/voor-vrouwen", destination: "/lovegra/", permanent: true },
+      { source: "/product-category/cialis", destination: "/tadalafil-kopen/", permanent: true },
+      { source: "/product-category/tadalafil", destination: "/tadalafil-kopen/", permanent: true },
+      { source: "/product-category/vardenafil", destination: "/vardenafil/", permanent: true },
+      { source: "/product-category/dapoxetine", destination: "/super-kamagra/", permanent: true },
+      { source: "/product-category/cobra", destination: "/cobra-120-mg/", permanent: true },
+
+      // Producten die de catalogus niet heeft en die in twaalf maanden geen
+      // enkele vertoning haalden. Naar het dichtstbijzijnde schap.
+      { source: "/product/apcalis-jelly", destination: "/kamagra-jelly-kopen/", permanent: true },
+      { source: "/product/lovegra-oral-jelly", destination: "/lovegra/", permanent: true },
+      { source: "/product/extra-super-p-force", destination: "/super-p-force/", permanent: true },
+      { source: "/product/super-kamagra", destination: "/super-kamagra/", permanent: true },
+      { source: "/product/sildamax", destination: "/sildenafil-100mg-bestellen/", permanent: true },
+      { source: "/product/sildaforce-100mg", destination: "/sildenafil-100mg-bestellen/", permanent: true },
+      { source: "/product/sildaforce-100mg-2", destination: "/sildenafil-100mg-bestellen/", permanent: true },
+      { source: "/product/sildalis-120mg", destination: "/winkel/combo-preparaten/", permanent: true },
+      { source: "/product/viagra-original", destination: "/sildenafil-100mg-bestellen/", permanent: true },
+      { source: "/product/cialis-original", destination: "/tadalafil-kopen/", permanent: true },
+      // Slug met een houdbaarheidsdatum erin; niet overnemen als slug
+      { source: "/product/cobra-120mg-datum-6-2026", destination: "/cobra-120-mg/", permanent: true },
+      { source: "/product/cobra-120mg", destination: "/cobra-120-mg/", permanent: true },
+
+      // VANGNET, bedoeld om weer weg te halen. Deze zeven producten staan wel
+      // in de WooCommerce-shop maar niet in deze catalogus, en ze hebben samen
+      // 11 kliks en 2.284 vertoningen. Zodra het artikel is toegevoegd moet de
+      // bijbehorende regel hier weg, want de eigen URL is meer waard dan een
+      // redirect. Tot die tijd is dit beter dan een 404. Zie URL-OVERNAME.md.
+      // Sildaforce is sildenafil in tabletvorm, dus Cenforce is de directe
+      // tegenhanger in dezelfde dosering.
+      { source: "/product/sildaforce-200mg", destination: "/cenforce-200/", permanent: false },
+      { source: "/product/sildaforce-150mg", destination: "/sildenafil-100mg-bestellen/", permanent: false },
+      // Tadaforce is tadalafil
+      { source: "/product/tadaforce-20mg", destination: "/tadalafil-kopen/", permanent: false },
+      { source: "/product/tadaforce-40mg", destination: "/tadalafil-kopen/", permanent: false },
+      { source: "/product/tadaforce-60mg", destination: "/tadalafil-kopen/", permanent: false },
+      // Tadapox is tadalafil met dapoxetine, dus hetzelfde recept als Super Vidalista
+      { source: "/product/tadapox-80mg", destination: "/super-vidalista/", permanent: false },
+      { source: "/product/vidalista-professional-20mg", destination: "/vidalista-kopen/", permanent: false },
+
+      // Losse pagina's die hier samenvallen of niet thuishoren.
+      { source: "/shop", destination: "/winkel/", permanent: true },
+      // De live site had een gecombineerde pagina, deze site splitst dat in
+      // /bezorging en /retourneren. 17 kliks op positie 10, dus wel omleiden.
+      { source: "/verzenden-retourneren", destination: "/bezorging/", permanent: true },
+      { source: "/viagra-kopen", destination: "/sildenafil-100mg-bestellen/", permanent: true },
+      { source: "/viagra-kopen-ideal", destination: "/sildenafil-100mg-bestellen/", permanent: true },
+      // Novosil wordt niet verkocht
+      { source: "/novosil", destination: "/erectiepillen/", permanent: true },
+      // Voorlichting hoort bij erectiekompas, en deze drie haalden samen
+      // 5 vertoningen en 0 kliks. Intern opvangen tot die site live staat.
+      { source: "/bijwerkingen-kamagra", destination: "/kennisbank/", permanent: true },
+      { source: "/jelly-kamagra", destination: "/kamagra-jelly-kopen/", permanent: true },
+      { source: "/orgasmes-uitstellen", destination: "/super-kamagra/", permanent: true },
     ];
   },
   async headers() {
