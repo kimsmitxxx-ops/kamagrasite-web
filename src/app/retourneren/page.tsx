@@ -7,7 +7,7 @@ import { ShieldCheck, PackageCheck, Mail, AlertTriangle } from "lucide-react";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Retour en terugbetaling - Kamagraexpert",
+  title: "Retour en terugbetaling - Kamagra Site",
   description:
     "Retourzendingen zijn in onze branche niet mogelijk. Wat wel kan: 100% leveringsgarantie bij vertraging of vermissing, en kosteloze vervanging bij een beschadigde of verkeerde levering.",
   alternates: { canonical: "/retourneren" },

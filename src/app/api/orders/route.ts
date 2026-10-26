@@ -4,7 +4,7 @@ import { unitDiscountPct } from "@/lib/bulk-discount";
 
 export const dynamic = "force-dynamic";
 
-const SHOP_ID = "209efc65-a11e-499c-a74a-3d1c5043758f"; // kamagraexpert
+const SHOP_ID = "209efc65-a11e-499c-a74a-3d1c5043758f"; // kamagrasite
 const SHIPPING_FEE_CENTS = 1000; // EUR 10 per zending
 
 export async function POST(req: NextRequest) {

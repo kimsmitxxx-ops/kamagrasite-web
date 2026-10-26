@@ -1,7 +1,7 @@
 import { MetadataRoute } from "next";
 import { listProducts, listCategories, listBlogPosts, listBuyPages } from "@/lib/queries";
 
-const BASE = "https://kamagraexpert.com";
+const BASE = "https://kamagrasite.nl";
 
 export const revalidate = 3600;
 

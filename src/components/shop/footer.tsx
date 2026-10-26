@@ -121,7 +121,7 @@ export function Footer() {
 
       <div className="border-t border-primary-soft bg-primary-soft/40">
         <div className="mx-auto max-w-7xl px-4 py-5 flex flex-wrap items-center justify-between gap-3 text-xs text-primary-foreground/60">
-          <p>© {new Date().getFullYear()} Kamagraexpert B.V. · Vestigingsadres, KvK- en BTW-nummer staan op de factuur</p>
+          <p>© {new Date().getFullYear()} Kamagra Site B.V. · Vestigingsadres, KvK- en BTW-nummer staan op de factuur</p>
           <p>Geneesmiddelen zonder recept. Lees de bijsluiter en overleg bij twijfel met een arts.</p>
         </div>
       </div>

@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Winkel - alle ED-medicatie op een rij",
-  description: "De volledige catalogus van Kamagraexpert: Kamagra, Cenforce, Vidalista, Vilitra en combi-preparaten met sildenafil, tadalafil, vardenafil en dapoxetine. Zonder recept, discreet verzonden vanuit Nederland.",
+  description: "De volledige catalogus van Kamagra Site: Kamagra, Cenforce, Vidalista, Vilitra en combi-preparaten met sildenafil, tadalafil, vardenafil en dapoxetine. Zonder recept, discreet verzonden vanuit Nederland.",
   alternates: { canonical: "/winkel" },
 };
 

@@ -5,7 +5,7 @@ import { MessageCircle, Send, UserRound, Loader2, AlertCircle } from "lucide-rea
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 
 const SHOP_DASH_URL = process.env.NEXT_PUBLIC_SHOP_DASH_URL || "https://shop-dash-ruby.vercel.app";
-const SHOP_ID = "209efc65-a11e-499c-a74a-3d1c5043758f"; // kamagraexpert
+const SHOP_ID = "209efc65-a11e-499c-a74a-3d1c5043758f"; // kamagrasite
 const LS_CHAT_ID = "apo_chat_id";
 const LS_VISITOR = "apo_chat_visitor";
 const POLL_MS = 7000;
@@ -383,7 +383,7 @@ function MessageBubble({ message }: { message: ChatMessage }) {
           <p className={cn(
             "text-[10px] uppercase tracking-wider font-semibold mb-1 opacity-70",
           )}>
-            {isAdmin ? "Medewerker" : "Kamagraexpert AI"}
+            {isAdmin ? "Medewerker" : "Kamagra Site AI"}
           </p>
         )}
         {message.content}

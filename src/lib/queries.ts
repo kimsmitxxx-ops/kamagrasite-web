@@ -1,6 +1,6 @@
 import { supabase, type Product, type Category, type BlogPost } from "./supabase";
 
-// Hardcoded shop_id voor kamagraexpert - fallback voor scoped JWT die niet werkt.
+// Hardcoded shop_id voor kamagrasite - fallback voor scoped JWT die niet werkt.
 // RLS-policies in shop-dash migration 051 staan anon SELECT toe op deze shop.
 const SHOP_ID = "209efc65-a11e-499c-a74a-3d1c5043758f";
 

@@ -25,7 +25,7 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
       // een 403 zolang "Block AI bots" bij Security > Bots aanstaat.
       { userAgent: ["GPTBot", "ClaudeBot", "Google-Extended", "Applebot-Extended", "CCBot"], allow: "/", disallow: ["/account", "/api/", "/checkout"] },
     ],
-    sitemap: "https://kamagraexpert.com/sitemap.xml",
-    host: "https://kamagraexpert.com",
+    sitemap: "https://kamagrasite.nl/sitemap.xml",
+    host: "https://kamagrasite.nl",
   };
 }

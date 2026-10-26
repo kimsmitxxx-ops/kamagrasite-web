@@ -2,7 +2,7 @@
  * Supabase server-side client voor data fetching in Next.js server components.
  *
  * Fallback URL + anon key zijn hardcoded - beide PUBLIC. RLS-policies in
- * shop-dash migration 051 scopen alle SELECT-queries naar kamagraexpert shop_id.
+ * shop-dash migration 051 scopen alle SELECT-queries naar kamagrasite shop_id.
  * Zonder env vars op Vercel werkt de shop dus alsnog.
  */
 import { createClient } from "@supabase/supabase-js";

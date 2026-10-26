@@ -12,7 +12,7 @@ const SB_SERVICE =
   process.env.SUPABASE_SECRET ||
   "";
 
-const KAMAGRAEXPERT_SHOP_ID = "209efc65-a11e-499c-a74a-3d1c5043758f";
+const KAMAGRASITE_SHOP_ID = "209efc65-a11e-499c-a74a-3d1c5043758f";
 
 export async function POST(req: NextRequest) {
   let body: any;
@@ -45,17 +45,17 @@ export async function POST(req: NextRequest) {
 
   const sb = createClient(SB_URL, SB_SERVICE, { auth: { persistSession: false } });
 
-  // Verify product exists + zit in kamagraexpert shop scope (geen cross-shop submissions)
+  // Verify product exists + zit in kamagrasite shop scope (geen cross-shop submissions)
   const { data: product } = await sb
     .from("products")
     .select("id, shop_id")
     .eq("id", productId)
-    .eq("shop_id", KAMAGRAEXPERT_SHOP_ID)
+    .eq("shop_id", KAMAGRASITE_SHOP_ID)
     .maybeSingle();
   if (!product) return NextResponse.json({ error: "product niet gevonden" }, { status: 404 });
 
   const { error } = await sb.from("product_reviews").insert({
-    shop_id: KAMAGRAEXPERT_SHOP_ID,
+    shop_id: KAMAGRASITE_SHOP_ID,
     product_id: productId,
     rating: Math.round(rating),
     author_name: authorName,

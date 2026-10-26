@@ -3,9 +3,9 @@ import Link from "next/link";
 import { PageHero } from "@/components/shop/page-hero";
 
 export const metadata: Metadata = {
-  title: "Privacyverklaring - kamagraexpert",
+  title: "Privacyverklaring - Kamagra Site",
   description:
-    "Hoe kamagraexpert persoonsgegevens verwerkt, opslaat en beschermt onder de AVG. Lees welke data we vastleggen en hoe lang.",
+    "Hoe Kamagra Site persoonsgegevens verwerkt, opslaat en beschermt onder de AVG. Lees welke data we vastleggen en hoe lang.",
 };
 
 export const revalidate = 86400;
@@ -15,7 +15,7 @@ const sections = [
     id: "wie",
     title: "1. Wie zijn wij",
     body: [
-      "Kamagraexpert B.V., gevestigd in Nederland, is verwerkingsverantwoordelijke voor de gegevens die via kamagraexpert.com worden verzameld. Ons vestigingsadres, KvK- en BTW-nummer staan op de factuur die je na je bestelling ontvangt.",
+      "Kamagra Site B.V., gevestigd in Nederland, is verwerkingsverantwoordelijke voor de gegevens die via kamagrasite.nl worden verzameld. Ons vestigingsadres, KvK- en BTW-nummer staan op de factuur die je na je bestelling ontvangt.",
     ],
   },
   {

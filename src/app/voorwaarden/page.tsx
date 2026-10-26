@@ -3,9 +3,9 @@ import Link from "next/link";
 import { PageHero } from "@/components/shop/page-hero";
 
 export const metadata: Metadata = {
-  title: "Algemene voorwaarden - kamagraexpert",
+  title: "Algemene voorwaarden - Kamagra Site",
   description:
-    "De algemene voorwaarden van kamagraexpert B.V.: bestelproces, betaling, levering, garantie, aansprakelijkheid en herroepingsrecht.",
+    "De algemene voorwaarden van Kamagra Site B.V.: bestelproces, betaling, levering, garantie, aansprakelijkheid en herroepingsrecht.",
 };
 
 export const revalidate = 86400;
@@ -15,16 +15,16 @@ const sections: { id: string; title: string; body: string[] }[] = [
     id: "definities",
     title: "1. Definities",
     body: [
-      "Kamagraexpert: Kamagraexpert B.V., gevestigd in Nederland. Ons vestigingsadres, KvK- en BTW-nummer staan op de factuur die je na je bestelling ontvangt.",
-      "Klant: de natuurlijke of rechtspersoon die een overeenkomst aangaat met kamagraexpert.",
-      "Producten: alle door Kamagraexpert aangeboden artikelen, te weten generieke geneesmiddelen met sildenafil, tadalafil, vardenafil of dapoxetine als werkzame stof.",
+      "Kamagra Site: Kamagra Site B.V., gevestigd in Nederland. Ons vestigingsadres, KvK- en BTW-nummer staan op de factuur die je na je bestelling ontvangt.",
+      "Klant: de natuurlijke of rechtspersoon die een overeenkomst aangaat met Kamagra Site.",
+      "Producten: alle door Kamagra Site aangeboden artikelen, te weten generieke geneesmiddelen met sildenafil, tadalafil, vardenafil of dapoxetine als werkzame stof.",
     ],
   },
   {
     id: "toepasselijkheid",
     title: "2. Toepasselijkheid",
     body: [
-      "Deze voorwaarden zijn van toepassing op elk aanbod van kamagraexpert en op elke tot stand gekomen overeenkomst tussen kamagraexpert en klant.",
+      "Deze voorwaarden zijn van toepassing op elk aanbod van Kamagra Site en op elke tot stand gekomen overeenkomst tussen Kamagra Site en klant.",
       "Voordat een overeenkomst wordt gesloten, wordt de tekst van deze voorwaarden langs elektronische weg ter beschikking gesteld.",
     ],
   },
@@ -34,15 +34,15 @@ const sections: { id: string; title: string; body: string[] }[] = [
     body: [
       "Alle aanbiedingen op de website zijn vrijblijvend en zolang de voorraad strekt.",
       "Het aanbod bevat een volledige en nauwkeurige omschrijving, inclusief werkzame stof, sterkte, toedieningsvorm en fabrikant.",
-      "Kennelijke vergissingen of fouten in het aanbod binden kamagraexpert niet.",
+      "Kennelijke vergissingen of fouten in het aanbod binden Kamagra Site niet.",
     ],
   },
   {
     id: "overeenkomst",
     title: "4. Totstandkoming overeenkomst",
     body: [
-      "De overeenkomst komt tot stand op het moment dat de klant het aanbod heeft aanvaard via een bestelling en de betaling door kamagraexpert is bevestigd.",
-      "kamagraexpert kan zich binnen wettelijke kaders op de hoogte stellen of de klant aan zijn betalingsverplichtingen kan voldoen.",
+      "De overeenkomst komt tot stand op het moment dat de klant het aanbod heeft aanvaard via een bestelling en de betaling door Kamagra Site is bevestigd.",
+      "Kamagra Site kan zich binnen wettelijke kaders op de hoogte stellen of de klant aan zijn betalingsverplichtingen kan voldoen.",
     ],
   },
   {
@@ -61,14 +61,14 @@ const sections: { id: string; title: string; body: string[] }[] = [
     body: [
       "De op de website vermelde prijzen zijn in euro's en inclusief 21% BTW.",
       "Betaling vindt plaats via bank-overboeking (IBAN) of crypto (BTC/ETH/USDT). Zodra de betaling bij ons binnen is, gaat de bestelling in behandeling.",
-      "kamagraexpert behoudt zich het recht voor prijzen te wijzigen; eenmaal geplaatste orders blijven ongewijzigd.",
+      "Kamagra Site behoudt zich het recht voor prijzen te wijzigen; eenmaal geplaatste orders blijven ongewijzigd.",
     ],
   },
   {
     id: "levering",
     title: "7. Levering",
     body: [
-      "kamagraexpert neemt de grootst mogelijke zorgvuldigheid in acht bij ontvangst en uitvoering van bestellingen.",
+      "Kamagra Site neemt de grootst mogelijke zorgvuldigheid in acht bij ontvangst en uitvoering van bestellingen.",
       "Het adres dat door de klant is opgegeven, geldt als plaats van levering. Wij verzenden uitsluitend naar vaste huisadressen (geen PostNL-afhaalpunten als aflever-optie).",
       "Genoemde levertijden zijn indicatief. De maximale leveringstermijn bedraagt 14 dagen, gerekend vanaf de dag na verzending. Is het pakket dan nog niet aangekomen, dan verzenden wij automatisch opnieuw.",
       "Het risico van beschadiging en vermissing gaat over op de klant op het moment van bezorging aan het opgegeven huisadres.",
@@ -78,33 +78,33 @@ const sections: { id: string; title: string; body: string[] }[] = [
     id: "garantie",
     title: "8. Conformiteit van de levering",
     body: [
-      "Kamagraexpert staat ervoor in dat het geleverde product overeenkomt met de werkzame stof, de sterkte, de toedieningsvorm en de fabrikant zoals vermeld op de productpagina, en dat de verpakking ongeopend en voorzien van batchcode en houdbaarheidsdatum wordt geleverd.",
-      "Wijkt de levering daarvan af, of is de verpakking bij ontvangst beschadigd, dan vervangt Kamagraexpert het product kosteloos in de volgende zending. Meld dit binnen veertien dagen na ontvangst via het contactformulier, met foto van doos en blister.",
+      "Kamagra Site staat ervoor in dat het geleverde product overeenkomt met de werkzame stof, de sterkte, de toedieningsvorm en de fabrikant zoals vermeld op de productpagina, en dat de verpakking ongeopend en voorzien van batchcode en houdbaarheidsdatum wordt geleverd.",
+      "Wijkt de levering daarvan af, of is de verpakking bij ontvangst beschadigd, dan vervangt Kamagra Site het product kosteloos in de volgende zending. Meld dit binnen veertien dagen na ontvangst via het contactformulier, met foto van doos en blister.",
     ],
   },
   {
     id: "aansprakelijkheid",
     title: "9. Aansprakelijkheid en verantwoord gebruik",
     body: [
-      "De producten van Kamagraexpert zijn geneesmiddelen die in Nederland gewoonlijk op recept via de apotheek worden verstrekt. Kamagraexpert levert zonder recept en verstrekt geen medisch advies op maat; er vindt dus geen beoordeling door een arts plaats.",
+      "De producten van Kamagra Site zijn geneesmiddelen die in Nederland gewoonlijk op recept via de apotheek worden verstrekt. Kamagra Site levert zonder recept en verstrekt geen medisch advies op maat; er vindt dus geen beoordeling door een arts plaats.",
       "De klant verklaart meerderjarig te zijn en verantwoordelijk te zijn voor een veilig gebruik. Dat betekent in elk geval: niet gebruiken in combinatie met nitraten, poppers of riociguat, en eerst een arts raadplegen bij hart- en vaatziekten, een recent infarct of beroerte, een lage of slecht ingestelde bloeddruk, lever- of nierproblemen of bij gebruik van alfablokkers.",
-      "Kamagraexpert aanvaardt geen aansprakelijkheid voor schade die voortvloeit uit gebruik dat afwijkt van de gebruikelijke dosering of uit gebruik ondanks een van de hierboven genoemde contra-indicaties.",
+      "Kamagra Site aanvaardt geen aansprakelijkheid voor schade die voortvloeit uit gebruik dat afwijkt van de gebruikelijke dosering of uit gebruik ondanks een van de hierboven genoemde contra-indicaties.",
     ],
   },
   {
     id: "klachten",
     title: "10. Klachtenregeling",
     body: [
-      "Klachten over de uitvoering van de overeenkomst dienen binnen redelijke termijn, volledig en duidelijk omschreven, te worden ingediend bij kamagraexpert via het contactformulier op de website.",
-      "kamagraexpert reageert binnen 14 dagen na ontvangst van de klacht met een inhoudelijke reactie of een indicatie van de termijn waarop dat gebeurt.",
-      "Komen klant en kamagraexpert er onderling niet uit, dan kan het geschil worden voorgelegd aan de bevoegde rechter te Rotterdam.",
+      "Klachten over de uitvoering van de overeenkomst dienen binnen redelijke termijn, volledig en duidelijk omschreven, te worden ingediend bij Kamagra Site via het contactformulier op de website.",
+      "Kamagra Site reageert binnen 14 dagen na ontvangst van de klacht met een inhoudelijke reactie of een indicatie van de termijn waarop dat gebeurt.",
+      "Komen klant en Kamagra Site er onderling niet uit, dan kan het geschil worden voorgelegd aan de bevoegde rechter te Rotterdam.",
     ],
   },
   {
     id: "toepasselijk-recht",
     title: "11. Toepasselijk recht",
     body: [
-      "Op overeenkomsten tussen kamagraexpert en klant is uitsluitend Nederlands recht van toepassing.",
+      "Op overeenkomsten tussen Kamagra Site en klant is uitsluitend Nederlands recht van toepassing.",
     ],
   },
 ];
@@ -114,7 +114,7 @@ export default function VoorwaardenPage() {
     <>
       <PageHero
         eyebrow="Juridisch"
-        title="Algemene voorwaarden kamagraexpert B.V."
+        title="Algemene voorwaarden Kamagra Site B.V."
         intro="Versie 3.2 - laatst bijgewerkt op 12 juni 2026. Deze voorwaarden gelden voor elke bestelling die je via onze webshop plaatst."
       />
 

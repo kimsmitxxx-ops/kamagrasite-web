@@ -142,7 +142,7 @@ export function Header(_props: HeaderProps = {}) {
         <Link
           href="/"
           className="inline-flex items-center gap-2 font-display"
-          aria-label="kamagraexpert home"
+          aria-label="kamagrasite home"
         >
           <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-accent/15 text-accent ring-1 ring-accent/30">
             <Pill size={15} strokeWidth={2.25} className="-rotate-45" />

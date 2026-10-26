@@ -1,7 +1,7 @@
 /**
  * Verzendkosten-logica.
  *
- * Kamagraexpert verstuurt alles vanuit een magazijn in Nederland, dus elke
+ * Kamagra Site verstuurt alles vanuit een magazijn in Nederland, dus elke
  * bestelling is een zending met een vast tarief. De twee-locatie-constructie
  * uit de anabolenpro-basis is hier bewust uit gesloopt.
  */

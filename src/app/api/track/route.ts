@@ -3,7 +3,7 @@ import { createServiceClient } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 
-const SHOP_ID = process.env.ANALYTICS_SHOP_ID || "209efc65-a11e-499c-a74a-3d1c5043758f"; // kamagraexpert
+const SHOP_ID = process.env.ANALYTICS_SHOP_ID || "209efc65-a11e-499c-a74a-3d1c5043758f"; // kamagrasite
 
 /**
  * Whitelist. Alles wat hier niet in staat wordt geweigerd, zodat een willekeurige

@@ -14,9 +14,9 @@ import {
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Over Kamagraexpert - wie wij zijn en hoe wij werken",
+  title: "Over Kamagra Site - wie wij zijn en hoe wij werken",
   description:
-    "Kamagraexpert importeert generieke ED-medicatie rechtstreeks bij Ajanta Pharma, Centurion Laboratories en Sunrise Remedies. Lees hoe wij werken, wat wij wel en niet beloven en hoe je ons bereikt.",
+    "Kamagra Site importeert generieke ED-medicatie rechtstreeks bij Ajanta Pharma, Centurion Laboratories en Sunrise Remedies. Lees hoe wij werken, wat wij wel en niet beloven en hoe je ons bereikt.",
   alternates: { canonical: "/over-ons" },
 };
 
@@ -61,9 +61,9 @@ export default async function OverOnsPage() {
   return (
     <>
       <PageHero
-        eyebrow="Over Kamagraexpert"
+        eyebrow="Over Kamagra Site"
         title="Generieke ED-medicatie, zonder de drempel en zonder de merktoeslag"
-        intro="Kamagraexpert is een Nederlandse importeur van generieke erectiemiddelen. Wij halen Kamagra, Cenforce, Vidalista en Vilitra rechtstreeks bij de fabrikant en sturen ze discreet vanuit Nederland door. Geen wachtkamer, geen gesprek waar je tegenop ziet, en geen apotheekprijs voor een molecuul waarvan het patent allang is verlopen."
+        intro="Kamagra Site is een Nederlandse importeur van generieke erectiemiddelen. Wij halen Kamagra, Cenforce, Vidalista en Vilitra rechtstreeks bij de fabrikant en sturen ze discreet vanuit Nederland door. Geen wachtkamer, geen gesprek waar je tegenop ziet, en geen apotheekprijs voor een molecuul waarvan het patent allang is verlopen."
       />
 
       <section className="mx-auto max-w-7xl px-4 py-14 grid gap-10 lg:grid-cols-2 items-start">
@@ -195,7 +195,7 @@ export default async function OverOnsPage() {
         <div className="rounded-md border border-border bg-surface p-8 lg:p-10 grid gap-8 lg:grid-cols-2">
           <div>
             <p className="text-xs uppercase tracking-[0.15em] text-accent font-semibold">Bedrijfsgegevens</p>
-            <h2 className="mt-2 font-display text-2xl text-text">Kamagraexpert</h2>
+            <h2 className="mt-2 font-display text-2xl text-text">Kamagra Site</h2>
             <dl className="mt-5 space-y-2 text-sm">
               <div className="flex gap-2">
                 <dt className="w-32 text-text-muted">Vestiging</dt>

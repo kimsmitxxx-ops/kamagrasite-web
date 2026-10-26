@@ -45,7 +45,7 @@ export default async function KennisbankDetail({ params }: { params: { slug: str
         jobTitle: authorInfo.role || undefined,
         description: authorInfo.bio_short || undefined,
         image: authorInfo.avatar_url || undefined,
-        url: `https://kamagraexpert.com/over-ons#${authorInfo.slug}`,
+        url: `https://kamagrasite.nl/over-ons#${authorInfo.slug}`,
         knowsAbout: authorInfo.expertise || undefined,
       }
     : authorName
@@ -63,11 +63,11 @@ export default async function KennisbankDetail({ params }: { params: { slug: str
     author: authorPersonLd,
     publisher: {
       "@type": "Organization",
-      name: "Kamagraexpert",
-      url: "https://kamagraexpert.com",
-      logo: { "@type": "ImageObject", url: "https://kamagraexpert.com/assets/logo.png" },
+      name: "Kamagra Site",
+      url: "https://kamagrasite.nl",
+      logo: { "@type": "ImageObject", url: "https://kamagrasite.nl/assets/logo.png" },
     },
-    mainEntityOfPage: { "@type": "WebPage", "@id": `https://kamagraexpert.com/kennisbank/${p.slug}` },
+    mainEntityOfPage: { "@type": "WebPage", "@id": `https://kamagrasite.nl/kennisbank/${p.slug}` },
   };
   // ProfilePage als losse JSON-LD voor de auteur (versterkt E-E-A-T signaal)
   const profileJsonLd = authorInfo
@@ -82,7 +82,7 @@ export default async function KennisbankDetail({ params }: { params: { slug: str
           image: authorInfo.avatar_url || undefined,
           knowsAbout: authorInfo.expertise || undefined,
           award: authorInfo.credentials || undefined,
-          url: `https://kamagraexpert.com/over-ons#${authorInfo.slug}`,
+          url: `https://kamagrasite.nl/over-ons#${authorInfo.slug}`,
         },
       }
     : null;

@@ -6,8 +6,8 @@ import { ContactForm } from "@/components/shop/contact-form";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Contact - Kamagraexpert",
-  description: "Bereik Kamagraexpert via online chat, e-mail of contactformulier. Antwoord binnen 1 werkdag tussen 09:00 en 21:00, ook in het weekend.",
+  title: "Contact - Kamagra Site",
+  description: "Bereik Kamagra Site via online chat, e-mail of contactformulier. Antwoord binnen 1 werkdag tussen 09:00 en 21:00, ook in het weekend.",
   alternates: { canonical: "/contact" },
 };
 

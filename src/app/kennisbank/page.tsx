@@ -6,7 +6,7 @@ import type { Metadata } from "next";
 export const revalidate = 600;
 
 export const metadata: Metadata = {
-  title: "Kennisbank ED - sildenafil, tadalafil, wisselwerkingen · Kamagraexpert",
+  title: "Kennisbank ED - sildenafil, tadalafil, wisselwerkingen · Kamagra Site",
   description:
     "Onafhankelijke gidsen over generieke ED-medicatie: werkingsmechanisme van sildenafil, tadalafil en vardenafil, doseringsschema's, wisselwerkingen en veiligheidsadviezen.",
   alternates: { canonical: "/kennisbank" },

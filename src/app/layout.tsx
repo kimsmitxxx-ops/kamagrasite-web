@@ -41,8 +41,8 @@ const WhatsAppFab = dynamic(
 );
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://kamagraexpert.com"),
-  title: { default: "Kamagraexpert - generieke ED-medicatie zonder recept, snel verzonden", template: "%s · Kamagraexpert" },
+  metadataBase: new URL("https://kamagrasite.nl"),
+  title: { default: "Kamagra Site - generieke ED-medicatie zonder recept, snel verzonden", template: "%s · Kamagra Site" },
   description: "Kamagra, Cenforce, Vidalista en Vilitra: sildenafil, tadalafil en vardenafil direct geïmporteerd van gecertificeerde fabrikanten. Discrete verzending vanaf NL, geen recept nodig.",
   robots: { index: true, follow: true },
   icons: {
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="nl" data-shop="kamagraexpert" className={`${manrope.variable} ${spaceGrotesk.variable}`}>
+    <html lang="nl" data-shop="kamagrasite" className={`${manrope.variable} ${spaceGrotesk.variable}`}>
       <head>
         <link rel="preconnect" href="https://rexqfwibxawqnvrzbdoo.supabase.co" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />

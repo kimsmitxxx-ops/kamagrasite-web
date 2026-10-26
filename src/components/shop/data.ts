@@ -1,5 +1,5 @@
 /**
- * Shared static data voor kamagraexpert-web.
+ * Shared static data voor kamagrasite-web.
  * Product-catalog + blogs komen uit Supabase; deze file bevat de vaste
  * navigatie-vocabulaire (categorieen, werkzame stoffen, toedieningsvormen)
  * en de fallback-beelden voor de homepage-tegels.

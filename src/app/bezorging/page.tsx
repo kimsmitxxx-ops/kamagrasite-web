@@ -7,7 +7,7 @@ import { Truck, PackageCheck, Clock, Globe2, ShieldCheck, MapPin } from "lucide-
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Bezorging - Kamagraexpert",
+  title: "Bezorging - Kamagra Site",
   description:
     "Snel verzonden vanuit Nederland via PostNL en DPD. Betaling vóór 11:00 = dezelfde dag verstuurd. Discreet, met track & trace, alleen naar huisadressen.",
   alternates: { canonical: "/bezorging" },

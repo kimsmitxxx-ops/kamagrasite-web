@@ -5,9 +5,9 @@ import { BookOpen } from "lucide-react";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Begrippenlijst ED-medicatie - PDE5, sildenafil, tadalafil, onset | Kamagraexpert",
+  title: "Begrippenlijst ED-medicatie - PDE5, sildenafil, tadalafil, onset | Kamagra Site",
   description:
-    "Uitleg van de begrippen die je tegenkomt op kamagraexpert.com en in de kennisbank: PDE5-remmer, sildenafil, tadalafil, vardenafil, dapoxetine, onset, halfwaardetijd, nitraten en meer.",
+    "Uitleg van de begrippen die je tegenkomt op kamagrasite.nl en in de kennisbank: PDE5-remmer, sildenafil, tadalafil, vardenafil, dapoxetine, onset, halfwaardetijd, nitraten en meer.",
   alternates: { canonical: "/begrippenlijst" },
 };
 
@@ -334,13 +334,13 @@ export default function BegrippenlijstPage() {
     "@context": "https://schema.org",
     "@type": "DefinedTermSet",
     name: "Begrippenlijst ED-medicatie",
-    url: "https://kamagraexpert.com/begrippenlijst",
+    url: "https://kamagrasite.nl/begrippenlijst",
     hasDefinedTerm: TERMS.map((t) => ({
       "@type": "DefinedTerm",
-      "@id": `https://kamagraexpert.com/begrippenlijst#${t.id}`,
+      "@id": `https://kamagrasite.nl/begrippenlijst#${t.id}`,
       name: t.term,
       description: t.body,
-      inDefinedTermSet: "https://kamagraexpert.com/begrippenlijst",
+      inDefinedTermSet: "https://kamagrasite.nl/begrippenlijst",
     })),
   };
 

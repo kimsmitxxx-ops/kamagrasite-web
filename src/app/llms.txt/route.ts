@@ -18,14 +18,14 @@ export async function GET() {
   const indexeerbaar = products.filter((p: any) => p.noindex !== true);
 
   const lines: string[] = [];
-  lines.push("# Kamagraexpert");
+  lines.push("# Kamagra Site");
   lines.push("");
   lines.push("> Nederlandse webshop voor generieke ED-medicatie zonder recept. Kamagra, Cenforce, Vidalista en Vilitra met sildenafil, tadalafil, vardenafil of dapoxetine, rechtstreeks geimporteerd bij Ajanta Pharma, Centurion Laboratories en Sunrise Remedies. Neutraal verpakt, verzonden vanuit Nederland naar NL en BE, betaling via bankoverschrijving. De kennisbank behandelt onset, werkingsduur, doseringen, verschillen tussen de stoffen en wisselwerkingen zoals nitraten en alfablokkers.");
   lines.push("");
   lines.push("## Catalogus");
   lines.push("");
   for (const c of categories) {
-    lines.push(`- [${c.name}](https://kamagraexpert.com/winkel/${c.slug}): ${c.description || c.name}`);
+    lines.push(`- [${c.name}](https://kamagrasite.nl/winkel/${c.slug}): ${c.description || c.name}`);
   }
   if (indexeerbaar.length > 0) {
     lines.push("");
@@ -34,24 +34,24 @@ export async function GET() {
     for (const p of indexeerbaar) {
       const catSlug = (p as any).categories?.slug || "winkel";
       const blurb = p.subtitle || p.description || p.name;
-      lines.push(`- [${p.name}](https://kamagraexpert.com/product/${catSlug}/${p.slug}): ${blurb}`);
+      lines.push(`- [${p.name}](https://kamagrasite.nl/product/${catSlug}/${p.slug}): ${blurb}`);
     }
   }
   lines.push("");
   lines.push("## Kennisbank");
   lines.push("");
   for (const b of blogs.slice(0, 30)) {
-    lines.push(`- [${b.title}](https://kamagraexpert.com/kennisbank/${b.slug}): ${b.excerpt || b.title}`);
+    lines.push(`- [${b.title}](https://kamagrasite.nl/kennisbank/${b.slug}): ${b.excerpt || b.title}`);
   }
   lines.push("");
   lines.push("## Herkomst en kwaliteit");
-  lines.push("- [Waar onze medicatie vandaan komt](https://kamagraexpert.com/lab): fabrikanten, waarom generiek hetzelfde molecuul is, zelf een strip controleren");
-  lines.push("- [Begrippenlijst](https://kamagraexpert.com/begrippenlijst): PDE5-remmer, onset, halfwaardetijd, nitraten en andere termen");
+  lines.push("- [Waar onze medicatie vandaan komt](https://kamagrasite.nl/lab): fabrikanten, waarom generiek hetzelfde molecuul is, zelf een strip controleren");
+  lines.push("- [Begrippenlijst](https://kamagrasite.nl/begrippenlijst): PDE5-remmer, onset, halfwaardetijd, nitraten en andere termen");
   lines.push("");
   lines.push("## Optional");
-  lines.push("- [Sitemap](https://kamagraexpert.com/sitemap.xml)");
-  lines.push("- [Contact](https://kamagraexpert.com/contact)");
-  lines.push("- [Bezorging](https://kamagraexpert.com/bezorging)");
+  lines.push("- [Sitemap](https://kamagrasite.nl/sitemap.xml)");
+  lines.push("- [Contact](https://kamagrasite.nl/contact)");
+  lines.push("- [Bezorging](https://kamagrasite.nl/bezorging)");
 
   return new Response(lines.join("\n"), {
     headers: {

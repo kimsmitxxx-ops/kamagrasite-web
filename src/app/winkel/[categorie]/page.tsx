@@ -30,7 +30,7 @@ export async function generateMetadata({
     description:
       cat.meta_description ||
       cat.description ||
-      `Het volledige ${cat.name}-assortiment van Kamagraexpert, met prijs en voorraad per variant. Discreet verpakt en snel verstuurd vanuit Nederland.`,
+      `Het volledige ${cat.name}-assortiment van Kamagra Site, met prijs en voorraad per variant. Discreet verpakt en snel verstuurd vanuit Nederland.`,
     // Gefilterde varianten zijn facetten van dezelfde lijst: canonical naar de
     // schone URL en uit de index houden, anders indexeert Google elke
     // filtercombinatie als losse pagina.

@@ -29,7 +29,7 @@ import { BULK_TIERS } from "@/lib/bulk-discount";
  * koopgids, prijstabel en FAQ zodat de twee niet om dezelfde query vechten.
  */
 
-const BASE = "https://kamagraexpert.com";
+const BASE = "https://kamagrasite.nl";
 
 // Zelfde live-data-regel als de rest van de site: de Supabase-client haalt met
 // cache: "no-store" op, dus een statisch gerenderde variant botst daarmee.
@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     description:
       page.meta_description ||
       page.intro ||
-      `${page.h1} bij Kamagraexpert. Prijs per stuk vergelijken, discreet verpakt en snel verstuurd vanuit Nederland.`,
+      `${page.h1} bij Kamagra Site. Prijs per stuk vergelijken, discreet verpakt en snel verstuurd vanuit Nederland.`,
     alternates: { canonical: page.canonical_url || `/${page.slug}` },
     robots: page.noindex ? { index: false, follow: false } : { index: true, follow: true },
     openGraph: { title: page.h1, description: page.intro || undefined, type: "website" },

@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Brief voor Claude Code werk in de kamagraexpert-web repo.
+Brief voor Claude Code werk in de kamagrasite-web repo.
 
 ## Commands
 
@@ -14,11 +14,11 @@ Geen test runner. Content-management + images gaan via het shop-dash sister-repo
 
 ## Wat dit is
 
-Publieke Next.js webshop voor **kamagraexpert.com** — generieke ED-medicatie (sildenafil, tadalafil, vardenafil, dapoxetine). Fork van anabolenpro-nextjs, aangepast voor Kamagra-focus met lichter mint/teal thema.
+Publieke Next.js webshop voor **kamagrasite.nl** — generieke ED-medicatie (sildenafil, tadalafil, vardenafil, dapoxetine). Fork van anabolenpro-nextjs, aangepast voor Kamagra-focus met lichter mint/teal thema.
 
-Data leeft in Supabase (`rexqfwibxawqnvrzbdoo` eu-west-1) — dezelfde database als **shop-dash** (admin dashboard + 3-agent blog pipeline). Alle content (blogs, product-catalog, categorieën, shop-config incl. `payment_instructions`, order-flow) leest deze site direct uit die DB.
+Data leeft in Supabase (`rexqfwibxawqnvrzbdoo`, eu-west-3; de pooler accepteert de tenant alleen op `aws-1-eu-west-3.pooler.supabase.com`) — dezelfde database als **shop-dash** (admin dashboard + 3-agent blog pipeline). Alle content (blogs, product-catalog, categorieën, shop-config incl. `payment_instructions`, order-flow) leest deze site direct uit die DB.
 
-Shop-slug: `kamagraexpert` — shop_id = `209efc65-a11e-499c-a74a-3d1c5043758f`.
+Shop-slug: `kamagrasite` — shop_id = `209efc65-a11e-499c-a74a-3d1c5043758f`.
 
 ## Architectuur
 
@@ -43,7 +43,7 @@ Next.js 14 App Router, TypeScript strict, Tailwind. Path alias `@/*` → `./src/
 
 ### Images: /img/* + /media/* rewrite
 
-`next.config.js` heeft `/img/:path* → ${SUPABASE_URL}/storage/v1/object/public/blog-images/:path*` en `/media/:path* → product-media/kamagraexpert` rewrites. Gebruikers zien geen Supabase URLs in view-source.
+`next.config.js` heeft `/img/:path* → ${SUPABASE_URL}/storage/v1/object/public/blog-images/:path*` en `/media/:path* → product-media/kamagrasite` rewrites. Gebruikers zien geen Supabase URLs in view-source.
 
 ### Cart & checkout
 
@@ -60,16 +60,16 @@ Categorieën (auto-created bij import):
 - `vilitra` — Vilitra 20/40/60
 - `combo-preparaten` — Super P Force, Super Kamagra Oral Jelly, Super Vidalista
 
-## Content-tone (kamagraexpert bedrijfsprofiel)
+## Content-tone (kamagrasite bedrijfsprofiel)
 
 Praktisch, informatief en no-nonsense. Geen prestatie-angst pseudo-medische taal. Doelgroep 25-55 mannen die gewoon informatie willen. Concrete werkzame-stof namen (sildenafil, tadalafil, vardenafil) + hun onset/halfwaardetijd. Eerlijk over wisselwerkingen (nitraten, alfablokkers), wanneer arts consulteren, verschillen tussen merken en generiek.
 
-Zie `../shop-dash` → cron_schedules waar `slug=kamagraexpert AND agent_type=blog_writer` het bedrijfsprofiel voor de Schrijver-agent bevat.
+Zie `../shop-dash` → cron_schedules waar `slug=kamagrasite AND agent_type=blog_writer` het bedrijfsprofiel voor de Schrijver-agent bevat.
 
 ## Content in de database
 
 Producten, categorieen, de shop-rij en de blog-metadata worden gevuld door
-`../shop-dash/scripts/kamagraexpert-content.mjs`. Dat script is idempotent: het
+`../shop-dash/scripts/kamagrasite-content.mjs`. Dat script is idempotent: het
 schrijft subtitle, description, long_description, meta, usps, faqs,
 specificaties, stof_slugs, package_type en sort_order per product, plus de
 intro- en SEO-teksten van de vijf categorieen. Pas de teksten daar aan en draai
@@ -80,7 +80,7 @@ inclusief links naar die shop en claims die niet kloppen. Die zijn vervangen.
 
 ## RLS
 
-De site draait op de anon key. Zonder `shop-dash/supabase/051-kamagraexpert-public-read.sql`
+De site draait op de anon key. Zonder `shop-dash/supabase/051-kamagrasite-public-read.sql`
 geeft de `categories`-tabel een lege lijst terug en geven alle
 `/winkel/<categorie>`-pagina's dus 404. Die migratie moet in de Supabase
 SQL-editor gedraaid zijn voordat een deploy zin heeft.
@@ -103,10 +103,10 @@ Zelfde als anabolenpro-nextjs (Supabase URL + anon key + service role). Het vers
 
 Identity: `kimsmitxxx-ops <kimsmitxxx@gmail.com>`. Pass inline via `-c user.name= -c user.email=`. Token in `C:\Users\Administrator\Downloads\gh-token.txt`.
 
-Repo: [github.com/kimsmitxxx-ops/kamagraexpert-web](https://github.com/kimsmitxxx-ops/kamagraexpert-web).
+Repo: [github.com/kimsmitxxx-ops/kamagrasite-web](https://github.com/kimsmitxxx-ops/kamagrasite-web).
 
 ## Cross-repo workflow
 
-- **Blog + content changes** → shop-dash admin UI met shop=kamagraexpert filter; DB in Supabase
+- **Blog + content changes** → shop-dash admin UI met shop=kamagrasite filter; DB in Supabase
 - **Product-catalog** → shop-dash of `import-kamagrashop-catalog.mjs`
 - **UI / component changes** → deze repo direct

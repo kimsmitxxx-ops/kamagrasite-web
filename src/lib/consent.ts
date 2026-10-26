@@ -10,8 +10,8 @@
  * overal gerespecteerd, in GA4 en in onze eigen tracking.
  */
 
-export const CONSENT_KEY = "kamagraexpert.consent.analytics";
-export const CONSENT_EVENT = "kamagraexpert:consent-changed";
+export const CONSENT_KEY = "kamagrasite.consent.analytics";
+export const CONSENT_EVENT = "kamagrasite:consent-changed";
 
 export type ConsentState = "granted" | "denied" | null;
 

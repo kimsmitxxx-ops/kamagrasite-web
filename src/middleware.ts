@@ -3,7 +3,7 @@ import { createServerClient } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";
 import { SB_URL, SB_ANON } from "@/lib/supabase-config";
 
-const SHOP_SLUG = "kamagraexpert";
+const SHOP_SLUG = "kamagrasite";
 
 // Onderhoudsmodus wordt per shop geschakeld via shops.maintenance_mode in
 // Supabase, zodat aanzetten en uitzetten geen deploy kost. Zelfde patroon als
@@ -63,7 +63,7 @@ function maintenancePage(message: string | null): string {
 <html lang="nl">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>Binnenkort open | Kamagra Expert</title>
+<title>Binnenkort open | Kamagra Site</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{min-height:100vh;display:flex;align-items:center;justify-content:center;background:rgb(22 62 58);color:rgb(240 250 248);font-family:system-ui,-apple-system,sans-serif;padding:24px}
@@ -77,7 +77,7 @@ a{color:rgb(110 209 191)}
 <body><div class="c">
 <div class="logo">K</div>
 <h1>${msg}</h1>
-<p>Kamagra Expert gaat binnenkort open. Vragen in de tussentijd? Mail naar <a href="mailto:info@kamagraexpert.com">info@kamagraexpert.com</a>.</p>
+<p>Kamagra Site gaat binnenkort open. Vragen in de tussentijd? Mail naar <a href="mailto:info@kamagrasite.nl">info@kamagrasite.nl</a>.</p>
 <div class="bar"></div>
 </div></body></html>`;
 }
