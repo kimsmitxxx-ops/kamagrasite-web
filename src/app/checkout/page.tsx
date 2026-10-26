@@ -5,8 +5,14 @@ import { formatEUR } from "@/lib/queries";
 import { calcTotals, unitDiscountPct } from "@/lib/bulk-discount";
 import { PaymentRow } from "@/components/payment-row";
 import { Sparkles, UserPlus, Lock } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { track } from "@/lib/analytics";
+import {
+  markCheckoutReached,
+  markCheckoutField,
+  markOrderPlaced,
+  suppressAbandon,
+} from "@/lib/cart-abandon";
 
 const EU_COUNTRIES = [
   { code: "NL", name: "Nederland" },
@@ -40,12 +46,26 @@ export default function CheckoutPage() {
   const [err, setErr] = useState<string | null>(null);
 
   // Eén keer per bezoek aan de checkout, ongeacht latere re-renders.
+  // Let op de afhankelijkheid: de mand komt uit localStorage via een
+  // effect van de CartProvider, en effecten van kinderen draaien eerder
+  // dan die van de ouder. Met een lege dependency-array was de mand hier
+  // dus altijd nog leeg en vuurde begin_checkout nooit bij een verse
+  // paginalading.
+  const checkoutGemeld = useRef(false);
   useEffect(() => {
-    if (cart.items.length) {
-      track("begin_checkout", { items: cart.items.length, value_cents: totals.total });
-    }
+    if (checkoutGemeld.current || cart.items.length === 0) return;
+    checkoutGemeld.current = true;
+    markCheckoutReached();
+    track("begin_checkout", { items: cart.items.length, value_cents: totals.total });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [cart.items.length]);
+
+  // Welk veld de bezoeker als laatste aanraakte. Haakt hij af, dan laat
+  // checkout_abandoned zien waar in het formulier het misging.
+  const onFieldFocus = (e: React.FocusEvent<HTMLFormElement>) => {
+    const name = (e.target as unknown as { name?: string }).name;
+    if (name) markCheckoutField(name);
+  };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,6 +81,7 @@ export default function CheckoutPage() {
         setErr(j.error || "Bestelling kon niet worden aangemaakt");
         return;
       }
+      markOrderPlaced();
       track("order_placed", {
         order_reference: j.order_id,
         value_cents: j.total_cents ?? totals.total,
@@ -83,7 +104,7 @@ export default function CheckoutPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-10">
       <h1 className="font-display text-3xl">Afrekenen</h1>
-      <form onSubmit={submit} className="mt-6 grid gap-8 lg:grid-cols-3">
+      <form onSubmit={submit} onFocus={onFieldFocus} className="mt-6 grid gap-8 lg:grid-cols-3">
         <div className="space-y-4 lg:col-span-2">
           <Field
             k="email"

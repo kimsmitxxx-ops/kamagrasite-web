@@ -1,16 +1,45 @@
 "use client";
+import { useEffect } from "react";
 import Link from "next/link";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/button";
 import { Badge } from "@/components/badge";
 import { Minus, Plus, Trash2, ArrowRight, ShoppingBag, Truck, Sparkles } from "lucide-react";
 import { useCart } from "./cart-store";
+import { track } from "@/lib/analytics";
 import { formatEUR } from "@/lib/queries";
 import { computeShipping } from "@/lib/shipping";
 import { unitDiscountPct, calcTotals } from "@/lib/bulk-discount";
 
 export function CartDrawer() {
   const { isOpen, setOpen, items, setQty, remove } = useCart();
+
+  // De mand openen is een eigen stap in de trechter: wie hier wegklikt haakt
+  // op een ander moment af dan wie nooit zover kwam.
+  useEffect(() => {
+    if (!isOpen || items.length === 0) return;
+    track("view_cart", {
+      items: items.length,
+      value_cents: items.reduce((sum, i) => sum + i.price_cents * i.qty, 0),
+      products: items.map((i) => String(i.id)).join(","),
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen]);
+
+  // Iets uit de mand halen is een koopsignaal dat omslaat. Apart meten, want
+  // het verklaart een deel van de verlaten manden.
+  const removeTracked = (id: string) => {
+    const it = items.find((i) => String(i.id) === String(id));
+    if (it) {
+      track("remove_from_cart", {
+        product_slug: String(it.id),
+        product_name: String(it.name),
+        qty: it.qty,
+        value_cents: it.price_cents * it.qty,
+      });
+    }
+    remove(id);
+  };
   const totals = calcTotals(items);
   const shipping = computeShipping(items);
   const grandTotal = totals.subtotal + shipping.shippingCents;
@@ -76,7 +105,7 @@ export function CartDrawer() {
                         {it.name}
                       </Link>
                       <button
-                        onClick={() => remove(it.id)}
+                        onClick={() => removeTracked(it.id)}
                         className="text-text-muted hover:text-danger shrink-0"
                         aria-label="Verwijderen"
                       >

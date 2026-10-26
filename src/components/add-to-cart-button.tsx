@@ -1,6 +1,6 @@
 "use client";
 import { Plus, Minus, ShoppingCart, Sparkles, ShieldCheck, Smartphone, Bitcoin } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCart } from "@/lib/cart-context";
 import { formatEUR } from "@/lib/queries";
 import { track } from "@/lib/analytics";
@@ -15,6 +15,20 @@ const BULK_TIERS = [
 export function AddToCartButton({ product }: { product: Product }) {
   const cart = useCart();
   const [qty, setQty] = useState(1);
+
+  // Productweergave melden. Zonder dit event is er geen noemer voor de
+  // mand-ratio: je ziet dan wel hoeveel mensen iets toevoegen, maar niet
+  // hoeveel er keken.
+  useEffect(() => {
+    track("product_view", {
+      product_slug: product.slug,
+      product_name: String(product.name),
+      sku: product.sku,
+      price_cents: product.price_cents,
+      value_cents: product.price_cents,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [product.slug]);
 
   const dec = () => setQty((q) => Math.max(1, q - 1));
   const inc = () => setQty((q) => q + 1);
@@ -34,6 +48,7 @@ export function AddToCartButton({ product }: { product: Product }) {
       qty,
     );
     track("add_to_cart", {
+      product_name: String(product.name),
       product_slug: product.slug,
       sku: product.sku,
       qty,

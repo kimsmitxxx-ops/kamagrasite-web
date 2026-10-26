@@ -23,6 +23,17 @@ const ALLOWED_EVENTS = new Set([
   "contact_submit",
   "chat_opened",
   "newsletter_signup",
+  "cart_abandoned",
+  "checkout_abandoned",
+  "remove_from_cart",
+  "add_shipping_info",
+  "add_payment_info",
+  "product_list_view",
+  "product_click",
+  "search",
+  "calculator_used",
+  "cta_click",
+  "scroll_depth",
 ]);
 
 const SEARCH_HOSTS = /(^|\.)(google|bing|duckduckgo|yahoo|ecosia|startpagina|startpage|brave|yandex|baidu)\./;
