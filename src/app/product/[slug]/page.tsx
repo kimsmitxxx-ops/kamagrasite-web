@@ -54,8 +54,18 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
     listProducts({ categorySlug: catSlug, limit: 4 }),
     listProductReviews(p.id, 20),
   ]);
+  // De hoofdafbeelding uit products.image_url blijft de eerste en dus de
+  // afbeelding die in de lijsten, de sitemap en het Product-schema staat.
+  // product_media komt daar achter als extra gallerijbeeld.
+  //
+  // Dit stond eerder als "media.length > 0 ? media : [image_url]", waardoor de
+  // hoofdafbeelding verdween zodra er een gallerij was. Dan wijkt de foto op de
+  // productpagina af van die in de categorielijst, en dat is precies het beeld
+  // waar klanten op geklikt hebben.
   const media = p.product_media?.sort((a: any, b: any) => a.sort_order - b.sort_order) || [];
-  const gallery = media.length > 0 ? media : (p.image_url ? [{ url: p.image_url, alt: p.name }] : []);
+  const hoofd = p.image_url ? [{ url: p.image_url, alt: p.name }] : [];
+  const extra = media.filter((m: any) => m.url !== p.image_url);
+  const gallery = [...hoofd, ...extra];
 
   const reviewsCount = reviews.length;
   const avgRating = reviewsCount > 0
