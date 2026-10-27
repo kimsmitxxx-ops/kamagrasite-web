@@ -7,6 +7,7 @@ import { CollapsibleIntro } from "@/components/shop/collapsible-intro";
 import { BuyPageLinks } from "@/components/shop/buy-page-links";
 import type { Metadata } from "next";
 import { BookOpen, Truck, ShieldCheck, PackageCheck, Sparkles } from "lucide-react";
+import { MERCHANT_RETURN_POLICY } from "@/lib/return-policy";
 
 export const dynamic = "force-dynamic";
 
@@ -89,7 +90,7 @@ export default async function CategoryPage({
           name: p.name,
           sku: p.sku,
           image: p.image_url || undefined,
-          offers: { "@type": "Offer", price: (p.price_cents / 100).toFixed(2), priceCurrency: "EUR", availability: p.availability === "OutOfStock" ? "https://schema.org/OutOfStock" : "https://schema.org/InStock" },
+          offers: { "@type": "Offer", hasMerchantReturnPolicy: MERCHANT_RETURN_POLICY, price: (p.price_cents / 100).toFixed(2), priceCurrency: "EUR", availability: p.availability === "OutOfStock" ? "https://schema.org/OutOfStock" : "https://schema.org/InStock" },
         },
       })),
     },

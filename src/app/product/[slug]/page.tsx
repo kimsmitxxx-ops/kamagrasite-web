@@ -11,6 +11,7 @@ import { RestockNotifyForm } from "@/components/shop/restock-notify-form";
 import { ShieldCheck, Truck, Factory, ArrowLeft, MapPin } from "lucide-react";
 import { vormLabel } from "@/components/shop/data";
 import type { Metadata } from "next";
+import { MERCHANT_RETURN_POLICY } from "@/lib/return-policy";
 
 export const revalidate = 300;
 
@@ -71,6 +72,7 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
     brand: p.tags?.[0] ? { "@type": "Brand", name: p.tags[0] } : undefined,
     offers: {
       "@type": "Offer",
+      hasMerchantReturnPolicy: MERCHANT_RETURN_POLICY,
       url: `/product/${p.slug}`,
       priceCurrency: "EUR",
       price: (p.price_cents / 100).toFixed(2),

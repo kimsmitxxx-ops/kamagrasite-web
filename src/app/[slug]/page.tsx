@@ -15,6 +15,7 @@ import { BuyPageLinks } from "@/components/shop/buy-page-links";
 import { MedicalDisclaimer } from "@/components/medical-disclaimer";
 import { Breadcrumb } from "@/components/breadcrumb";
 import { BULK_TIERS } from "@/lib/bulk-discount";
+import { MERCHANT_RETURN_POLICY } from "@/lib/return-policy";
 
 /**
  * Transactionele koop-pagina op root-niveau: /kamagra-kopen.
@@ -110,6 +111,7 @@ export default async function BuyPage({ params }: { params: { slug: string } }) 
           url: `${BASE}/product/${p.slug}`,
           offers: {
             "@type": "Offer",
+            hasMerchantReturnPolicy: MERCHANT_RETURN_POLICY,
             price: (p.price_cents / 100).toFixed(2),
             priceCurrency: "EUR",
             availability:
