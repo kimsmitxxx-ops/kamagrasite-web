@@ -7,10 +7,7 @@ import { createClient } from "@supabase/supabase-js";
 
 const SB_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://rexqfwibxawqnvrzbdoo.supabase.co";
 const SB_SERVICE =
-  process.env.SUPABASE_SERVICE_ROLE_KEY ||
-  process.env.SUPA_SECRET ||
-  process.env.SUPABASE_SECRET ||
-  "";
+  process.env.SUPABASE_SHOP_KEY || "";
 
 const KAMAGRASITE_SHOP_ID = "209efc65-a11e-499c-a74a-3d1c5043758f";
 

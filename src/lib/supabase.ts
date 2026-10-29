@@ -22,15 +22,16 @@ export const supabase = createClient(SB_URL, SB_ANON, {
 });
 
 /**
- * WRITE client - gebruikt SUPABASE_SERVICE_ROLE_KEY (SERVER-only!). Vereist
+ * WRITE client - gebruikt SUPABASE_SHOP_KEY (SERVER-only!): de per-shop sleutel met rol
+ * shop_server, die alleen de rijen van deze shop opent (shop-dash migratie 059). Vereist
  * voor writes zoals orders + payment_screenshots + restock_notifications
- * die RLS-policies overslaan. Faalt met duidelijke error als env var mist.
+ * binnen de eigen shop. Faalt met duidelijke error als env var mist.
  * Gebruik in Route Handlers, NOOIT in client components.
  */
 export function createServiceClient() {
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPA_SECRET || "";
+  const key = process.env.SUPABASE_SHOP_KEY || "";
   if (!key) {
-    throw new Error("SUPABASE_SERVICE_ROLE_KEY ontbreekt - server-only writes zullen falen");
+    throw new Error("SUPABASE_SHOP_KEY ontbreekt (per-shop Supabase-sleutel, rol shop_server)");
   }
   return createClient(SB_URL, key, { auth: { persistSession: false, autoRefreshToken: false } });
 }
