@@ -41,8 +41,9 @@ export async function POST(req: NextRequest) {
   let write;
   try {
     write = createServiceClient();
-  } catch (e: any) {
-    return NextResponse.json({ error: `Server-config fout: ${e.message}` }, { status: 500 });
+  } catch (e) {
+    console.error("voorraadmelding: server-config onvolledig", e);
+    return NextResponse.json({ error: "Aanmelden lukte niet. Probeer het later opnieuw." }, { status: 500 });
   }
 
   const { error } = await write
@@ -58,8 +59,10 @@ export async function POST(req: NextRequest) {
       { onConflict: "product_id,email", ignoreDuplicates: false },
     );
 
+  // Zie newsletter/route.ts: de melding van de database blijft in de serverlog.
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error("voorraadmelding aanmelden mislukt", error);
+    return NextResponse.json({ error: "Aanmelden lukte niet. Probeer het later opnieuw." }, { status: 500 });
   }
 
   return NextResponse.json({ ok: true });

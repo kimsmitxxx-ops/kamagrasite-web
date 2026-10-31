@@ -1,17 +1,17 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { createServerSupabase } from "@/lib/supabase-server";
+import { huidigeKlant } from "@/lib/sessie";
 import { formatEUR } from "@/lib/queries";
 import { User, Package, MapPin, LogOut } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
 export default async function AccountPage() {
-  const sb = createServerSupabase();
-  const { data: { user } } = await sb.auth.getUser();
-  if (!user) redirect("/account/login");
+  const klant = await huidigeKlant();
+  if (!klant) redirect("/account/login");
+  const { sb } = klant;
 
-  const { data: customer } = await sb.from("customers").select("*").eq("auth_user_id", user.id).maybeSingle();
+  const { data: customer } = await sb.from("customers").select("*").eq("auth_user_id", klant.id).maybeSingle();
   const orders = customer?.id
     ? (await sb.from("orders")
         .select("id, order_number, total_cents, status, created_at")
@@ -23,7 +23,7 @@ export default async function AccountPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
       <h1 className="font-display text-3xl">Hi {customer?.name?.split(" ")[0] || "daar"}</h1>
-      <p className="mt-2 text-sm text-text-muted">Ingelogd als <strong>{user.email}</strong></p>
+      <p className="mt-2 text-sm text-text-muted">Ingelogd als <strong>{klant.email}</strong></p>
 
       <div className="mt-8 grid gap-3 sm:grid-cols-3">
         <Link href="/account/orders" className="rounded-2xl border border-paper-border bg-paper-soft p-5 hover:border-accent">

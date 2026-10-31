@@ -1,17 +1,17 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { createServerSupabase } from "@/lib/supabase-server";
+import { huidigeKlant } from "@/lib/sessie";
 import { formatEUR } from "@/lib/queries";
 import { Package, ArrowLeft } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
 export default async function OrdersPage() {
-  const sb = createServerSupabase();
-  const { data: { user } } = await sb.auth.getUser();
-  if (!user) redirect("/account/login");
+  const klant = await huidigeKlant();
+  if (!klant) redirect("/account/login");
+  const { sb } = klant;
 
-  const { data: customer } = await sb.from("customers").select("id").eq("auth_user_id", user.id).maybeSingle();
+  const { data: customer } = await sb.from("customers").select("id").eq("auth_user_id", klant.id).maybeSingle();
   const orders = customer?.id
     ? (await sb.from("orders")
         .select("id, order_number, total_cents, status, created_at, shipping_city")

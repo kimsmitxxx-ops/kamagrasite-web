@@ -38,8 +38,11 @@ export async function POST(req: NextRequest) {
   let supabase;
   try {
     supabase = createServiceClient();
-  } catch (e: any) {
-    return NextResponse.json({ error: `Server-config fout: ${e.message}` }, { status: 500 });
+  } catch (e) {
+    // De melding van de throw noemt de naam van de Supabase-sleutel; die blijft
+    // in de serverlog en gaat niet mee naar de browser.
+    console.error("bestelling: server-config onvolledig", e);
+    return NextResponse.json({ error: "Bestellen lukte niet. Probeer het later opnieuw." }, { status: 500 });
   }
 
   let customerId: string | null = null;
@@ -77,8 +80,11 @@ export async function POST(req: NextRequest) {
     reference: `AP-${Date.now().toString(36).toUpperCase()}`,
   }).select().single();
 
+  // Alleen een eigen tekst naar buiten: de melding van de database noemt
+  // tabelnamen, constraints en PostgREST-codes, en dat verraadt waar we zitten.
   if (error || !order) {
-    return NextResponse.json({ error: error?.message || "Order kon niet worden aangemaakt" }, { status: 500 });
+    console.error("bestelling opslaan mislukt", error);
+    return NextResponse.json({ error: "Bestelling kon niet worden aangemaakt." }, { status: 500 });
   }
 
   // Resolve product_id by sku (cart items van ProductCard hebben slug-as-id)

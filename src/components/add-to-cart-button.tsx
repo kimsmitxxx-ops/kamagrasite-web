@@ -2,7 +2,7 @@
 import { Plus, Minus, ShoppingCart, Sparkles, ShieldCheck, Smartphone, Bitcoin } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useCart } from "@/lib/cart-context";
-import { formatEUR } from "@/lib/queries";
+import { formatEUR } from "@/lib/format";
 import { track } from "@/lib/analytics";
 import type { Product } from "@/lib/supabase";
 

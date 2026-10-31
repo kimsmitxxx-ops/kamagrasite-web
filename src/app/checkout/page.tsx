@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
-import { formatEUR } from "@/lib/queries";
+import { formatEUR } from "@/lib/format";
 import { calcTotals, unitDiscountPct } from "@/lib/bulk-discount";
 import { PaymentRow } from "@/components/payment-row";
 import { Sparkles, UserPlus, Lock } from "lucide-react";

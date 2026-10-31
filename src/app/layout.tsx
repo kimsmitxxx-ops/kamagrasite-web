@@ -58,7 +58,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="nl" data-shop="kamagrasite" className={`${manrope.variable} ${spaceGrotesk.variable}`}>
       <head>
-        <link rel="preconnect" href="https://rexqfwibxawqnvrzbdoo.supabase.co" />
+        {/* Hier stond een regel die alvast verbinding maakte met de host van de
+            database. Die stond daarmee in de head van elke pagina en noemde de
+            projectnaam in de broncode. Beelden lopen nu via /media, /img en
+            /bestand op ons eigen domein, dus valt er niets vooruit te verbinden. */}
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
       </head>
       <body>

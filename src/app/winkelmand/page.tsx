@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
-import { formatEUR } from "@/lib/queries";
+import { formatEUR } from "@/lib/format";
 import { calcTotals, unitDiscountPct } from "@/lib/bulk-discount";
 import { Trash2, Minus, Plus, ShoppingBag, Sparkles } from "lucide-react";
 

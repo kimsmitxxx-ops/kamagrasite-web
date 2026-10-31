@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { schoonFetch } from "@/lib/media";
 
 export const dynamic = "force-dynamic";
 
@@ -12,7 +13,10 @@ function getServiceClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || "";
   const key = process.env.SUPABASE_SHOP_KEY || "";
   if (!url || !key) throw new Error("Supabase env vars ontbreken (URL of service key)");
-  return createClient(url, key);
+  // schoonFetch haalt de storage-URL's uit het antwoord; zie lib/media.ts. De
+  // ondertekende URL voor de beheerder komt hier niet door: die zet de SDK pas
+  // samen na de fetch, want het antwoord van de bron bevat alleen een pad.
+  return createClient(url, key, { global: { fetch: (u, init) => schoonFetch(u, init) } });
 }
 
 export async function POST(req: NextRequest) {
@@ -49,8 +53,11 @@ export async function POST(req: NextRequest) {
       contentType: file.type,
       upsert: false,
     });
+    // Alleen een eigen tekst naar buiten: de melding van de opslaglaag noemt
+    // bucketnamen en de host, en dat verraadt waar we zitten.
     if (upErr) {
-      return NextResponse.json({ error: `Upload error: ${upErr.message}` }, { status: 500 });
+      console.error("betaalbewijs uploaden mislukt", upErr);
+      return NextResponse.json({ error: "Uploaden lukte niet. Probeer het later opnieuw." }, { status: 500 });
     }
 
     // Privé bucket - genereer signed URL voor admin (valid 30 dagen)
@@ -68,14 +75,16 @@ export async function POST(req: NextRequest) {
       status: "pending",
     });
     if (insErr) {
-      return NextResponse.json({ error: `DB error: ${insErr.message}` }, { status: 500 });
+      console.error("betaalbewijs opslaan mislukt", insErr);
+      return NextResponse.json({ error: "Opslaan lukte niet. Probeer het later opnieuw." }, { status: 500 });
     }
 
     // Update order status (optioneel) - markeer dat klant heeft betaald
     await sb.from("orders").update({ status: "payment_proof_received" }).eq("id", orderId);
 
     return NextResponse.json({ ok: true });
-  } catch (e: any) {
-    return NextResponse.json({ error: e.message || "Onbekende fout" }, { status: 500 });
+  } catch (e) {
+    console.error("betaalbewijs: onverwachte fout", e);
+    return NextResponse.json({ error: "Uploaden lukte niet. Probeer het later opnieuw." }, { status: 500 });
   }
 }

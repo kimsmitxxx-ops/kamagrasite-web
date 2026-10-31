@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { formatEUR } from "@/lib/queries";
+import { formatEUR } from "@/lib/format";
 import { parsePackUnits, parsePackUnitLabel, pricePerUnitCents } from "@/lib/pack-size";
 import { unitDiscountPct } from "@/lib/bulk-discount";
 import type { Product } from "@/lib/supabase";

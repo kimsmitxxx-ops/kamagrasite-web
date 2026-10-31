@@ -7,7 +7,7 @@ import { Badge } from "@/components/badge";
 import { Minus, Plus, Trash2, ArrowRight, ShoppingBag, Truck, Sparkles } from "lucide-react";
 import { useCart } from "./cart-store";
 import { track } from "@/lib/analytics";
-import { formatEUR } from "@/lib/queries";
+import { formatEUR } from "@/lib/format";
 import { computeShipping } from "@/lib/shipping";
 import { unitDiscountPct, calcTotals } from "@/lib/bulk-discount";
 

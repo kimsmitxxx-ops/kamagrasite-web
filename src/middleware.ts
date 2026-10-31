@@ -1,7 +1,14 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { createServerClient } from "@supabase/ssr";
 import { createClient } from "@supabase/supabase-js";
 import { SB_URL, SB_ANON } from "@/lib/supabase-config";
+import {
+  COOKIE_TOEGANG,
+  COOKIE_TOEGANG_OPTIES,
+  COOKIE_VERNIEUW,
+  COOKIE_VERNIEUW_OPTIES,
+  restgeldigheid,
+  vernieuwTokens,
+} from "@/lib/sessie-kern";
 
 const SHOP_SLUG = "kamagrasite";
 
@@ -128,14 +135,18 @@ export async function middleware(request: NextRequest) {
   // Supabase fout - geeft altijd NextResponse.next() terug zodat de site
   // overeind blijft als auth-laag offline is.
   try {
-    const sb = createServerClient(SB_URL, SB_ANON, {
-      cookies: {
-        get(name) { return request.cookies.get(name)?.value; },
-        set(name, value, options) { res.cookies.set({ name, value, ...options }); },
-        remove(name, options) { res.cookies.set({ name, value: "", ...options, maxAge: 0 }); },
-      },
-    });
-    await sb.auth.getUser();
+    const toegang = request.cookies.get(COOKIE_TOEGANG)?.value;
+    const vernieuw = request.cookies.get(COOKIE_VERNIEUW)?.value;
+    if (vernieuw && (!toegang || restgeldigheid(toegang) < 300)) {
+      const tokens = await vernieuwTokens(vernieuw);
+      if (tokens) {
+        res.cookies.set({ name: COOKIE_TOEGANG, value: tokens.access_token, ...COOKIE_TOEGANG_OPTIES });
+        res.cookies.set({ name: COOKIE_VERNIEUW, value: tokens.refresh_token, ...COOKIE_VERNIEUW_OPTIES });
+      } else {
+        res.cookies.set({ name: COOKIE_TOEGANG, value: "", path: "/", maxAge: 0 });
+        res.cookies.set({ name: COOKIE_VERNIEUW, value: "", path: "/", maxAge: 0 });
+      }
+    }
   } catch {}
   return res;
 }

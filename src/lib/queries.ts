@@ -240,8 +240,10 @@ export async function getOrderForConfirmation(orderId: string) {
   }
 }
 
-export const formatEUR = (cents: number) =>
-  new Intl.NumberFormat("nl-NL", { style: "currency", currency: "EUR" }).format(cents / 100);
+// Staat in lib/format.ts omdat client-componenten het nodig hebben en dit
+// bestand de Supabase-client aanmaakt. Hier doorgegeven zodat server-code die
+// het al importeerde niets hoeft te wijzigen.
+export { formatEUR } from "./format";
 
 // ---------------------------------------------------------------------------
 // Koop-pagina's (buy_pages, migratie 052)

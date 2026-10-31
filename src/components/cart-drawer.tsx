@@ -1,7 +1,7 @@
 "use client";
 import { X, Trash2, Minus, Plus } from "lucide-react";
 import { useCart } from "@/lib/cart-context";
-import { formatEUR } from "@/lib/queries";
+import { formatEUR } from "@/lib/format";
 import Link from "next/link";
 
 export function CartDrawer() {
