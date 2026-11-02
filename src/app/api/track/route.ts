@@ -34,6 +34,7 @@ const ALLOWED_EVENTS = new Set([
   "calculator_used",
   "cta_click",
   "scroll_depth",
+  "page_not_found",
 ]);
 
 const SEARCH_HOSTS = /(^|\.)(google|bing|duckduckgo|yahoo|ecosia|startpagina|startpage|brave|yandex|baidu)\./;
