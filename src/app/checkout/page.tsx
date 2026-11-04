@@ -204,6 +204,14 @@ export default function CheckoutPage() {
             </select>
           </label>
 
+          {/* Staat hier en niet in de voorwaarden, want het hoort bij het adres:
+              een pakket naar een afhaalpunt of pakketautomaat komt onbezorgd
+              terug en dan is de klant twee weken verder. */}
+          <p className="rounded-lg border border-border bg-surface px-3 py-2 text-xs text-text-muted">
+            We bezorgen alleen op een huisadres. Een afhaalpunt of pakketautomaat
+            (PostNL-punt, DHL ServicePoint of pakketkluis) kunnen we niet gebruiken.
+          </p>
+
           <Field
             k="phone"
             label="Telefoon (optioneel)"
