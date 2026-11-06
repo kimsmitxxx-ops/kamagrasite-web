@@ -92,14 +92,22 @@ export async function POST(req: NextRequest) {
   const { data: skuRows } = await supabase.from("products").select("id, sku").eq("shop_id", SHOP_ID).in("sku", skus);
   const skuToId = new Map((skuRows || []).map((r: any) => [r.sku, r.id]));
 
-  await supabase.from("order_items").insert(adjustedItems.map((it: any) => ({
+  // Kolomnamen van de echte, gedeelde order_items-tabel (product_name/
+  // quantity/unit_price_cents/total_cents) - sku/name/qty/price_cents bestaan
+  // hier niet. Deze insert faalde daardoor altijd stil (geen .select(), geen
+  // foutafhandeling): elke bestelling stond wel in `orders`, maar zonder een
+  // enkele regel in `order_items`, dus zag de admin alleen een totaalbedrag.
+  const { error: itemsError } = await supabase.from("order_items").insert(adjustedItems.map((it: any) => ({
     order_id: order.id,
     product_id: skuToId.get(it.sku) || null,
-    sku: it.sku,
-    name: it.name,
-    qty: it.qty,
-    price_cents: it.applied_price_cents,
+    product_name: it.name,
+    quantity: it.qty,
+    unit_price_cents: it.applied_price_cents,
+    total_cents: it.applied_price_cents * it.qty,
   })));
+  if (itemsError) {
+    console.error("bestelling: order_items opslaan mislukte", itemsError);
+  }
 
   return NextResponse.json({ ok: true, order_id: order.id, total_cents: total, subtotal_cents: subtotal, shipping_cents: shipping });
 }
