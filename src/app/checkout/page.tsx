@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
 import { formatEUR } from "@/lib/format";
 import { calcTotals, unitDiscountPct } from "@/lib/bulk-discount";
+import { CouponField } from "@/components/shop/coupon-field";
 import { PaymentRow } from "@/components/payment-row";
 import { Sparkles, UserPlus, Lock } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
@@ -29,7 +30,7 @@ const EU_COUNTRIES = [
 
 export default function CheckoutPage() {
   const cart = useCart();
-  const totals = calcTotals(cart.items);
+  const totals = calcTotals(cart.items, cart.coupon.discount_cents);
   const [form, setForm] = useState({
     email: "",
     name: "",
@@ -74,7 +75,7 @@ export default function CheckoutPage() {
     try {
       const res = await fetch("/api/orders", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, items: cart.items }),
+        body: JSON.stringify({ ...form, items: cart.items, discount_code: cart.couponCode || null }),
       });
       const j = await res.json().catch(() => ({}));
       if (!res.ok || !j.order_id) {
@@ -267,10 +268,17 @@ export default function CheckoutPage() {
                 <span>Verzending</span>
                 <span className="tabular">{formatEUR(totals.shipping)}</span>
               </div>
+              {totals.coupon > 0 && (
+                <div className="flex justify-between text-accent-muted">
+                  <span>Kortingscode {cart.coupon.code}</span>
+                  <span className="tabular">−{formatEUR(totals.coupon)}</span>
+                </div>
+              )}
               <div className="mt-2 flex justify-between font-display text-lg pt-2 border-t border-paper-border">
                 <span>Totaal</span>
                 <span className="tabular">{formatEUR(totals.total)}</span>
               </div>
+              <CouponField compact />
             </div>
             <button type="submit" disabled={busy} className="mt-5 w-full rounded-full bg-accent px-5 py-3 text-sm font-semibold text-accent-foreground hover:bg-accent-soft disabled:opacity-50">
               {busy ? "Bezig…" : "Plaats bestelling"}

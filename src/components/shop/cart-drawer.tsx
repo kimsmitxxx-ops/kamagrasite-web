@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/button";
 import { Badge } from "@/components/badge";
-import { Minus, Plus, Trash2, ArrowRight, ShoppingBag, Truck, Sparkles } from "lucide-react";
+import { Minus, Plus, Trash2, ArrowRight, ShoppingBag, Truck, Sparkles, Tag } from "lucide-react";
 import { useCart } from "./cart-store";
 import { track } from "@/lib/analytics";
 import { formatEUR } from "@/lib/format";
@@ -12,7 +12,7 @@ import { computeShipping } from "@/lib/shipping";
 import { unitDiscountPct, calcTotals } from "@/lib/bulk-discount";
 
 export function CartDrawer() {
-  const { isOpen, setOpen, items, setQty, remove } = useCart();
+  const { isOpen, setOpen, items, setQty, remove, coupon } = useCart();
 
   // De mand openen is een eigen stap in de trechter: wie hier wegklikt haakt
   // op een ander moment af dan wie nooit zover kwam.
@@ -40,9 +40,12 @@ export function CartDrawer() {
     }
     remove(id);
   };
-  const totals = calcTotals(items);
+  const totals = calcTotals(items, coupon.discount_cents);
   const shipping = computeShipping(items);
-  const grandTotal = totals.subtotal + shipping.shippingCents;
+  // De lade heeft geen invoerveld: een code vullen hoort in de mand of op
+  // de checkout. Staat er een, dan telt hij hier wel mee, anders klopt het
+  // totaal in de lade niet met dat op de checkout.
+  const grandTotal = totals.subtotal - totals.coupon + shipping.shippingCents;
 
   return (
     <Sheet open={isOpen} onOpenChange={setOpen}>
@@ -193,6 +196,14 @@ export function CartDrawer() {
                   <span>{totals.savings > 0 ? "Met korting" : "Subtotaal"}</span>
                   <span className="tabular">{formatEUR(totals.subtotal)}</span>
                 </div>
+                {totals.coupon > 0 && (
+                  <div className="flex items-baseline justify-between text-sm text-accent-muted">
+                    <span className="inline-flex items-center gap-1">
+                      <Tag size={11} /> Code {coupon.code}
+                    </span>
+                    <span className="tabular">−{formatEUR(totals.coupon)}</span>
+                  </div>
+                )}
                 <div className="flex items-baseline justify-between text-sm text-text-muted">
                   <span>Verzending</span>
                   <span className="tabular">{formatEUR(shipping.shippingCents)}</span>

@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
     email, name,
     street, house_number,
     postal, city, country = "NL",
-    phone, items,
+    phone, items, discount_code,
   } = body;
 
   if (!email || !name || !street || !postal || !city || !Array.isArray(items) || items.length === 0) {
@@ -63,8 +63,41 @@ export async function POST(req: NextRequest) {
   });
 
   // Shipping = EUR 10 per bestelling; alles gaat als een zending de deur uit.
+  // Kortingscode. Wat de browser meestuurt is een claim; de database bepaalt
+  // of de code bestaat, nog geldig is, aan het minimumbedrag komt en wat hij
+  // oplevert, en zet in dezelfde stap de gebruiksteller omhoog. Een code met
+  // max_uses = 1 kan dus niet twee keer tegelijk verzilverd worden.
+  //
+  // De korting rekent over het subtotaal NA de staffelkorting, net als in de
+  // mand: staffel eerst, code daarna.
+  let discountCents = 0;
+  let couponCode: string | null = null;
+  if (typeof discount_code === "string" && discount_code.trim()) {
+    const { data: couponRijen, error: couponError } = await supabase.rpc("coupon_verzilver", {
+      p_shop_id: SHOP_ID,
+      p_code: discount_code.trim().toUpperCase(),
+      p_subtotal_cents: subtotal,
+    });
+    const c = Array.isArray(couponRijen) ? couponRijen[0] : couponRijen;
+    if (couponError) {
+      // Niet de bestelling laten klappen op een kortingscode: zonder korting
+      // verder is beter dan een klant die niet kan afrekenen.
+      console.error("bestelling: kortingscode verzilveren mislukte", couponError);
+    } else if (c?.ok) {
+      discountCents = Math.min(Number(c.discount_cents) || 0, subtotal);
+      couponCode = c.code;
+    } else {
+      // Wel weigeren als de code echt niet (meer) kan: anders ziet de klant in
+      // de mand een bedrag dat de bestelling niet rekent.
+      return NextResponse.json(
+        { error: c?.melding || "Deze kortingscode is niet geldig." },
+        { status: 400 },
+      );
+    }
+  }
+
   const shipping = items.length === 0 ? 0 : SHIPPING_FEE_CENTS;
-  const total = subtotal + shipping;
+  const total = subtotal - discountCents + shipping;
 
   const fullStreet = house_number ? `${street} ${house_number}` : street;
 
@@ -76,6 +109,7 @@ export async function POST(req: NextRequest) {
     customer_phone: phone || null,
     shipping_street: fullStreet, shipping_postal: postal, shipping_city: city, shipping_country: country,
     subtotal_cents: subtotal, shipping_cents: shipping, total_cents: total,
+    coupon_code: couponCode, discount_cents: discountCents,
     status: "pending_payment",
     reference: `AP-${Date.now().toString(36).toUpperCase()}`,
   }).select().single();

@@ -3,11 +3,12 @@ import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
 import { formatEUR } from "@/lib/format";
 import { calcTotals, unitDiscountPct } from "@/lib/bulk-discount";
+import { CouponField } from "@/components/shop/coupon-field";
 import { Trash2, Minus, Plus, ShoppingBag, Sparkles } from "lucide-react";
 
 export default function WinkelmandPage() {
   const cart = useCart();
-  const totals = calcTotals(cart.items);
+  const totals = calcTotals(cart.items, cart.coupon.discount_cents);
   return (
     <div className="mx-auto max-w-4xl px-4 py-10">
       <h1 className="font-display text-3xl">Winkelmand</h1>
@@ -67,6 +68,12 @@ export default function WinkelmandPage() {
                   <span>−{formatEUR(totals.savings)}</span>
                 </div>
               )}
+              {totals.coupon > 0 && (
+                <div className="mt-2 flex justify-between text-sm text-accent-muted">
+                  <span>Kortingscode {cart.coupon.code}</span>
+                  <span>−{formatEUR(totals.coupon)}</span>
+                </div>
+              )}
               <div className="mt-2 flex justify-between text-sm text-text-muted">
                 <span>Verzending</span>
                 <span>{formatEUR(totals.shipping)}</span>
@@ -75,6 +82,7 @@ export default function WinkelmandPage() {
                 <span>Totaal</span>
                 <span>{formatEUR(totals.total)}</span>
               </div>
+              <CouponField />
               <Link href="/checkout" className="mt-5 block rounded-full bg-accent px-5 py-3 text-center text-sm font-semibold text-accent-foreground hover:bg-accent-soft">
                 Naar checkout
               </Link>
