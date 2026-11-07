@@ -235,10 +235,10 @@ function ChatPanel({ open, onOpenChange }: { open: boolean; onOpenChange: (v: bo
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent side="right" className="w-full sm:max-w-md p-0 flex flex-col bg-background">
-        <header className="px-5 py-4 border-b border-border flex items-center gap-2">
-          <MessageCircle size={18} className="text-accent" />
+        <header className="py-4 pl-5 pr-12 border-b border-border flex items-center gap-2">
+          <MessageCircle size={18} className="shrink-0 text-accent" />
           <SheetTitle className="font-display text-lg">Live chat</SheetTitle>
-          <span className="ml-auto text-xs text-text-muted">
+          <span className="ml-auto truncate text-xs text-text-muted">
             {polling ? "verversen…" : escalated ? "wacht op medewerker" : hasAdminReply ? "medewerker actief" : hasAiReply ? "AI-antwoord" : "Antwoord binnen 1 uur"}
           </span>
         </header>
