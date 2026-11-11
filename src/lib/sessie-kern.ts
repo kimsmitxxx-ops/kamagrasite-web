@@ -65,6 +65,30 @@ export async function vraagInlogcode(email: string): Promise<boolean> {
   }
 }
 
+/**
+ * Inloggen met het wachtwoord dat de klant bij het afrekenen koos.
+ *
+ * Naast de code per mail, niet in plaats daarvan: wie het vinkje "maak meteen
+ * een account aan" gebruikt heeft een wachtwoord, en die hoort daarmee binnen
+ * te komen zonder eerst een code op te halen. Het wachtwoord gaat niet verder
+ * dan deze server; de browser praat alleen met ons eigen domein.
+ */
+export async function logInMetWachtwoord(email: string, wachtwoord: string): Promise<Tokens | null> {
+  try {
+    const r = await fetch(`${SB_URL}/auth/v1/token?grant_type=password`, {
+      method: "POST",
+      headers: { apikey: SB_ANON, Authorization: `Bearer ${SB_ANON}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password: wachtwoord }),
+      cache: "no-store",
+      signal: AbortSignal.timeout(10_000),
+    });
+    if (!r.ok) return null;
+    return tokensUit(await r.json());
+  } catch {
+    return null;
+  }
+}
+
 /** Wissel de code uit de mail in voor een sessie. */
 export async function wisselCodeIn(email: string, code: string): Promise<Tokens | null> {
   try {

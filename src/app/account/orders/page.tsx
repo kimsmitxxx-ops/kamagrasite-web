@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { huidigeKlant } from "@/lib/sessie";
+import { createServiceClient } from "@/lib/supabase";
 import { formatEUR } from "@/lib/queries";
 import { Package, ArrowLeft } from "lucide-react";
 
@@ -9,7 +10,12 @@ export const dynamic = "force-dynamic";
 export default async function OrdersPage() {
   const klant = await huidigeKlant();
   if (!klant) redirect("/account/login");
-  const { sb } = klant;
+  // Lezen met de sleutel van de shop, niet met het token van de klant: dat
+  // token draagt geen shop_id-claim, en de RLS-regels op customers en orders
+  // eisen die wel. Daardoor zag een ingelogde klant helemaal niets, ook niet
+  // zijn eigen klantrij. De afbakening zit nu in de query hieronder: alleen de
+  // rij die aan dit account hangt, en de sleutel opent alleen deze shop.
+  const sb = createServiceClient();
 
   const { data: customer } = await sb.from("customers").select("id").eq("auth_user_id", klant.id).maybeSingle();
   // Ook de fout uitlezen, niet alleen `.data`. Ging de query mis, dan toonde
