@@ -12,13 +12,17 @@ export default async function OrdersPage() {
   const { sb } = klant;
 
   const { data: customer } = await sb.from("customers").select("id").eq("auth_user_id", klant.id).maybeSingle();
-  const orders = customer?.id
-    ? (await sb.from("orders")
-        .select("id, order_number, total_cents, status, created_at, shipping_city")
+  // Ook de fout uitlezen, niet alleen `.data`. Ging de query mis, dan toonde
+  // deze pagina "nog geen bestellingen geplaatst" terwijl er wel bestellingen
+  // waren; zo bleef een verkeerde kolomnaam maandenlang onopgemerkt.
+  const { data: orders, error: ordersFout } = customer?.id
+    ? await sb.from("orders")
+        .select("id, reference, total_cents, status, created_at, shipping_city")
         .eq("customer_id", customer.id)
         .order("created_at", { ascending: false })
-        .limit(50)).data
-    : [];
+        .limit(50)
+    : { data: [], error: null };
+  if (ordersFout) console.error("bestellingen ophalen mislukte:", ordersFout.message);
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10">
@@ -42,7 +46,7 @@ export default async function OrdersPage() {
             <tbody className="divide-y divide-paper-border">
               {orders.map((o: any) => (
                 <tr key={o.id} className="hover:bg-surface/50">
-                  <td className="px-5 py-4 font-medium">#{o.order_number || o.id.slice(0, 8)}</td>
+                  <td className="px-5 py-4 font-medium">#{o.reference || o.id.slice(0, 8)}</td>
                   <td className="px-5 py-4 text-text-muted tabular">
                     {new Date(o.created_at).toLocaleDateString("nl-NL", { day: "numeric", month: "long", year: "numeric" })}
                   </td>
@@ -60,7 +64,11 @@ export default async function OrdersPage() {
       ) : (
         <div className="mt-8 rounded-2xl border border-dashed border-paper-border bg-paper-soft p-10 text-center">
           <Package className="mx-auto h-10 w-10 text-text-subtle" />
-          <p className="mt-3 text-text-muted">Nog geen bestellingen geplaatst.</p>
+          <p className="mt-3 text-text-muted">
+            {ordersFout
+              ? "Je bestellingen konden even niet worden opgehaald. Probeer het zo nog eens, of mail ons."
+              : "Nog geen bestellingen geplaatst."}
+          </p>
           <Link href="/winkel" className="mt-5 inline-flex rounded-full bg-accent px-5 py-2 text-sm font-semibold text-accent-foreground hover:bg-accent-soft">
             Naar de winkel
           </Link>

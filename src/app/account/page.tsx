@@ -12,13 +12,16 @@ export default async function AccountPage() {
   const { sb } = klant;
 
   const { data: customer } = await sb.from("customers").select("*").eq("auth_user_id", klant.id).maybeSingle();
-  const orders = customer?.id
-    ? (await sb.from("orders")
-        .select("id, order_number, total_cents, status, created_at")
+  // Zie account/orders: een mislukte query mag niet als "geen bestellingen"
+  // op het scherm komen.
+  const { data: orders, error: ordersFout } = customer?.id
+    ? await sb.from("orders")
+        .select("id, reference, total_cents, status, created_at")
         .eq("customer_id", customer.id)
         .order("created_at", { ascending: false })
-        .limit(5)).data
-    : [];
+        .limit(5)
+    : { data: [], error: null };
+  if (ordersFout) console.error("bestellingen ophalen mislukte:", ordersFout.message);
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
@@ -51,7 +54,7 @@ export default async function AccountPage() {
           {orders.map((o: any) => (
             <div key={o.id} className="flex items-center justify-between rounded-xl border border-paper-border bg-paper-soft p-4 text-sm">
               <div>
-                <p className="font-medium">#{o.order_number || o.id.slice(0, 8)}</p>
+                <p className="font-medium">#{o.reference || o.id.slice(0, 8)}</p>
                 <p className="text-xs text-text-muted">{new Date(o.created_at).toLocaleDateString("nl-NL")} · {o.status}</p>
               </div>
               <span className="font-display text-lg">{formatEUR(o.total_cents)}</span>
@@ -59,7 +62,7 @@ export default async function AccountPage() {
           ))}
         </div>
       ) : (
-        <p className="mt-4 rounded-xl border border-dashed border-paper-border p-6 text-center text-text-muted">Nog geen bestellingen</p>
+        <p className="mt-4 rounded-xl border border-dashed border-paper-border p-6 text-center text-text-muted">{ordersFout ? "Je bestellingen konden even niet worden opgehaald." : "Nog geen bestellingen"}</p>
       )}
     </div>
   );

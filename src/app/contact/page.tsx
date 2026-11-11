@@ -7,7 +7,7 @@ export const revalidate = 86400;
 
 export const metadata: Metadata = {
   title: "Contact - Kamagra Site",
-  description: "Bereik Kamagra Site via online chat, e-mail of contactformulier. Antwoord binnen 1 werkdag tussen 09:00 en 21:00, ook in het weekend.",
+  description: "Bereik Kamagra Site via online chat, e-mail of contactformulier. Antwoord binnen 48 uur, ook in het weekend.",
   alternates: { canonical: "/contact/" },
 };
 
@@ -39,7 +39,7 @@ export default function ContactPage() {
             <Mail size={20} className="text-accent" />
             <h3 className="mt-3 font-display text-lg text-primary-foreground">Stuur ons een bericht</h3>
             <p className="mt-2 text-sm text-primary-foreground/75">
-              Gebruik het formulier hieronder. Zet je ordernummer erbij als het over een bestelling gaat, of de batchcode van je strip als je twijfelt over de verpakking. Antwoord binnen 1 werkdag.
+              Gebruik het formulier hieronder. Zet je ordernummer erbij als het over een bestelling gaat, of de batchcode van je strip als je twijfelt over de verpakking. Antwoord binnen 48 uur.
             </p>
           </div>
           <div className="rounded-md border border-primary-muted bg-primary p-6 text-primary-foreground">

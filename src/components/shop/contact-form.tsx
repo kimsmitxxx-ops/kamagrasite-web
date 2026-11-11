@@ -57,7 +57,7 @@ export function ContactForm() {
     >
       <h2 className="font-display text-2xl text-primary-foreground">Stuur een bericht</h2>
       <p className="mt-2 text-sm text-primary-foreground/75">
-        Reactie binnen 1 werkdag. Voeg je ordernummer toe als het om een lopende bestelling gaat.
+        Reactie binnen 48 uur. Voeg je ordernummer toe als het om een lopende bestelling gaat.
       </p>
 
       {sent ? (
@@ -65,7 +65,7 @@ export function ContactForm() {
           <CheckCircle2 size={18} className="text-success" />
           <p className="mt-2 font-medium">Bedankt, je bericht staat in onze inbox.</p>
           <p className="mt-1 text-primary-foreground/75">
-            We reageren binnen 1 werkdag op {form.email || "het opgegeven e-mailadres"}. Voor spoed
+            We reageren binnen 48 uur op {form.email || "het opgegeven e-mailadres"}. Voor spoed
             gebruik je de live chat rechtsonder.
           </p>
         </div>

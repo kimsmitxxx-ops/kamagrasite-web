@@ -111,7 +111,7 @@ export default function RetourPage() {
               <Link href="/contact" className="text-sm text-accent hover:underline">
                 Stuur een bericht via het contactformulier
               </Link>
-              <p className="mt-2 text-xs text-text-subtle">Antwoord binnen 1 werkdag.</p>
+              <p className="mt-2 text-xs text-text-subtle">Antwoord binnen 48 uur.</p>
             </div>
           </div>
           <FaqAccordion items={faq} />
