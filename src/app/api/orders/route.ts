@@ -14,6 +14,7 @@ export async function POST(req: NextRequest) {
     street, house_number,
     postal, city, country = "NL",
     phone, items, discount_code,
+    create_account, password,
   } = body;
 
   if (!email || !name || !street || !postal || !city || !Array.isArray(items) || items.length === 0) {
@@ -141,6 +142,33 @@ export async function POST(req: NextRequest) {
   })));
   if (itemsError) {
     console.error("bestelling: order_items opslaan mislukte", itemsError);
+  }
+
+  // Account aanmaken, als de klant dat vinkje bij het afrekenen aanzette.
+  //
+  // Dit stond er niet, terwijl de checkout het vinkje en een verplicht
+  // wachtwoordveld wel toonde: de klant koos een wachtwoord en er gebeurde
+  // vervolgens niets mee. Niet fataal voor de bestelling, dus na de order en
+  // met een eigen try: een account dat niet lukt mag geen bestelling kosten.
+  //
+  // shop-dash beheert de accounts (service-role); wij hebben die sleutel
+  // bewust niet. Bestaat het adres al, dan maakt shop-dash niets nieuws aan en
+  // blijft het bestaande wachtwoord gelden.
+  if (create_account === true && typeof password === "string" && password.length >= 8) {
+    try {
+      const dash = process.env.SHOP_DASH_URL || "https://shop-dash-ruby.vercel.app";
+      const res = await fetch(`${dash}/api/storefront/auth`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-shop-dash-key": process.env.SHOP_DASH_API_KEY || "" },
+        body: JSON.stringify({ shopId: SHOP_ID, action: "create", email, password, name }),
+        signal: AbortSignal.timeout(12_000),
+      });
+      if (!res.ok) {
+        console.error("account aanmaken mislukte:", res.status, await res.text().catch(() => ""));
+      }
+    } catch (e) {
+      console.error("account aanmaken mislukte (niet fataal):", e);
+    }
   }
 
   return NextResponse.json({ ok: true, order_id: order.id, total_cents: total, subtotal_cents: subtotal, shipping_cents: shipping });

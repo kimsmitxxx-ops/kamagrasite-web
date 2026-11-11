@@ -60,13 +60,21 @@ export async function listFeaturedProducts(limit = 8): Promise<Product[]> {
 export async function listProducts(opts: { categorySlug?: string; tag?: string; limit?: number } = {}): Promise<Product[]> {
   try {
     let q = supabase.from("products")
-      .select("*, categories(slug, name)")
+      .select(
+        // Alleen bij een categoriepagina de koppeltabel erbij halen: met
+        // !inner valt een product zonder categorie anders helemaal weg.
+        opts.categorySlug ? "*, categories(slug, name)" + ", product_categories!inner(category_id)" : "*, categories(slug, name)",
+      )
       .eq("shop_id", SHOP_ID)
       .eq("is_active", true)
       .order("sort_order");
     if (opts.categorySlug) {
       const cat = await supabase.from("categories").select("id").eq("shop_id", SHOP_ID).eq("slug", opts.categorySlug).maybeSingle();
-      if (cat.data) q = q.eq("category_id", cat.data.id);
+      // Een product kan in meerdere categorieën staan (migratie 103), dus de
+      // koppeltabel is leidend. Hiervoor telde ook een oude WooCommerce-tag
+      // met dezelfde naam mee, en dat maakte "haal dit product uit de
+      // categorie" in het dashboard zinloos: de tag bleef staan.
+      if (cat.data) q = q.eq("product_categories.category_id", cat.data.id);
     }
     if (opts.tag) q = q.contains("tags", [opts.tag]);
     if (opts.limit) q = q.limit(opts.limit);
