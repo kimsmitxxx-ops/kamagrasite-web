@@ -12,12 +12,13 @@ import {
   Truck,
   BadgeCheck,
 } from "lucide-react";
+import { alternatesNL } from "@/lib/geo-nl";
 
 export const metadata: Metadata = {
   title: "Over Kamagra Site - wie wij zijn en hoe wij werken",
   description:
     "Kamagra Site importeert generieke ED-medicatie rechtstreeks bij Ajanta Pharma, Centurion Laboratories en Sunrise Remedies. Lees hoe wij werken, wat wij wel en niet beloven en hoe je ons bereikt.",
-  alternates: { canonical: "/over-ons/" },
+  alternates: alternatesNL("/over-ons/"),
 };
 
 export const revalidate = 600;
@@ -36,7 +37,7 @@ const pillars = [
   {
     icon: Truck,
     h: "Dezelfde dag de deur uit",
-    p: "Betaling binnen voor 15:00 op een werkdag betekent diezelfde dag verstuurd via PostNL. Nederland doorgaans de volgende werkdag, Belgie een dag later.",
+    p: "Zodra de betaling binnen is gaat het pakket via PostNL de deur uit. Nederland doorgaans de volgende werkdag, Belgie een dag later.",
   },
   {
     icon: BookOpen,

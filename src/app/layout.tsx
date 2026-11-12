@@ -10,6 +10,7 @@ import { AnalyticsTracker } from "@/components/analytics-tracker";
 import { CartAbandonTracker } from "@/components/cart-abandon-tracker";
 import { GA4 } from "@/components/ga4";
 import { ConsentNotice } from "@/components/consent-notice";
+import { hreflangVoor, OG_LOCALE } from "@/lib/geo-nl";
 
 // Measurement-ID per Vercel-project instellen; zonder ID laadt GA4 niet.
 const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID || "";
@@ -42,6 +43,8 @@ const WhatsAppFab = dynamic(
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://kamagrasite.nl"),
+    // Taal en land expliciet, zie lib/geo-nl.ts.
+    alternates: { languages: hreflangVoor("/") },
   title: { default: "Kamagra Site - generieke ED-medicatie zonder recept, snel verzonden", template: "%s · Kamagra Site" },
   description: "Kamagra, Cenforce, Vidalista en Vilitra: sildenafil, tadalafil en vardenafil direct geïmporteerd van gecertificeerde fabrikanten. Discrete verzending vanaf NL, geen recept nodig.",
   robots: { index: true, follow: true },
@@ -50,6 +53,7 @@ export const metadata: Metadata = {
     apple: [{ url: "/apple-icon.png", type: "image/png" }],
   },
   openGraph: {
+      locale: OG_LOCALE,
     images: [{ url: "/opengraph-image.png", width: 1200, height: 630 }],
   },
 };

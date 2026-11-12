@@ -5,7 +5,7 @@ const USPS = [
   "Direct geimporteerd bij de fabrikant",
   "Houdbaarheidsdatum zichtbaar voor je bestelt",
   "Discreet, neutraal verpakt",
-  "Voor 15:00 betaald is dezelfde dag verstuurd",
+  "Zodra je betaling binnen is, maken we je bestelling klaar",
   "100% leveringsgarantie",
 ];
 

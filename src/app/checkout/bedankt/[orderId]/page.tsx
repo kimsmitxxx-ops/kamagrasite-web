@@ -10,6 +10,9 @@ import { CheckCircle2, Copy, Building2, Bitcoin, AlertTriangle } from "lucide-re
 import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
+// Hoort bij force-dynamic: de gedeelde Supabase-client cachet sinds de
+// TTFB-ronde standaard, en hier moet elke lees juist vers zijn.
+export const fetchCache = "force-no-store";
 export const revalidate = 0;
 
 export const metadata: Metadata = {

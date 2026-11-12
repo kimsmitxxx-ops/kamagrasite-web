@@ -16,6 +16,7 @@ import { MedicalDisclaimer } from "@/components/medical-disclaimer";
 import { Breadcrumb } from "@/components/breadcrumb";
 import { BULK_TIERS } from "@/lib/bulk-discount";
 import { MERCHANT_RETURN_POLICY } from "@/lib/return-policy";
+import { alternatesNL } from "@/lib/geo-nl";
 
 /**
  * Transactionele koop-pagina op root-niveau: /kamagra-kopen.
@@ -38,8 +39,8 @@ const BASE = "https://kamagrasite.nl";
 // prerenderen en gaf hij "Page changed from static to dynamic at runtime"
 // (HTTP 500) op elke koop-pagina. Vindbaarheid loopt via de sitemap en de
 // interne links, niet via prerendering.
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+
+export const revalidate = 300;
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const page = await getBuyPage(params.slug);
@@ -50,7 +51,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       page.meta_description ||
       page.intro ||
       `${page.h1} bij Kamagra Site. Prijs per stuk vergelijken, discreet verpakt en snel verstuurd vanuit Nederland.`,
-    alternates: { canonical: page.canonical_url || `/${page.slug}` },
+    alternates: alternatesNL(page.canonical_url || `/${page.slug}`),
     robots: page.noindex ? { index: false, follow: false } : { index: true, follow: true },
     openGraph: { title: page.h1, description: page.intro || undefined, type: "website" },
   };
@@ -89,7 +90,6 @@ export default async function BuyPage({ params }: { params: { slug: string } }) 
       return needles.some((n) => hay.includes(n));
     })
     .slice(0, 4);
-
 
   const itemListJsonLd = {
     "@context": "https://schema.org",
@@ -186,7 +186,7 @@ export default async function BuyPage({ params }: { params: { slug: string } }) 
       <div className="mt-6 grid gap-3 sm:grid-cols-3">
         <div className="flex items-start gap-2.5 rounded-lg border border-border bg-paper-soft p-3 text-sm">
           <Truck size={16} className="mt-0.5 shrink-0 text-accent" />
-          <span className="text-text-muted">Voor 15:00 betaald is dezelfde dag verstuurd</span>
+          <span className="text-text-muted">Zodra je betaling binnen is, maken we je bestelling klaar</span>
         </div>
         <div className="flex items-start gap-2.5 rounded-lg border border-border bg-paper-soft p-3 text-sm">
           <PackageCheck size={16} className="mt-0.5 shrink-0 text-accent" />

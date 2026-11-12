@@ -4,13 +4,14 @@ import { ProductCard } from "@/components/product-card";
 import { CatalogFilters } from "@/components/shop/catalog-filters";
 import type { Metadata } from "next";
 import { BookOpen, Truck, ShieldCheck, PackageCheck, Sparkles } from "lucide-react";
+import { alternatesNL } from "@/lib/geo-nl";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "Winkel - alle ED-medicatie op een rij",
   description: "De volledige catalogus van Kamagra Site: Kamagra, Cenforce, Vidalista, Vilitra en combi-preparaten met sildenafil, tadalafil, vardenafil en dapoxetine. Zonder recept, discreet verzonden vanuit Nederland.",
-  alternates: { canonical: "/winkel/" },
+  alternates: alternatesNL("/winkel/"),
 };
 
 export default async function WinkelIndexPage({
@@ -90,7 +91,7 @@ export default async function WinkelIndexPage({
             <h4 className="text-xs uppercase tracking-wider text-accent-muted font-semibold inline-flex items-center gap-1.5">
               <ShieldCheck size={12} /> Onze garanties
             </h4>
-            <p className="inline-flex items-start gap-2"><Truck size={14} className="text-accent mt-0.5" /> Voor 15:00 betaald is dezelfde dag verstuurd</p>
+            <p className="inline-flex items-start gap-2"><Truck size={14} className="text-accent mt-0.5" /> Zodra je betaling binnen is, maken we je bestelling klaar</p>
             <p className="inline-flex items-start gap-2"><PackageCheck size={14} className="text-accent mt-0.5" /> Neutrale verpakking, geen productnaam op het label</p>
             <p className="inline-flex items-start gap-2"><ShieldCheck size={14} className="text-accent mt-0.5" /> 100% leveringsgarantie, anders opnieuw verstuurd</p>
           </div>

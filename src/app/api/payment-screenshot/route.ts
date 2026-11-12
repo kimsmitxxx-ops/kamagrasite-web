@@ -3,6 +3,9 @@ import { createClient } from "@supabase/supabase-js";
 import { schoonFetch } from "@/lib/media";
 
 export const dynamic = "force-dynamic";
+// Hoort bij force-dynamic: de gedeelde Supabase-client cachet sinds de
+// TTFB-ronde standaard, en hier moet elke lees juist vers zijn.
+export const fetchCache = "force-no-store";
 
 const SHOP_ID = "209efc65-a11e-499c-a74a-3d1c5043758f";
 const MAX_BYTES = 5 * 1024 * 1024;

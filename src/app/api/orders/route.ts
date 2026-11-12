@@ -3,6 +3,9 @@ import { createServiceClient } from "@/lib/supabase";
 import { unitDiscountPct } from "@/lib/bulk-discount";
 
 export const dynamic = "force-dynamic";
+// Hoort bij force-dynamic: de gedeelde Supabase-client cachet sinds de
+// TTFB-ronde standaard, en hier moet elke lees juist vers zijn.
+export const fetchCache = "force-no-store";
 
 const SHOP_ID = "209efc65-a11e-499c-a74a-3d1c5043758f"; // kamagrasite
 const SHIPPING_FEE_CENTS = 1000; // EUR 10 per zending

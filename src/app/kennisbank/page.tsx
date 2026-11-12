@@ -2,6 +2,7 @@ import Link from "next/link";
 import { listBlogPosts } from "@/lib/queries";
 import { KennisbankTabs } from "@/components/shop/kennisbank-tabs";
 import type { Metadata } from "next";
+import { alternatesNL } from "@/lib/geo-nl";
 
 export const revalidate = 600;
 
@@ -9,10 +10,8 @@ export const metadata: Metadata = {
   title: "Kennisbank ED - sildenafil, tadalafil, wisselwerkingen · Kamagra Site",
   description:
     "Onafhankelijke gidsen over generieke ED-medicatie: werkingsmechanisme van sildenafil, tadalafil en vardenafil, doseringsschema's, wisselwerkingen en veiligheidsadviezen.",
-  alternates: { canonical: "/kennisbank/" },
+  alternates: alternatesNL("/kennisbank/"),
 };
-
-export const dynamic = "force-dynamic";
 
 export default async function KennisbankPage({
   searchParams,

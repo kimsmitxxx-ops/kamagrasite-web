@@ -6,6 +6,9 @@ import { formatEUR } from "@/lib/queries";
 import { User, Package, MapPin, LogOut } from "lucide-react";
 
 export const dynamic = "force-dynamic";
+// Hoort bij force-dynamic: de gedeelde Supabase-client cachet sinds de
+// TTFB-ronde standaard, en hier moet elke lees juist vers zijn.
+export const fetchCache = "force-no-store";
 
 export default async function AccountPage() {
   const klant = await huidigeKlant();

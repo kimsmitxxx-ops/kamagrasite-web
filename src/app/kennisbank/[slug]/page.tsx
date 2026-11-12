@@ -5,6 +5,7 @@ import { ArrowLeft, BadgeCheck } from "lucide-react";
 import type { Metadata } from "next";
 import { MedicalDisclaimer } from "@/components/medical-disclaimer";
 import { highlightGlossary } from "@/lib/glossary-highlight";
+import { alternatesNL } from "@/lib/geo-nl";
 
 export const revalidate = 600;
 
@@ -19,7 +20,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   return {
     title: p.meta_title || p.title,
     description: p.meta_description || p.excerpt || undefined,
-    alternates: { canonical: `/kennisbank/${p.slug}/` },
+    alternates: alternatesNL(`/kennisbank/${p.slug}/`),
     openGraph: {
       title: p.title,
       description: p.excerpt || undefined,

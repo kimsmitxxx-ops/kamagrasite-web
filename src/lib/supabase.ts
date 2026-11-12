@@ -14,6 +14,9 @@ import { schoonFetch } from "./media";
  * READ-only client via anon key - voor product/blog/category listings.
  * RLS-policies scopen alles per shop_id.
  */
+/** De tag waarmee shop-dash alle Supabase-leesacties van deze site purgt. */
+export const SB_TAG = "supabase";
+
 export const supabase = createClient(SB_URL, SB_ANON, {
   auth: { persistSession: false, autoRefreshToken: false },
   // Zie anabolenpro en anabolendoktor: Next cachet fetches in de Vercel Data
@@ -23,8 +26,20 @@ export const supabase = createClient(SB_URL, SB_ANON, {
   // schoonFetch haalt bovendien de storage-URL's uit het antwoord, zodat geen
   // enkele pagina de projectnaam van Supabase in de broncode kan zetten. Zie
   // lib/media.ts voor waarom dat hier zit en niet per component.
-  global: { fetch: (url, init) => schoonFetch(url, { ...init, cache: "no-store" }) },
+  global: { fetch: (url, init) => schoonFetch(url, { ...init, next: { revalidate: 300, tags: [SB_TAG] } }) },
 });
+
+
+/**
+ * Dezelfde lees-client, maar zonder cache-instelling. Alleen gebruiken binnen
+ * een `unstable_cache`: die bepaalt zelf hoe lang het resultaat meegaat en
+ * heeft de commit-hash in de sleutel, dus een deploy krijgt een schone cache.
+ */
+export const supabaseLeesbaar = createClient(SB_URL, SB_ANON, {
+  auth: { persistSession: false, autoRefreshToken: false },
+  global: { fetch: (url, init) => schoonFetch(url, init) },
+});
+
 
 /**
  * WRITE client - gebruikt SUPABASE_SHOP_KEY (SERVER-only!): de per-shop sleutel met rol

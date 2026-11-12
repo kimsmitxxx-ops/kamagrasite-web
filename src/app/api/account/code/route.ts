@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { vraagInlogcode } from "@/lib/sessie";
 
 export const dynamic = "force-dynamic";
+// Hoort bij force-dynamic: de gedeelde Supabase-client cachet sinds de
+// TTFB-ronde standaard, en hier moet elke lees juist vers zijn.
+export const fetchCache = "force-no-store";
 
 /**
  * Stap 1 van inloggen: een code laten mailen.

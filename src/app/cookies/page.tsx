@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHero } from "@/components/shop/page-hero";
+import { alternatesNL } from "@/lib/geo-nl";
 
 export const metadata: Metadata = {
   title: "Cookies - wat we wel en niet bewaren · Kamagra Site",
   description:
     "Kamagra Site gebruikt alleen functionele en optionele analytische cookies. Geen tracking voor advertenties. Lees welke cookies wij plaatsen en hoe je ze beheert.",
-  alternates: { canonical: "/cookies/" },
+  alternates: alternatesNL("/cookies/"),
 };
 
 export const revalidate = 86400;

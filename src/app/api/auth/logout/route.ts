@@ -3,6 +3,9 @@ import { cookies } from "next/headers";
 import { COOKIE_TOEGANG, COOKIE_VERNIEUW, meldAf } from "@/lib/sessie";
 
 export const dynamic = "force-dynamic";
+// Hoort bij force-dynamic: de gedeelde Supabase-client cachet sinds de
+// TTFB-ronde standaard, en hier moet elke lees juist vers zijn.
+export const fetchCache = "force-no-store";
 
 export async function POST(req: Request) {
   const toegang = cookies().get(COOKIE_TOEGANG)?.value;

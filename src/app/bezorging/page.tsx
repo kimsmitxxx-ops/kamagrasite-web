@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/shop/page-hero";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { Truck, PackageCheck, Clock, Globe2, ShieldCheck, MapPin } from "lucide-react";
+import { alternatesNL } from "@/lib/geo-nl";
 
 export const revalidate = 86400;
 
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
   title: "Bezorging - Kamagra Site",
   description:
     "Snel verzonden vanuit Nederland via PostNL en DPD. Betaling vóór 11:00 = dezelfde dag verstuurd. Discreet, met track & trace, alleen naar huisadressen.",
-  alternates: { canonical: "/bezorging/" },
+  alternates: alternatesNL("/bezorging/"),
 };
 
 const carriers = [
@@ -73,7 +74,7 @@ const faq = [
 const timeline = [
   { t: "0:00", h: "Bestelling geplaatst", d: "Directe bevestiging per e-mail met ordernummer + betaalinstructies." },
   { t: "Voor 11:00", h: "Betaling binnen", d: "Bankoverboeking (IBAN) of crypto. Zodra we het zien, is je order in behandeling." },
-  { t: "Zelfde werkdag 15:00", h: "Order ingepakt", d: "Wij controleren sterkte, batchcode en houdbaarheidsdatum per item en pakken neutraal in." },
+  { t: "Na de betaling", h: "Order ingepakt", d: "Wij controleren sterkte, batchcode en houdbaarheidsdatum per item en pakken neutraal in." },
   { t: "Zelfde werkdag 17:00", h: "Bij PostNL / DPD", d: "Track & trace per mail, label is dan al actief." },
   { t: "Volgende werkdag", h: "Bezorgd", d: "NL: tussen 09:00 en 21:30 aan je vaste huisadres. BE: 1-3 werkdagen. Rest EU: 3-5 werkdagen." },
 ];

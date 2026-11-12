@@ -15,6 +15,7 @@ import {
   CalendarClock,
   BookOpen,
 } from "lucide-react";
+import { alternatesNL } from "@/lib/geo-nl";
 
 export const revalidate = 3600;
 
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
   title: "Herkomst en kwaliteit - waar onze ED-medicatie vandaan komt · Kamagra Site",
   description:
     "Van welke fabrikanten wij importeren, waarom generieke sildenafil hetzelfde molecuul is als Viagra, en hoe je zelf aan de verpakking ziet of een strip klopt.",
-  alternates: { canonical: "/lab/" },
+  alternates: alternatesNL("/lab/"),
 };
 
 const fabrikanten = [

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BookOpen } from "lucide-react";
+import { alternatesNL } from "@/lib/geo-nl";
 
 export const revalidate = 86400;
 
@@ -8,7 +9,7 @@ export const metadata: Metadata = {
   title: "Begrippenlijst ED-medicatie - PDE5, sildenafil, tadalafil, onset | Kamagra Site",
   description:
     "Uitleg van de begrippen die je tegenkomt op kamagrasite.nl en in de kennisbank: PDE5-remmer, sildenafil, tadalafil, vardenafil, dapoxetine, onset, halfwaardetijd, nitraten en meer.",
-  alternates: { canonical: "/begrippenlijst/" },
+  alternates: alternatesNL("/begrippenlijst/"),
 };
 
 type Term = {

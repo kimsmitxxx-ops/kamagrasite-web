@@ -35,7 +35,7 @@ export function Footer() {
               <PackageCheck size={14} className="text-accent" /> Neutrale verpakking, geen productnaam op het label
             </li>
             <li className="inline-flex items-center gap-2">
-              <Clock size={14} className="text-accent" /> Voor 15:00 betaald op een werkdag is dezelfde dag verstuurd
+              <Clock size={14} className="text-accent" /> Verstuurd zodra je betaling binnen is
             </li>
             <li>
               <Link href="/contact" className="inline-flex items-center gap-2 text-primary-foreground/80 hover:text-accent">

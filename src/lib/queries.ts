@@ -47,7 +47,7 @@ export function sortProducts<T extends { name: string; sort_order?: number | nul
 export async function listFeaturedProducts(limit = 8): Promise<Product[]> {
   try {
     const { data } = await supabase.from("products")
-      .select("*, categories(slug, name)")
+      .select("*, categories!products_category_id_fkey(slug, name)")
       .eq("shop_id", SHOP_ID)
       .eq("is_active", true)
       .eq("is_featured", true)
@@ -63,7 +63,7 @@ export async function listProducts(opts: { categorySlug?: string; tag?: string; 
       .select(
         // Alleen bij een categoriepagina de koppeltabel erbij halen: met
         // !inner valt een product zonder categorie anders helemaal weg.
-        opts.categorySlug ? "*, categories(slug, name)" + ", product_categories!inner(category_id)" : "*, categories(slug, name)",
+        opts.categorySlug ? "*, categories!products_category_id_fkey(slug, name)" + ", product_categories!inner(category_id)" : "*, categories!products_category_id_fkey(slug, name)",
       )
       .eq("shop_id", SHOP_ID)
       .eq("is_active", true)
@@ -86,7 +86,7 @@ export async function listProducts(opts: { categorySlug?: string; tag?: string; 
 export async function getProduct(slug: string) {
   try {
     const { data } = await supabase.from("products")
-      .select("*, categories(slug, name), product_media(url, alt, sort_order, is_primary)")
+      .select("*, categories!products_category_id_fkey(slug, name), product_media(url, alt, sort_order, is_primary)")
       .eq("shop_id", SHOP_ID)
       .eq("slug", slug)
       .eq("is_active", true)
@@ -329,7 +329,7 @@ export async function resolveBuyPageProducts(page: BuyPage): Promise<Product[]> 
 
     if (explicit.length > 0) {
       const { data } = await supabase.from("products")
-        .select("*, categories(slug, name)")
+        .select("*, categories!products_category_id_fkey(slug, name)")
         .eq("shop_id", SHOP_ID)
         .eq("is_active", true)
         .in("slug", explicit);
@@ -348,7 +348,7 @@ export async function resolveBuyPageProducts(page: BuyPage): Promise<Product[]> 
 
     if (stoffen.length > 0) {
       const { data } = await supabase.from("products")
-        .select("*, categories(slug, name)")
+        .select("*, categories!products_category_id_fkey(slug, name)")
         .eq("shop_id", SHOP_ID)
         .eq("is_active", true)
         .overlaps("stof_slugs", stoffen);

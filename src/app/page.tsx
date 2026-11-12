@@ -9,7 +9,6 @@ import { mainCategories } from "@/components/shop/data";
 import { Truck, ShieldCheck, PackageCheck, ArrowRight, Pill, Timer } from "lucide-react";
 
 export const revalidate = 300;
-export const dynamic = "force-dynamic";
 
 const HOMEPAGE_FAQ = [
   {
@@ -40,7 +39,7 @@ const HOMEPAGE_FAQ = [
   {
     question: "Hoe lang duurt de verzending?",
     answer:
-      "Betaling voor 15:00 op een werkdag = dezelfde dag verstuurd via PostNL. NL binnen 1 werkdag, BE 1-2 werkdagen. Neutrale verpakking zonder productnaam op het label - de bezorger ziet een gewoon pakket.",
+      "Zodra de betaling binnen is, maken we de bestelling klaar via PostNL. NL binnen 1 werkdag, BE 1-2 werkdagen. Neutrale verpakking zonder productnaam op het label - de bezorger ziet een gewoon pakket.",
   },
   {
     question: "Hoe wordt betaald?",
@@ -254,7 +253,7 @@ export default async function HomePage() {
             <Truck size={22} className="text-accent" />
             <h3 className="mt-4 font-display text-xl text-text">Snel verzonden</h3>
             <p className="mt-2 text-sm text-text-muted">
-              Betaling voor 15:00 werkdag = dezelfde dag verstuurd via PostNL. NL 1 dag, BE 1-2 dagen.
+              Verstuurd met PostNL zodra je betaling binnen is. NL 1 dag, BE 1-2 dagen.
             </p>
           </div>
           <div className="rounded-lg border border-border bg-background p-6">

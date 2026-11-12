@@ -26,7 +26,7 @@ const LANGS: { code: Lang; label: string; flag: string }[] = [
 
 const TOPBAR_ITEMS = [
   { Icon: ShieldCheck, text: "100% leveringsgarantie" },
-  { Icon: Truck, text: "Voor 15:00 betaald, dezelfde dag verstuurd" },
+  { Icon: Truck, text: "Verstuurd zodra je betaling binnen is" },
   { Icon: Pill, text: "Sildenafil, tadalafil, vardenafil & dapoxetine" },
 ];
 

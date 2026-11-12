@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/shop/page-hero";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { ShieldCheck, PackageCheck, Mail, AlertTriangle } from "lucide-react";
+import { alternatesNL } from "@/lib/geo-nl";
 
 export const revalidate = 86400;
 
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
   title: "Retour en terugbetaling - Kamagra Site",
   description:
     "Retourzendingen zijn in onze branche niet mogelijk. Wat wel kan: 100% leveringsgarantie bij vertraging of vermissing, en kosteloze vervanging bij een beschadigde of verkeerde levering.",
-  alternates: { canonical: "/retourneren/" },
+  alternates: alternatesNL("/retourneren/"),
 };
 
 const cards = [

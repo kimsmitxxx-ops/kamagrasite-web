@@ -8,8 +8,9 @@ import { BuyPageLinks } from "@/components/shop/buy-page-links";
 import type { Metadata } from "next";
 import { BookOpen, Truck, ShieldCheck, PackageCheck, Sparkles } from "lucide-react";
 import { MERCHANT_RETURN_POLICY } from "@/lib/return-policy";
+import { alternatesNL } from "@/lib/geo-nl";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 export async function generateMetadata({
   params,
@@ -35,7 +36,7 @@ export async function generateMetadata({
     // Gefilterde varianten zijn facetten van dezelfde lijst: canonical naar de
     // schone URL en uit de index houden, anders indexeert Google elke
     // filtercombinatie als losse pagina.
-    alternates: { canonical: `/winkel/${cat.slug}/` },
+    alternates: alternatesNL(`/winkel/${cat.slug}/`),
     robots: filtered ? { index: false, follow: true } : { index: true, follow: true },
     openGraph: { title: cat.name, description: cat.description || undefined, type: "website" },
   };
@@ -152,7 +153,7 @@ export default async function CategoryPage({
             <h4 className="text-xs uppercase tracking-wider text-accent-muted font-semibold inline-flex items-center gap-1.5">
               <ShieldCheck size={12} /> Onze garanties
             </h4>
-            <p className="inline-flex items-start gap-2"><Truck size={14} className="text-accent mt-0.5" /> Voor 15:00 betaald is dezelfde dag verstuurd</p>
+            <p className="inline-flex items-start gap-2"><Truck size={14} className="text-accent mt-0.5" /> Zodra je betaling binnen is, maken we je bestelling klaar</p>
             <p className="inline-flex items-start gap-2"><PackageCheck size={14} className="text-accent mt-0.5" /> Neutrale verpakking, geen productnaam op het label</p>
             <p className="inline-flex items-start gap-2"><ShieldCheck size={14} className="text-accent mt-0.5" /> 100% leveringsgarantie, anders opnieuw verstuurd</p>
           </div>
