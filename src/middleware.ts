@@ -54,11 +54,14 @@ async function readMaintenanceFlag(): Promise<{ on: boolean; message: string | n
 // af is ook zelf niet nakijken, en daar is de onderhoudsmodus juist voor.
 const BYPASS_COOKIE = "ke_preview";
 
-// Zet MAINTENANCE_BYPASS_TOKEN op Vercel om dit te overschrijven. De
-// constante is de terugval: Vercel heeft hier geen env-vars, en zonder
-// terugval zou niemand de staging-site kunnen bekijken zodra onderhoud
-// aanstaat. Hij beschermt alleen een noindex-stagingsite, geen klantdata.
-const FALLBACK_BYPASS = "ke-preview-2026";
+// MAINTENANCE_BYPASS_TOKEN staat op Vercel en is leidend. Zet hem daar ook
+// echt: zonder die variabele valt deze functie terug op REVALIDATE_TOKEN, en
+// dan is de sleutel waarmee je de site bekijkt dezelfde als die waarmee
+// shop-dash de cache leegt. Die twee horen niet aan elkaar vast te zitten,
+// en de previewsleutel verandert dan stilletjes zodra iemand de purge-token
+// toevoegt. De constante eronder is alleen de laatste terugval; hij
+// beschermt een noindex-stagingsite, geen klantdata.
+const FALLBACK_BYPASS = "kamagrasite-preview";
 
 function bypassToken(): string {
   return process.env.MAINTENANCE_BYPASS_TOKEN || process.env.REVALIDATE_TOKEN || FALLBACK_BYPASS;
