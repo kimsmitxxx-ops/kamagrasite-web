@@ -36,7 +36,7 @@ const pillars = [
   },
   {
     icon: Truck,
-    h: "Dezelfde dag de deur uit",
+    h: "De deur uit zodra je betaald hebt",
     p: "Zodra de betaling binnen is gaat het pakket via PostNL de deur uit. Nederland doorgaans de volgende werkdag, Belgie een dag later.",
   },
   {

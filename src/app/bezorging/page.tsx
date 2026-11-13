@@ -10,19 +10,22 @@ export const revalidate = 86400;
 export const metadata: Metadata = {
   title: "Bezorging - Kamagra Site",
   description:
-    "Snel verzonden vanuit Nederland via PostNL en DPD. Betaling vóór 11:00 = dezelfde dag verstuurd. Discreet, met track & trace, alleen naar huisadressen.",
+    "Verzonden vanuit Nederland via PostNL en DPD, EUR 5 per bestelling. Discreet, met track & trace, alleen naar huisadressen.",
   alternates: alternatesNL("/bezorging/"),
 };
 
+// Een tarief voor alle bestemmingen, gelijk aan wat de kassa rekent
+// (SHIPPING_FEE_CENTS in lib/shipping.ts). Stond hier op EUR 10 en EUR 15
+// terwijl er EUR 5 werd afgerekend; wijzig je het tarief, pas dan allebei aan.
 const carriers = [
-  { name: "PostNL Standaard NL", cost: "€10,00", note: "Betaling vóór 11:00 werkdag binnen = dezelfde dag verstuurd." },
-  { name: "PostNL België", cost: "€15,00", note: "1-3 werkdagen na verzending." },
-  { name: "DPD Nederland", cost: "€10,00", note: "Alternatief PostNL. Betaling vóór 11:00 = dezelfde dag verstuurd." },
-  { name: "DPD EU", cost: "€15,00", note: "Binnen 3-5 werkdagen naar DE, FR, AT, ES, IT, PL, SE." },
+  { name: "PostNL Standaard NL", cost: "€5,00", note: "1-2 werkdagen na verzending." },
+  { name: "PostNL België", cost: "€5,00", note: "1-3 werkdagen na verzending." },
+  { name: "DPD Nederland", cost: "€5,00", note: "Alternatief PostNL, 1-2 werkdagen na verzending." },
+  { name: "DPD EU", cost: "€5,00", note: "Binnen 3-5 werkdagen naar DE, FR, AT, ES, IT, PL, SE." },
 ];
 
 const usps = [
-  { icon: Clock, title: "Snel verzonden", sub: "Betaling voor 11:00 werkdag binnen = dezelfde dag nog verstuurd." },
+  { icon: Clock, title: "Snel verzonden", sub: "Je bestelling gaat de deur uit zodra je betaling binnen is." },
   { icon: PackageCheck, title: "Neutrale verpakking", sub: "Geen logo, geen productnaam, geen vermelding op label." },
   { icon: ShieldCheck, title: "100% leveringsgarantie", sub: "Komt je pakket niet aan? Wij verzenden opnieuw - geen discussie, geen extra kosten." },
   { icon: Globe2, title: "EU-breed bezorgd", sub: "NL en BE dagelijks. DE, FR, AT, ES, IT, PL, SE binnen 3-5 werkdagen." },
@@ -32,7 +35,7 @@ const faq = [
   {
     question: "Hoe snel wordt mijn pakket verstuurd?",
     answer:
-      "Als je betaling vóór 11:00 op een werkdag binnen is, wordt je pakket dezelfde dag nog verstuurd. Betaling na 11:00 of in het weekend? Dan vertrekt je bestelling de eerstvolgende werkdag.",
+      "Zodra je betaling binnen is, maken we het pakket klaar en gaat het de eerstvolgende werkdag de deur uit. Betalingen in het weekend verwerken we op maandag.",
   },
   {
     question: "Hoe ziet de verpakking eruit?",
@@ -72,11 +75,11 @@ const faq = [
 ];
 
 const timeline = [
-  { t: "0:00", h: "Bestelling geplaatst", d: "Directe bevestiging per e-mail met ordernummer + betaalinstructies." },
-  { t: "Voor 11:00", h: "Betaling binnen", d: "Bankoverboeking (IBAN) of crypto. Zodra we het zien, is je order in behandeling." },
-  { t: "Na de betaling", h: "Order ingepakt", d: "Wij controleren sterkte, batchcode en houdbaarheidsdatum per item en pakken neutraal in." },
-  { t: "Zelfde werkdag 17:00", h: "Bij PostNL / DPD", d: "Track & trace per mail, label is dan al actief." },
-  { t: "Volgende werkdag", h: "Bezorgd", d: "NL: tussen 09:00 en 21:30 aan je vaste huisadres. BE: 1-3 werkdagen. Rest EU: 3-5 werkdagen." },
+  { t: "Stap 1", h: "Bestelling geplaatst", d: "Je krijgt meteen je bestelnummer en de betaalgegevens op het scherm." },
+  { t: "Stap 2", h: "Betaling binnen", d: "Je maakt het bedrag over per bankoverschrijving. Zodra we het zien, is je order in behandeling." },
+  { t: "Stap 3", h: "Order ingepakt", d: "Wij controleren sterkte, batchcode en houdbaarheidsdatum per item en pakken neutraal in." },
+  { t: "Stap 4", h: "Bij PostNL / DPD", d: "Zodra het label actief is, kun je het pakket volgen met track & trace." },
+  { t: "Stap 5", h: "Bezorgd", d: "NL: tussen 09:00 en 21:30 aan je vaste huisadres. BE: 1-3 werkdagen. Rest EU: 3-5 werkdagen." },
 ];
 
 export default function BezorgingPage() {
@@ -85,7 +88,7 @@ export default function BezorgingPage() {
       <PageHero
         eyebrow="Bezorging"
         title="Snel verzonden, discreet verpakt, track & trace"
-        intro="Wij verzenden zelf vanuit Nederland. Betaling vóór 11:00 op een werkdag = dezelfde dag nog verstuurd met PostNL of DPD. Alleen naar vaste huisadressen - geen postbussen, geen afhaalpunten als aflever-optie."
+        intro="Wij verzenden zelf vanuit Nederland met PostNL of DPD, voor EUR 5 per bestelling. Je pakket gaat de deur uit zodra je betaling binnen is. Alleen naar vaste huisadressen - geen postbussen, geen afhaalpunten als aflever-optie."
       />
 
       <section className="mx-auto max-w-7xl px-4 py-14 grid gap-5 md:grid-cols-2 lg:grid-cols-4">

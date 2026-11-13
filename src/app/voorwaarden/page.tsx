@@ -60,7 +60,7 @@ const sections: { id: string; title: string; body: string[] }[] = [
     title: "6. Prijzen en betaling",
     body: [
       "De op de website vermelde prijzen zijn in euro's en inclusief 21% BTW.",
-      "Betaling vindt plaats via bank-overboeking (IBAN) of crypto (BTC/ETH/USDT). Zodra de betaling bij ons binnen is, gaat de bestelling in behandeling.",
+      "Betaling vindt plaats per bankoverschrijving. Je ontvangt de rekeninggegevens na het plaatsen van je bestelling op je eigen betaalpagina; die rekening hoort bij die ene bestelling. Zodra de betaling bij ons binnen is, gaat de bestelling in behandeling.",
       "Kamagra Site behoudt zich het recht voor prijzen te wijzigen; eenmaal geplaatste orders blijven ongewijzigd.",
     ],
   },

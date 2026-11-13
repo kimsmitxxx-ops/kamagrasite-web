@@ -45,7 +45,7 @@ const HOMEPAGE_FAQ = [
   {
     question: "Hoe wordt betaald?",
     answer:
-      "Bankoverboeking (IBAN) of crypto (BTC/ETH/USDT). Geen creditcard, geen tussenpartij die je koopgeschiedenis ziet. Op je bankafschrift staat alleen onze bedrijfsnaam.",
+      "Per bankoverschrijving. Je krijgt de rekeninggegevens direct na het bestellen op je eigen betaalpagina; die rekening hoort bij jouw bestelling. Geen creditcard en geen iDEAL.",
   },
   {
     question: "Wat is dapoxetine (Super P Force)?",

@@ -315,7 +315,7 @@ export default function CheckoutPage() {
             </button>
             {err && <p className="mt-2 text-center text-xs text-danger">{err}</p>}
             <p className="mt-3 text-center text-[11px] text-text-muted">
-              Direct op de volgende pagina krijg je de bank/crypto-gegevens.{" "}
+              Direct op de volgende pagina krijg je de bankgegevens.{" "}
               {po.regel
                 ? "Je bestelling gaat de deur uit zodra het artikel dat nog onderweg is binnen is."
                 : "Pakket verzonden zodra betaling binnen is."}
