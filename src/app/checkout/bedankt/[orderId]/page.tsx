@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import {
   getOrderForConfirmation,
   getShopPaymentInstructions,
+  heeftMailroute,
   formatEUR,
 } from "@/lib/queries";
 import { PaymentScreenshotForm } from "@/components/shop/payment-screenshot-form";
@@ -30,9 +31,10 @@ export default async function BedanktPage({
   params: { orderId: string };
   searchParams: { paytail?: string };
 }) {
-  const [order, payment] = await Promise.all([
+  const [order, payment, mailroute] = await Promise.all([
     getOrderForConfirmation(params.orderId),
     getShopPaymentInstructions(),
+    heeftMailroute(),
   ]);
 
   if (!order) notFound();
@@ -54,7 +56,9 @@ export default async function BedanktPage({
           <strong className="text-text tabular">{formatEUR(order.total_cents)}</strong>
         </p>
         <p className="mt-1 text-xs text-text-subtle">
-          Bevestiging gestuurd naar {order.email}
+          {mailroute
+            ? `Bevestiging gestuurd naar ${order.email}`
+            : `We hebben je bestelling op ${order.email} staan`}
         </p>
       </div>
 

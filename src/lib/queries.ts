@@ -520,3 +520,34 @@ export async function markeerGegevensMail(orderId: string, gelukt: boolean): Pro
     console.error("betaalpagina: mailmarkering opslaan gooide", e);
   }
 }
+
+/**
+ * Heeft deze shop een verzendroute voor mail?
+ *
+ * shop-dash weigert met "SMTP niet geconfigureerd voor deze shop" zolang
+ * shops.settings.smtp leeg is, en dat is hier zo. De bedankt-pagina beloofde
+ * intussen wel een bevestigingsmail. Liever niets beweren dan iets beweren
+ * dat niet gebeurt; zodra de mailbox er staat klopt de tekst vanzelf weer.
+ *
+ * Bij twijfel luidt het antwoord nee: een mislukte lees mag geen belofte
+ * opleveren.
+ */
+export async function heeftMailroute(): Promise<boolean> {
+  try {
+    const sb = createServiceClient();
+    const { data, error } = await sb
+      .from("shops")
+      .select("settings")
+      .eq("id", SHOP_ID)
+      .maybeSingle();
+    if (error) {
+      console.error("mailroute uitlezen mislukte", error);
+      return false;
+    }
+    const smtp = (data?.settings as { smtp?: { host?: string } } | null)?.smtp;
+    return Boolean(smtp?.host);
+  } catch (e) {
+    console.error("mailroute uitlezen gooide", e);
+    return false;
+  }
+}

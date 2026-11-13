@@ -3,6 +3,7 @@ import { preorderVoorMand } from "@/lib/preorder";
 import { createServiceClient } from "@/lib/supabase";
 import { haalBetaalgegevens } from "@/lib/paytail";
 import { unitDiscountPct } from "@/lib/bulk-discount";
+import { SHIPPING_FEE_CENTS } from "@/lib/shipping";
 
 export const dynamic = "force-dynamic";
 // Hoort bij force-dynamic: de gedeelde Supabase-client cachet sinds de
@@ -10,7 +11,7 @@ export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";
 
 const SHOP_ID = "209efc65-a11e-499c-a74a-3d1c5043758f"; // kamagrasite
-const SHIPPING_FEE_CENTS = 1000; // EUR 10 per zending
+
 
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => ({} as any));
@@ -111,11 +112,11 @@ export async function POST(req: NextRequest) {
   // repo is een fork en zette hier jarenlang "AP-" neer, de letters van
   // AnabolenPro, op een kamagra-winkel.
   //
-  // De terugval is dezelfde waarde als die nu in de rij staat ("KE"), en
-  // nadrukkelijk niet "KS": dat is de prefix van kamagrashop, en twee
-  // winkels met hetzelfde bestelnummer lopen vast bij het matchen van
-  // verzendlabels.
-  let orderPrefix = "KE";
+  // De terugval is dezelfde waarde als die in de rij staat ("KSI", van
+  // KamagraSIte), en nadrukkelijk niet "KS": dat is de prefix van
+  // kamagrashop, en twee winkels met hetzelfde bestelnummer lopen vast bij
+  // het matchen van verzendlabels.
+  let orderPrefix = "KSI";
   try {
     const { data: prefixRij } = await supabase
       .from("shops")

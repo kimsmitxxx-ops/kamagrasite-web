@@ -15,7 +15,7 @@ const sections = [
     id: "wie",
     title: "1. Wie zijn wij",
     body: [
-      "Kamagra Site B.V., gevestigd in Nederland, is verwerkingsverantwoordelijke voor de gegevens die via kamagrasite.nl worden verzameld. Ons vestigingsadres, KvK- en BTW-nummer staan op de factuur die je na je bestelling ontvangt.",
+      "Kamagra Site, gevestigd in Nederland, is verwerkingsverantwoordelijke voor de gegevens die via kamagrasite.nl worden verzameld. Ons vestigingsadres, KvK- en BTW-nummer staan op de factuur die je na je bestelling ontvangt.",
     ],
   },
   {
@@ -43,7 +43,7 @@ const sections = [
     title: "4. Met wie we gegevens delen",
     body: [
       "PostNL en DHL - voor de fysieke bezorging van je pakket.",
-      "Mollie B.V. - betalingsverwerker, ontvangt alleen het transactiebedrag en je e-mailadres.",
+      "Onze betaaldienst - levert de bankrekening voor je overboeking en koppelt de binnengekomen betaling aan je bestelnummer.",
       "Onze accountant - voor de wettelijke administratie, alleen factuurgegevens.",
       "Wij verkopen of verhuren jouw gegevens nooit aan derden.",
     ],

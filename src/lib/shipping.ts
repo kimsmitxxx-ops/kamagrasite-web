@@ -8,7 +8,10 @@
 
 import type { CartItem } from "@/lib/cart-context";
 
-export const SHIPPING_FEE_CENTS = 1000; // EUR 10 per bestelling
+// EUR 5 per bestelling, hetzelfde als kamagrashop. Deze waarde hoort gelijk
+// te blijven aan shops.shipping_nl_cents in de database; de winkelmand
+// rekent client-side, dus die kan de rij niet zelf lezen.
+export const SHIPPING_FEE_CENTS = 500;
 
 export type ShippingBreakdown = {
   shippingCents: number;

@@ -5,7 +5,7 @@ import { PageHero } from "@/components/shop/page-hero";
 export const metadata: Metadata = {
   title: "Algemene voorwaarden - Kamagra Site",
   description:
-    "De algemene voorwaarden van Kamagra Site B.V.: bestelproces, betaling, levering, garantie, aansprakelijkheid en herroepingsrecht.",
+    "De algemene voorwaarden van Kamagra Site: bestelproces, betaling, levering, garantie, aansprakelijkheid en herroepingsrecht.",
 };
 
 export const revalidate = 86400;
@@ -15,7 +15,7 @@ const sections: { id: string; title: string; body: string[] }[] = [
     id: "definities",
     title: "1. Definities",
     body: [
-      "Kamagra Site: Kamagra Site B.V., gevestigd in Nederland. Ons vestigingsadres, KvK- en BTW-nummer staan op de factuur die je na je bestelling ontvangt.",
+      "Kamagra Site: Kamagra Site, gevestigd in Nederland. Ons vestigingsadres, KvK- en BTW-nummer staan op de factuur die je na je bestelling ontvangt.",
       "Klant: de natuurlijke of rechtspersoon die een overeenkomst aangaat met Kamagra Site.",
       "Producten: alle door Kamagra Site aangeboden artikelen, te weten generieke geneesmiddelen met sildenafil, tadalafil, vardenafil of dapoxetine als werkzame stof.",
     ],
@@ -114,7 +114,7 @@ export default function VoorwaardenPage() {
     <>
       <PageHero
         eyebrow="Juridisch"
-        title="Algemene voorwaarden Kamagra Site B.V."
+        title="Algemene voorwaarden Kamagra Site"
         intro="Versie 3.2 - laatst bijgewerkt op 12 juni 2026. Deze voorwaarden gelden voor elke bestelling die je via onze webshop plaatst."
       />
 

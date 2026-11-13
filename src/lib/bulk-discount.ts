@@ -1,3 +1,8 @@
+// Het tarief staat in lib/shipping.ts en nergens anders. Eerder stond het
+// hier, daar en in de bestelroute alle drie apart, met als gevolg dat ze uit
+// elkaar konden lopen zonder dat iets klaagde.
+import { SHIPPING_FEE_CENTS } from "./shipping";
+
 // Bulk-korting matrix. Per item-qty.
 // 5+ items = 10%, 10+ items = 15%. Server (orders API) en client
 // (winkelmand/checkout) gebruiken dezelfde logica.
@@ -21,7 +26,6 @@ export interface CartLikeItem {
   qty: number;
 }
 
-const SHIPPING_FEE_CENTS = 1000; // EUR 10 per bestelling
 
 /**
  * `couponCents` is de korting van een ingevulde kortingscode. Die komt altijd
