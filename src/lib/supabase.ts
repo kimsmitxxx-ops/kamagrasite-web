@@ -75,6 +75,8 @@ export type Product = {
   tags: string[] | null;
   stof_slugs?: string[] | null;
   availability: string | null;
+  /** Pre-order: wanneer we dit artikel verwachten te kunnen verzenden (104). */
+  verwacht_op?: string | null;
   is_active: boolean;
   is_featured?: boolean;
   noindex?: boolean;

@@ -4,11 +4,14 @@ import { useCart } from "@/lib/cart-context";
 import { formatEUR } from "@/lib/format";
 import { calcTotals, unitDiscountPct } from "@/lib/bulk-discount";
 import { CouponField } from "@/components/shop/coupon-field";
-import { Trash2, Minus, Plus, ShoppingBag, Sparkles } from "lucide-react";
+import { Trash2, Minus, Plus, ShoppingBag, Sparkles, Truck } from "lucide-react";
+import { usePreorderMand } from "@/lib/use-preorder";
 
 export default function WinkelmandPage() {
   const cart = useCart();
   const totals = calcTotals(cart.items, cart.coupon.discount_cents);
+  // Wat er nog onderweg is; de stand komt uit de winkel, niet uit de mand.
+  const po = usePreorderMand(cart.items.map((it) => String(it.id)));
   return (
     <div className="mx-auto max-w-4xl px-4 py-10">
       <h1 className="font-display text-3xl">Winkelmand</h1>
@@ -42,6 +45,11 @@ export default function WinkelmandPage() {
                     </p>
                   ) : (
                     <p className="text-sm text-text-muted">{formatEUR(it.price_cents)}</p>
+                  )}
+                  {po.perSlug[String(it.id)] && (
+                    <p className="mt-1 inline-flex items-center gap-1.5 text-xs font-medium text-warning">
+                      <Truck className="h-3.5 w-3.5" /> {po.perSlug[String(it.id)].label}
+                    </p>
                   )}
                   <div className="mt-2 flex items-center gap-2">
                     <button onClick={() => cart.setQty(it.id, it.qty - 1)} className="rounded border border-paper-border p-1"><Minus className="h-3 w-3" /></button>
@@ -82,6 +90,12 @@ export default function WinkelmandPage() {
                 <span>Totaal</span>
                 <span>{formatEUR(totals.total)}</span>
               </div>
+              {po.regel && (
+                <p className="mt-4 rounded-xl border border-warning/40 bg-warning-soft/30 p-3 text-xs text-text">
+                  <Truck className="mr-1.5 inline h-3.5 w-3.5 text-warning" />
+                  {po.regel}
+                </p>
+              )}
               <CouponField />
               <Link href="/checkout" className="mt-5 block rounded-full bg-accent px-5 py-3 text-center text-sm font-semibold text-accent-foreground hover:bg-accent-soft">
                 Naar checkout

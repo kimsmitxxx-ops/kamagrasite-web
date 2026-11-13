@@ -10,9 +10,14 @@ import { track } from "@/lib/analytics";
 import { formatEUR } from "@/lib/format";
 import { computeShipping } from "@/lib/shipping";
 import { unitDiscountPct, calcTotals } from "@/lib/bulk-discount";
+import { usePreorderMand } from "@/lib/use-preorder";
 
 export function CartDrawer() {
   const { isOpen, setOpen, items, setQty, remove, coupon } = useCart();
+
+  // Wat hiervan nog onderweg is. Komt uit de winkel en niet uit de mand zelf:
+  // die staat weken in de localStorage en mag geen datum beloven.
+  const po = usePreorderMand(items.map((i) => String(i.id)));
 
   // De mand openen is een eigen stap in de trechter: wie hier wegklikt haakt
   // op een ander moment af dan wie nooit zover kwam.
@@ -120,6 +125,11 @@ export function CartDrawer() {
                         <Sparkles size={9} /> Bulk-korting actief −{discountPct}%
                       </span>
                     )}
+                    {po.perSlug[String(it.id)] && (
+                      <span className="mt-1 inline-flex items-center gap-1 rounded-full bg-warning/15 px-2 py-0.5 text-[10px] font-semibold text-warning">
+                        <Truck size={9} /> {po.perSlug[String(it.id)].label}
+                      </span>
+                    )}
                     <div className="mt-2 flex items-center justify-between gap-2">
                       <div className="inline-flex items-center rounded border border-border bg-background">
                         <button
@@ -166,6 +176,16 @@ export function CartDrawer() {
               className="border-t border-border bg-surface px-5 py-4 space-y-3"
               style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 1rem)" }}
             >
+              {/* Eén zending: is er iets onderweg, dan wacht de hele
+                  bestelling daarop. Dat hoort hier en niet pas in de mail. */}
+              {po.regel && (
+                <div className="rounded-md border border-warning/40 bg-warning-soft/30 p-2.5">
+                  <p className="inline-flex items-start gap-1.5 text-xs text-text">
+                    <Truck size={12} className="mt-0.5 shrink-0 text-warning" />
+                    <span>{po.regel}</span>
+                  </p>
+                </div>
+              )}
               {shipping.shippingCents > 0 && (
                 <div className="rounded-md border border-border bg-paper-soft p-2.5">
                   <div className="flex items-baseline justify-between gap-2 text-xs">

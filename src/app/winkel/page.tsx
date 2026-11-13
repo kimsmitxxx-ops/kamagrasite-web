@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { isPreorder, preorder } from "@/lib/preorder";
 import { listCategories, listProducts, sortProducts } from "@/lib/queries";
 import { ProductCard } from "@/components/product-card";
 import { CatalogFilters } from "@/components/shop/catalog-filters";
@@ -32,7 +33,9 @@ export default async function WinkelIndexPage({
   const vormen = Array.from(new Set(allProducts.map((p) => p.package_type).filter(Boolean) as string[]));
 
   const filtered = allProducts.filter((p) => {
-    if (stockOnly && p.availability === "OutOfStock") return false;
+    // "Alleen op voorraad" sluit ook een pre-order uit: die ligt niet op de
+    // plank, hoe goed de levertijd er ook bij staat.
+    if (stockOnly && (p.availability === "OutOfStock" || isPreorder(p))) return false;
     if (stof && !(p.stof_slugs || []).includes(stof)) return false;
     if (vorm && p.package_type !== vorm) return false;
     if (q) {
@@ -108,6 +111,7 @@ export default async function WinkelIndexPage({
                   slug={p.slug}
                   priceFrom={p.price_cents / 100}
                   inStock={p.availability !== "OutOfStock"}
+                  preorderLabel={preorder(p)?.kaartLabel}
                   tag={p.tags?.[0]}
                   category={p.categories?.name}
                   shortDescription={p.subtitle || undefined}

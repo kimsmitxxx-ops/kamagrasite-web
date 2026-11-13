@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { preorder, schemaAvailability } from "@/lib/preorder";
 import { notFound } from "next/navigation";
 import { getProduct, formatEUR, listProducts, listProductReviews } from "@/lib/queries";
 import { AddToCartButton } from "@/components/add-to-cart-button";
@@ -86,7 +87,8 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
       url: `/product/${p.slug}`,
       priceCurrency: "EUR",
       price: (p.price_cents / 100).toFixed(2),
-      availability: p.availability === "OutOfStock" ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
+      availability: schemaAvailability(p),
+      availabilityStarts: preorder(p)?.datum ? p.verwacht_op : undefined,
     },
   };
 
@@ -147,7 +149,22 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
           </div>
 
           <div className="mt-6">
-            {p.availability === "OutOfStock" ? (
+            {preorder(p) ? (
+              <>
+                <div className="rounded-lg border-2 border-warning/40 bg-warning-soft/30 p-4">
+                  <p className="inline-flex items-center gap-2 font-display text-lg text-text">
+                    <Truck size={18} className="text-warning" /> {preorder(p)?.label}
+                  </p>
+                  <p className="mt-1 text-sm text-text-muted">
+                    {preorder(p)?.verzendRegel} Je kunt nu al bestellen en houdt je plek in de zending;
+                    verzenden gebeurt zodra de voorraad binnen is.
+                  </p>
+                </div>
+                <div className="mt-4">
+                  <AddToCartButton product={p} />
+                </div>
+              </>
+            ) : p.availability === "OutOfStock" ? (
               <>
                 <div className="rounded-lg border-2 border-danger/40 bg-danger-soft/30 p-5 text-center">
                   <p className="text-danger font-display text-xl">Uitverkocht</p>
@@ -231,6 +248,7 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
                   slug={r.slug}
                   priceFrom={r.price_cents / 100}
                   inStock={r.availability !== "OutOfStock"}
+                  preorderLabel={preorder(r)?.kaartLabel}
                   tag={r.tags?.[0]}
                   category={r.categories?.name}
                   shortDescription={r.subtitle || undefined}

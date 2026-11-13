@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { preorder } from "@/lib/preorder";
 import { listProducts, listBlogPosts, listCategories, listFeaturedProducts } from "@/lib/queries";
 import { ProductCard } from "@/components/product-card";
 import { HomeUspBar } from "@/components/shop/home-usp-bar";
@@ -167,6 +168,7 @@ export default async function HomePage() {
                   slug={p.slug}
                   priceFrom={p.price_cents / 100}
                   inStock={p.availability !== "OutOfStock"}
+                  preorderLabel={preorder(p)?.kaartLabel}
                   tag="Uitgelicht"
                   category={p.categories?.name}
                   shortDescription={p.subtitle || undefined}
@@ -190,6 +192,7 @@ export default async function HomePage() {
                   slug={p.slug}
                   priceFrom={p.price_cents / 100}
                   inStock={p.availability !== "OutOfStock"}
+                  preorderLabel={preorder(p)?.kaartLabel}
                   tag={p.tags?.[0]}
                   category={p.categories?.name}
                   shortDescription={p.subtitle || undefined}

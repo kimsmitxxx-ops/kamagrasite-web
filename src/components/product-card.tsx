@@ -18,6 +18,8 @@ export interface ProductCardProps {
   ratingValue?: number;
   ratingCount?: number;
   inStock?: boolean;
+  /** Pre-order: het korte label ("Pre-order - over 5 dagen"). */
+  preorderLabel?: string | null;
   tag?: string;
   category?: string;
   shortDescription?: string;
@@ -47,6 +49,7 @@ export function ProductCard({
   ratingValue,
   ratingCount,
   inStock = true,
+  preorderLabel,
   tag,
   category,
   shortDescription,
@@ -100,7 +103,16 @@ export function ProductCard({
             <Tag variant="filled">{tag}</Tag>
           </div>
         )}
-        {!inStock && (
+        {/* Pre-order: wel te bestellen, alleen later leverbaar. Geen
+            uitverkocht-streep, want hier hoeft niemand af te haken. */}
+        {preorderLabel && (
+          <div className="absolute inset-x-0 bottom-0 bg-warning/90 px-2 py-1 text-center">
+            <span className="text-[11px] font-semibold uppercase tracking-wide text-white">
+              {preorderLabel}
+            </span>
+          </div>
+        )}
+        {!inStock && !preorderLabel && (
           <>
             {/* Diagonale streep + grote pill - onmiskenbaar uitverkocht */}
             <div aria-hidden className="absolute inset-0 bg-background/55 backdrop-blur-[1px]" />
@@ -140,7 +152,13 @@ export function ProductCard({
           {!isSm && (
             <button
               type="button"
-              aria-label={inStock ? `Voeg ${name} toe aan winkelmand` : "Op de wachtlijst"}
+              aria-label={
+                !inStock
+                  ? "Op de wachtlijst"
+                  : preorderLabel
+                    ? `Bestel ${name} vooruit`
+                    : `Voeg ${name} toe aan winkelmand`
+              }
               disabled={!inStock}
               onClick={handleAdd}
               className="inline-flex h-9 md:h-11 w-9 md:w-auto items-center justify-center md:gap-1.5 rounded-md bg-accent md:px-3 text-accent-foreground shadow-card transition-all hover:bg-accent-muted hover:shadow-lift active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed shrink-0"

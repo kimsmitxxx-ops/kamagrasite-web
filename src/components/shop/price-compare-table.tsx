@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { preorder } from "@/lib/preorder";
 import { formatEUR } from "@/lib/format";
 import { parsePackUnits, parsePackUnitLabel, pricePerUnitCents } from "@/lib/pack-size";
 import { unitDiscountPct } from "@/lib/bulk-discount";
@@ -72,6 +73,7 @@ export function PriceCompareTable({ products }: { products: Product[] }) {
               const href = `/product/${p.slug}`;
               const isCheapest = r.perUnit != null && r === cheapest;
               const oos = p.availability === "OutOfStock";
+              const po = preorder(p);
               return (
                 <tr key={p.id} className={isCheapest ? "bg-accent-soft/15" : undefined}>
                   <th scope="row" className="px-3 py-2.5 text-left font-normal">
@@ -84,6 +86,7 @@ export function PriceCompareTable({ products }: { products: Product[] }) {
                       </span>
                     )}
                     {oos && <span className="ml-2 text-xs text-danger">uitverkocht</span>}
+                    {po && <span className="ml-2 text-xs font-medium text-warning">{po.kaartLabel}</span>}
                   </th>
                   <td className="whitespace-nowrap px-3 py-2.5 text-text-muted">
                     {r.units ? `${r.units} ${r.unitLabel || "stuks"}` : "niet opgegeven"}

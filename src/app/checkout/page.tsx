@@ -5,7 +5,8 @@ import { formatEUR } from "@/lib/format";
 import { calcTotals, unitDiscountPct } from "@/lib/bulk-discount";
 import { CouponField } from "@/components/shop/coupon-field";
 import { PaymentRow } from "@/components/payment-row";
-import { Sparkles, UserPlus, Lock } from "lucide-react";
+import { Sparkles, UserPlus, Lock, Truck } from "lucide-react";
+import { usePreorderMand } from "@/lib/use-preorder";
 import { useEffect, useState, useRef } from "react";
 import { track } from "@/lib/analytics";
 import {
@@ -31,6 +32,9 @@ const EU_COUNTRIES = [
 export default function CheckoutPage() {
   const cart = useCart();
   const totals = calcTotals(cart.items, cart.coupon.discount_cents);
+  // Een artikel dat nog onderweg is hoort hier te staan, voor de klant
+  // afrekent: achteraf in de bevestigingsmail is te laat.
+  const po = usePreorderMand(cart.items.map((it) => String(it.id)));
   const [form, setForm] = useState({
     email: "",
     name: "",
@@ -280,12 +284,21 @@ export default function CheckoutPage() {
               </div>
               <CouponField compact />
             </div>
+            {po.regel && (
+              <p className="mt-4 rounded-xl border border-warning/40 bg-warning-soft/30 p-3 text-xs text-text">
+                <Truck className="mr-1.5 inline h-3.5 w-3.5 text-warning" />
+                {po.regel}
+              </p>
+            )}
             <button type="submit" disabled={busy} className="mt-5 w-full rounded-full bg-accent px-5 py-3 text-sm font-semibold text-accent-foreground hover:bg-accent-soft disabled:opacity-50">
               {busy ? "Bezig…" : "Plaats bestelling"}
             </button>
             {err && <p className="mt-2 text-center text-xs text-danger">{err}</p>}
             <p className="mt-3 text-center text-[11px] text-text-muted">
-              Direct op de volgende pagina krijg je de bank/crypto-gegevens. Pakket verzonden zodra betaling binnen is.
+              Direct op de volgende pagina krijg je de bank/crypto-gegevens.{" "}
+              {po.regel
+                ? "Je bestelling gaat de deur uit zodra het artikel dat nog onderweg is binnen is."
+                : "Pakket verzonden zodra betaling binnen is."}
             </p>
           </div>
         </div>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { preorder, schemaAvailability } from "@/lib/preorder";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { ShieldCheck, Truck, PackageCheck, Sparkles, ArrowDown } from "lucide-react";
@@ -114,10 +115,7 @@ export default async function BuyPage({ params }: { params: { slug: string } }) 
             hasMerchantReturnPolicy: MERCHANT_RETURN_POLICY,
             price: (p.price_cents / 100).toFixed(2),
             priceCurrency: "EUR",
-            availability:
-              p.availability === "OutOfStock"
-                ? "https://schema.org/OutOfStock"
-                : "https://schema.org/InStock",
+            availability: schemaAvailability(p),
           },
         },
       })),
@@ -234,6 +232,7 @@ export default async function BuyPage({ params }: { params: { slug: string } }) 
                   slug={p.slug}
                   priceFrom={p.price_cents / 100}
                   inStock={p.availability !== "OutOfStock"}
+                  preorderLabel={preorder(p)?.kaartLabel}
                   tag={p.tags?.[0]}
                   category={p.categories?.name}
                   shortDescription={p.subtitle || undefined}

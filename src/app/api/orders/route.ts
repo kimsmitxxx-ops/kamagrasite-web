@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { preorderVoorMand } from "@/lib/preorder";
 import { createServiceClient } from "@/lib/supabase";
 import { unitDiscountPct } from "@/lib/bulk-discount";
 
@@ -125,10 +126,32 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Bestelling kon niet worden aangemaakt." }, { status: 500 });
   }
 
-  // Resolve product_id by sku (cart items van ProductCard hebben slug-as-id)
-  const skus = Array.from(new Set(adjustedItems.map((it: any) => it.sku).filter(Boolean)));
-  const { data: skuRows } = await supabase.from("products").select("id, sku").eq("shop_id", SHOP_ID).in("sku", skus);
-  const skuToId = new Map((skuRows || []).map((r: any) => [r.sku, r.id]));
+  // Het product bij de regel zoeken. Het veld `sku` uit de mand is niet altijd
+  // een sku: ProductCard zet daar de slug in, en zulke mandjes staan ook al in
+  // de localStorage van bezoekers. Zoeken op alleen sku liet de koppeling
+  // daardoor leeg, en dan telt de bestelling niet mee in de omzet per product
+  // en weet de bevestigingsmail niet dat er een pre-order in zit. Dus: sku,
+  // anders slug, anders de naam. (Zelfde aanpak als kamagrashop.)
+  const { data: alleProducten } = await supabase
+    .from("products").select("id, sku, slug, name, availability, verwacht_op").eq("shop_id", SHOP_ID);
+  const bySku = new Map<string, string>();
+  const bySlug = new Map<string, string>();
+  const byName = new Map<string, string>();
+  for (const p of alleProducten || []) {
+    if (p.sku) bySku.set(String(p.sku).trim(), p.id);
+    if (p.slug) bySlug.set(String(p.slug).trim().toLowerCase(), p.id);
+    if (p.name) byName.set(String(p.name).trim().toLowerCase(), p.id);
+  }
+  const zoekProductId = (it: any): string | null => {
+    const sleutel = String(it.sku || "").trim();
+    return (
+      bySku.get(sleutel) ||
+      bySlug.get(sleutel.toLowerCase()) ||
+      bySlug.get(String(it.id || "").trim().toLowerCase()) ||
+      byName.get(String(it.name || "").trim().toLowerCase()) ||
+      null
+    );
+  };
 
   // Kolomnamen van de echte, gedeelde order_items-tabel (product_name/
   // quantity/unit_price_cents/total_cents) - sku/name/qty/price_cents bestaan
@@ -137,7 +160,7 @@ export async function POST(req: NextRequest) {
   // enkele regel in `order_items`, dus zag de admin alleen een totaalbedrag.
   const { error: itemsError } = await supabase.from("order_items").insert(adjustedItems.map((it: any) => ({
     order_id: order.id,
-    product_id: skuToId.get(it.sku) || null,
+    product_id: zoekProductId(it),
     product_name: it.name,
     quantity: it.qty,
     unit_price_cents: it.applied_price_cents,
@@ -145,6 +168,34 @@ export async function POST(req: NextRequest) {
   })));
   if (itemsError) {
     console.error("bestelling: order_items opslaan mislukte", itemsError);
+  }
+
+  // Staat er een pre-order in deze bestelling, dan moet dat bij de bestelling
+  // zelf staan. Anders ziet degene die de labels maakt een gewone bestelling en
+  // gaat die de deur uit met een artikel dat nog niet op de plank ligt. De
+  // beschikbaarheid komt uit de database, niet uit de mand van de bezoeker.
+  try {
+    const regels = adjustedItems.map((it: any) => {
+      const pid = zoekProductId(it);
+      const prod = (alleProducten || []).find((p: any) => p.id === pid);
+      return {
+        name: String(prod?.name || it.name || ""),
+        availability: prod?.availability ?? null,
+        verwacht_op: prod?.verwacht_op ?? null,
+      };
+    });
+    const po = preorderVoorMand(regels);
+    if (po) {
+      const notitie = `PRE-ORDER: ${po.regel}`;
+      const { error: notitieError } = await supabase
+        .from("orders")
+        .update({ notes: order.notes ? `${order.notes}
+${notitie}` : notitie })
+        .eq("id", order.id);
+      if (notitieError) console.error("bestelling: pre-ordernotitie opslaan mislukte", notitieError);
+    }
+  } catch (e) {
+    console.error("bestelling: pre-order bepalen mislukte (niet fataal):", e);
   }
 
   // Account aanmaken, als de klant dat vinkje bij het afrekenen aanzette.

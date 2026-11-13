@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { isPreorder, preorder, schemaAvailability } from "@/lib/preorder";
 import { notFound } from "next/navigation";
 import { getCategory, listProducts, listCategories, sortProducts, listBuyPages } from "@/lib/queries";
 import { ProductCard } from "@/components/product-card";
@@ -64,7 +65,9 @@ export default async function CategoryPage({
   const vormen = Array.from(new Set(allProducts.map((p) => p.package_type).filter(Boolean) as string[]));
 
   const filtered = allProducts.filter((p) => {
-    if (stockOnly && p.availability === "OutOfStock") return false;
+    // "Alleen op voorraad" sluit ook een pre-order uit: die ligt niet op de
+    // plank, hoe goed de levertijd er ook bij staat.
+    if (stockOnly && (p.availability === "OutOfStock" || isPreorder(p))) return false;
     if (stof && !(p.stof_slugs || []).includes(stof)) return false;
     if (vorm && p.package_type !== vorm) return false;
     if (q) {
@@ -91,7 +94,7 @@ export default async function CategoryPage({
           name: p.name,
           sku: p.sku,
           image: p.image_url || undefined,
-          offers: { "@type": "Offer", hasMerchantReturnPolicy: MERCHANT_RETURN_POLICY, price: (p.price_cents / 100).toFixed(2), priceCurrency: "EUR", availability: p.availability === "OutOfStock" ? "https://schema.org/OutOfStock" : "https://schema.org/InStock" },
+          offers: { "@type": "Offer", hasMerchantReturnPolicy: MERCHANT_RETURN_POLICY, price: (p.price_cents / 100).toFixed(2), priceCurrency: "EUR", availability: schemaAvailability(p) },
         },
       })),
     },
@@ -176,6 +179,7 @@ export default async function CategoryPage({
                       slug={p.slug}
                       priceFrom={p.price_cents / 100}
                       inStock={p.availability !== "OutOfStock"}
+                      preorderLabel={preorder(p)?.kaartLabel}
                       tag={p.tags?.[0]}
                       category={p.categories?.name}
                       shortDescription={p.subtitle || undefined}
