@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { preorderVoorMand } from "@/lib/preorder";
 import { createServiceClient } from "@/lib/supabase";
+import { haalBetaalgegevens } from "@/lib/paytail";
 import { unitDiscountPct } from "@/lib/bulk-discount";
 
 export const dynamic = "force-dynamic";
@@ -106,6 +107,29 @@ export async function POST(req: NextRequest) {
 
   const fullStreet = house_number ? `${street} ${house_number}` : street;
 
+  // Bestelnummer. De prefix komt uit de shops-rij, niet uit de code: deze
+  // repo is een fork en zette hier jarenlang "AP-" neer, de letters van
+  // AnabolenPro, op een kamagra-winkel.
+  //
+  // De terugval is dezelfde waarde als die nu in de rij staat ("KE"), en
+  // nadrukkelijk niet "KS": dat is de prefix van kamagrashop, en twee
+  // winkels met hetzelfde bestelnummer lopen vast bij het matchen van
+  // verzendlabels.
+  let orderPrefix = "KE";
+  try {
+    const { data: prefixRij } = await supabase
+      .from("shops")
+      .select("order_prefix")
+      .eq("id", SHOP_ID)
+      .single();
+    const uitDb = String(prefixRij?.order_prefix || "").trim();
+    if (uitDb) orderPrefix = uitDb;
+  } catch (e) {
+    console.error("bestelnummer: prefix ophalen mislukte, terugval gebruikt", e);
+  }
+  const reference = `${orderPrefix}-${Date.now().toString(36).toUpperCase()}`;
+
+
   const { data: order, error } = await supabase.from("orders").insert({
     shop_id: SHOP_ID,
     customer_id: customerId,
@@ -116,7 +140,7 @@ export async function POST(req: NextRequest) {
     subtotal_cents: subtotal, shipping_cents: shipping, total_cents: total,
     coupon_code: couponCode, discount_cents: discountCents,
     status: "pending_payment",
-    reference: `AP-${Date.now().toString(36).toUpperCase()}`,
+    reference,
   }).select().single();
 
   // Alleen een eigen tekst naar buiten: de melding van de database noemt
@@ -198,6 +222,53 @@ ${notitie}` : notitie })
     console.error("bestelling: pre-order bepalen mislukte (niet fataal):", e);
   }
 
+  // Bevestigingsmail - de bedankt-pagina zegt "Bevestiging gestuurd naar ...",
+  // maar niets in deze route verstuurde ooit iets. Overgenomen uit
+  // kamagrashop: shop-dash verstuurt centraal, met de mailroute van deze shop.
+  // Non-fataal, want een mislukte mail mag de bestelling niet blokkeren.
+  try {
+    const dash = process.env.SHOP_DASH_URL || "https://shop-dash-ruby.vercel.app";
+    const mailRes = await fetch(`${dash}/api/orders/${order.id}/email`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-shop-dash-key": process.env.SHOP_DASH_API_KEY || "" },
+      body: JSON.stringify({
+        shopId: SHOP_ID,
+        templateSlug: "order_confirmed",
+        toEmail: email,
+        vars: { customer_name: name, reference: order.reference },
+      }),
+    });
+    if (!mailRes.ok) {
+      console.error("bevestigingsmail mislukte:", mailRes.status, await mailRes.text().catch(() => ""));
+    }
+  } catch (e) {
+    console.error("bevestigingsmail versturen mislukte (niet fataal):", e);
+  }
+  // Paytail: de rekening voor deze bestelling alvast ophalen en vastleggen.
+  //
+  // shop-dash doet het echte werk (zie src/lib/paytail.ts voor waarom dat
+  // centraal zit) en schrijft het resultaat naar orders.paytail_details. De
+  // betaalpagina leest het daarna gewoon uit de bestelling.
+  type PaytailShopRij = {
+    paytail_enabled: boolean | null;
+    paytail_eigen_blok: boolean | null;
+    paytail_base_url: string | null;
+  };
+  let paytailShop: PaytailShopRij | null = null;
+  try {
+    const { data } = await supabase
+      .from("shops")
+      .select("paytail_enabled, paytail_eigen_blok, paytail_base_url")
+      .eq("id", SHOP_ID)
+      .single();
+    paytailShop = (data as PaytailShopRij | null) ?? null;
+
+    if (paytailShop?.paytail_enabled && paytailShop.paytail_base_url && paytailShop.paytail_eigen_blok !== false) {
+      await haalBetaalgegevens(order.id, SHOP_ID);
+    }
+  } catch (e) {
+    console.error("Paytail-gegevens bij de bestelling vastleggen mislukte (niet fataal):", e);
+  }
   // Account aanmaken, als de klant dat vinkje bij het afrekenen aanzette.
   //
   // Dit stond er niet, terwijl de checkout het vinkje en een verplicht
@@ -225,5 +296,10 @@ ${notitie}` : notitie })
     }
   }
 
-  return NextResponse.json({ ok: true, order_id: order.id, total_cents: total, subtotal_cents: subtotal, shipping_cents: shipping });
+  // De checkout hoeft alleen te weten of er via Paytail betaald wordt; de
+  // bankgegevens staan al bij de bestelling en de betaalpagina toont ze.
+  const paytailUrl =
+    paytailShop?.paytail_enabled && paytailShop.paytail_base_url ? paytailShop.paytail_base_url : null;
+
+  return NextResponse.json({ ok: true, order_id: order.id, total_cents: total, subtotal_cents: subtotal, shipping_cents: shipping, paytailUrl });
 }

@@ -1,4 +1,4 @@
-import { supabase, type Product, type Category, type BlogPost } from "./supabase";
+import { supabase, createServiceClient, type Product, type Category, type BlogPost } from "./supabase";
 
 // Hardcoded shop_id voor kamagrasite - fallback voor scoped JWT die niet werkt.
 // RLS-policies in shop-dash migration 051 staan anon SELECT toe op deze shop.
@@ -372,4 +372,151 @@ export async function resolveBuyPageProducts(page: BuyPage): Promise<Product[]> 
     }
     return out;
   } catch { return []; }
+}
+
+// ---------------------------------------------------------------------------
+// Betaalpagina (Paytail)
+//
+// Overgenomen uit kamagrashop, waar deze flow al draait. Het verschil met daar
+// is alleen de client: deze repo heeft geen metHerkansing, dus die staat
+// hieronder. De shop praat zelf niet met Paytail; dat doet shop-dash centraal.
+// Zie src/lib/paytail.ts voor het waarom.
+// ---------------------------------------------------------------------------
+
+// Een herkansing bij een netwerk- of databasehapering. Zonder retry wordt zo'n
+// hapering een harde 404 op de pagina waar iemand net zijn bestelling heeft
+// geplaatst, en dat ziet eruit alsof de bestelling is verdwenen.
+async function metHerkansing<T>(wat: string, fn: () => Promise<{ data: T | null; error: unknown }>): Promise<T | null> {
+  for (let poging = 1; poging <= 2; poging++) {
+    try {
+      const { data, error } = await fn();
+      if (!error) return data;
+      console.error(wat + ": ophalen mislukte (poging " + poging + ")", error);
+    } catch (e) {
+      console.error(wat + ": ophalen gooide (poging " + poging + ")", e);
+    }
+    if (poging === 1) await new Promise((r) => setTimeout(r, 250));
+  }
+  return null;
+}
+
+export type OrderForPayment = {
+  id: string;
+  shop_id: string;
+  reference: string | null;
+  customer_name: string | null;
+  customer_email: string | null;
+  shipping_street: string | null;
+  shipping_postal: string | null;
+  shipping_city: string | null;
+  shipping_country: string | null;
+  subtotal_cents: number;
+  shipping_cents: number;
+  total_cents: number;
+  coupon_code: string | null;
+  discount_cents: number;
+  status: string | null;
+};
+
+export async function getOrderForPayment(orderId: string) {
+  return metHerkansing<OrderForPayment>("betaalpagina order", async () => {
+    const sb = createServiceClient();
+    const res = await sb
+      .from("orders")
+      .select(
+        "id, shop_id, reference, customer_name, customer_email, shipping_street, shipping_postal, shipping_city, shipping_country, subtotal_cents, shipping_cents, total_cents, coupon_code, discount_cents, status"
+      )
+      .eq("id", orderId)
+      .eq("shop_id", SHOP_ID)
+      .maybeSingle();
+    return { data: res.data as OrderForPayment | null, error: res.error };
+  });
+}
+
+export type OrderRegelForPayment = {
+  product_name: string;
+  quantity: number;
+  unit_price_cents: number;
+  total_cents: number;
+};
+
+/** De regels van de bestelling, zodat de klant op de betaalpagina ziet waar hij voor betaalt. */
+export async function getOrderItemsForPayment(orderId: string): Promise<OrderRegelForPayment[]> {
+  const rijen = await metHerkansing<OrderRegelForPayment[]>("betaalpagina regels", async () => {
+    const sb = createServiceClient();
+    const res = await sb
+      .from("order_items")
+      .select("product_name, quantity, unit_price_cents, total_cents")
+      .eq("order_id", orderId)
+      .order("product_name");
+    return { data: res.data as OrderRegelForPayment[] | null, error: res.error };
+  });
+  return rijen || [];
+}
+
+export type PaytailConfig = {
+  paytail_enabled: boolean | null;
+  paytail_eigen_blok: boolean | null;
+  paytail_base_url: string | null;
+  paytail_btn_label: string | null;
+  paytail_btn_color: string | null;
+  paytail_btn_text_color: string | null;
+  domain: string | null;
+};
+
+export async function getPaytailConfig(): Promise<PaytailConfig | null> {
+  return metHerkansing<PaytailConfig>("betaalpagina paytail-config", async () => {
+    const sb = createServiceClient();
+    const res = await sb
+      .from("shops")
+      .select(
+        "paytail_enabled, paytail_eigen_blok, paytail_base_url, paytail_btn_label, paytail_btn_color, paytail_btn_text_color, domain"
+      )
+      .eq("id", SHOP_ID)
+      .maybeSingle();
+    return { data: res.data as PaytailConfig | null, error: res.error };
+  });
+}
+
+/** De bij de bestelling bewaarde Paytail-gegevens, zoals ze naar de klant gingen. */
+export async function getPaytailDetails(orderId: string): Promise<Record<string, unknown> | null> {
+  const rij = await metHerkansing<{ paytail_details: Record<string, unknown> | null }>(
+    "betaalpagina opgeslagen gegevens",
+    async () => {
+      const sb = createServiceClient();
+      const res = await sb
+        .from("orders")
+        .select("paytail_details")
+        .eq("id", orderId)
+        .eq("shop_id", SHOP_ID)
+        .maybeSingle();
+      return { data: res.data as { paytail_details: Record<string, unknown> | null } | null, error: res.error };
+    }
+  );
+  return rij?.paytail_details || null;
+}
+
+/**
+ * Houdt bij of de bankgegevens naar de klant zijn gemaild.
+ *
+ * Bij succes komt de datum erin en gaat er nooit meer een mail uit. Bij een
+ * mislukking tellen we de poging, want zonder die teller probeerde elke
+ * paginalading het opnieuw.
+ */
+export async function markeerGegevensMail(orderId: string, gelukt: boolean): Promise<void> {
+  try {
+    const sb = createServiceClient();
+    const huidig = (await getPaytailDetails(orderId)) || {};
+    const bij = gelukt
+      ? { gegevens_gemaild_op: new Date().toISOString() }
+      : { gegevens_mail_pogingen: Number(huidig.gegevens_mail_pogingen || 0) + 1 };
+    const { error } = await sb
+      .from("orders")
+      .update({ paytail_details: { ...huidig, ...bij } })
+      .eq("id", orderId)
+      .eq("shop_id", SHOP_ID);
+    if (error) console.error("betaalpagina: mailmarkering opslaan mislukte", error);
+  } catch (e) {
+    console.error("betaalpagina: mailmarkering opslaan gooide", e);
+  }
 }

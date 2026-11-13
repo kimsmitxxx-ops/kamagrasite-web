@@ -100,6 +100,18 @@ export default function CheckoutPage() {
         value_cents: j.total_cents ?? totals.total,
         items: cart.items.length,
       });
+      if (j.paytailUrl) {
+        // Mand pas legen na een geslaagde betaling (terugkeer op de
+        // bedankt-pagina), zodat een afgebroken Paytail-betaling de winkelmand
+        // intact laat.
+        suppressAbandon();
+        // Eerst onze eigen betaalpagina met de bankgegevens erop; die post
+        // vandaaruit pas naar Paytail. payment_redirect vuurt op de knop daar,
+        // zodat het gat met order_placed de afhakers op die pagina laat zien.
+        window.location.href = `/checkout/betalen/${j.order_id}`;
+        return;
+      }
+
       cart.clear();
       // Redirect naar bedankt-pagina met betaalinstructies + screenshot-upload
       window.location.href = `/checkout/bedankt/${j.order_id}`;

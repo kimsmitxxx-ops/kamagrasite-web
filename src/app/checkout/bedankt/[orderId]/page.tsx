@@ -6,6 +6,7 @@ import {
   formatEUR,
 } from "@/lib/queries";
 import { PaymentScreenshotForm } from "@/components/shop/payment-screenshot-form";
+import { PaytailReturnClearCart } from "@/components/shop/paytail-return";
 import { CheckCircle2, Copy, Building2, Bitcoin, AlertTriangle } from "lucide-react";
 import type { Metadata } from "next";
 
@@ -22,7 +23,13 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default async function BedanktPage({ params }: { params: { orderId: string } }) {
+export default async function BedanktPage({
+  params,
+  searchParams,
+}: {
+  params: { orderId: string };
+  searchParams: { paytail?: string };
+}) {
   const [order, payment] = await Promise.all([
     getOrderForConfirmation(params.orderId),
     getShopPaymentInstructions(),
@@ -31,12 +38,17 @@ export default async function BedanktPage({ params }: { params: { orderId: strin
   if (!order) notFound();
 
   const ref = `ORDER-${order.id.slice(0, 8).toUpperCase()}`;
+  // Paytail stuurt na een afgeronde betaling hierheen terug met ?paytail=1.
+  const viaPaytail = searchParams.paytail === "1";
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-12">
+      {viaPaytail && <PaytailReturnClearCart orderReference={ref} />}
       <div className="rounded-2xl border border-success/40 bg-success-soft/30 p-6 text-center">
         <CheckCircle2 size={36} className="mx-auto text-success" />
-        <h1 className="mt-3 font-display text-3xl text-primary">Bedankt voor je bestelling!</h1>
+        <h1 className="mt-3 font-display text-3xl text-primary">
+          {viaPaytail ? "Betaling geregistreerd!" : "Bedankt voor je bestelling!"}
+        </h1>
         <p className="mt-2 text-text-muted">
           Bestelling <strong className="text-text tabular">{ref}</strong> · totaal{" "}
           <strong className="text-text tabular">{formatEUR(order.total_cents)}</strong>
@@ -46,6 +58,14 @@ export default async function BedanktPage({ params }: { params: { orderId: strin
         </p>
       </div>
 
+      {/* Na een geslaagde Paytail-betaling zijn bank/crypto-instructies en de
+          screenshot-upload overbodig - de betaling is al rond. */}
+      {viaPaytail ? (
+        <div className="mt-8 rounded-xl border border-border bg-surface p-6 text-center text-sm text-text-muted">
+          Je pakket gaat zo snel mogelijk de deur uit.
+        </div>
+      ) : (
+        <>
       {/* Bank / IBAN betaalblok */}
       {payment?.iban && (
         <section className="mt-8 rounded-xl border border-primary-muted bg-primary text-primary-foreground p-6">
@@ -136,6 +156,9 @@ export default async function BedanktPage({ params }: { params: { orderId: strin
           <PaymentScreenshotForm orderId={order.id} customerEmail={order.email} />
         </div>
       </section>
+
+        </>
+      )}
 
       <div className="mt-10 text-center text-sm text-text-muted">
         Vragen? <Link href="/contact" className="text-accent hover:underline">Contact opnemen</Link>{" "}
