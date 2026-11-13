@@ -12,6 +12,7 @@ import { track } from "@/lib/analytics";
 import {
   markCheckoutReached,
   markCheckoutField,
+  setCheckoutEmail,
   markOrderPlaced,
   suppressAbandon,
 } from "@/lib/cart-abandon";
@@ -71,6 +72,13 @@ export default function CheckoutPage() {
     const name = (e.target as unknown as { name?: string }).name;
     if (name) markCheckoutField(name);
   };
+
+  // Het adres onthouden zodra het ingevuld is. Haakt de bezoeker daarna af,
+  // dan komt zijn mandje in het dashboard te staan; zonder adres is er later
+  // niemand om nog iets aan te vragen.
+  useEffect(() => {
+    setCheckoutEmail(form.email || null);
+  }, [form.email]);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();

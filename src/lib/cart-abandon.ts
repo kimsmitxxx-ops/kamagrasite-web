@@ -40,6 +40,7 @@ const HIDDEN_ABANDON_MS = 30 * 60 * 1000;
 let snapshot: Snapshot = { count: 0, valueCents: 0, items: [] };
 let reachedCheckout = false;
 let lastField: string | null = null;
+let checkoutEmail: string | null = null;
 let orderPlaced = false;
 let suppressed = false;
 let hiddenTimer: ReturnType<typeof setTimeout> | null = null;
@@ -72,6 +73,32 @@ function fire(reason: "exit" | "idle") {
     value_cents: snapshot.valueCents,
     products: snapshot.items.map((i) => i.id).join(",").slice(0, 200),
   };
+
+  // Heeft de bezoeker zijn adres al ingevuld, dan leggen we het mandje vast
+  // in het dashboard. Zonder adres heeft dat geen zin: dan is er niemand om
+  // later nog iets aan te vragen. sendBeacon, want dit gebeurt op het moment
+  // dat de pagina sluit.
+  if (checkoutEmail) {
+    try {
+      const lading = JSON.stringify({
+        email: checkoutEmail,
+        items: snapshot.items,
+        totalCents: snapshot.valueCents,
+      });
+      const verstuurd =
+        typeof navigator !== "undefined" &&
+        typeof navigator.sendBeacon === "function" &&
+        navigator.sendBeacon("/api/mandje", new Blob([lading], { type: "application/json" }));
+      if (!verstuurd) {
+        void fetch("/api/mandje", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: lading,
+          keepalive: true,
+        }).catch(() => {});
+      }
+    } catch {}
+  }
 
   if (reachedCheckout) {
     track("checkout_abandoned", { ...base, last_field: lastField || "onbekend" });
@@ -119,6 +146,15 @@ export function setCartSnapshot(next: Snapshot) {
 /** De bezoeker is op de kassa beland. */
 export function markCheckoutReached() {
   reachedCheckout = true;
+}
+
+/**
+ * Het e-mailadres uit het checkoutformulier. Alleen hiermee kan een
+ * achtergelaten mandje later nog iets opleveren; de meting zelf is anoniem.
+ */
+export function setCheckoutEmail(email: string | null) {
+  const schoon = (email || "").trim().toLowerCase();
+  checkoutEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(schoon) ? schoon : null;
 }
 
 /** Laatst aangeraakte formulierveld, voor `checkout_abandoned`. */

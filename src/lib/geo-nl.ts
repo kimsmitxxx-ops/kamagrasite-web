@@ -54,7 +54,22 @@ export interface ShopGegevens {
  * Organization-schema met de landsignalen erin. Velden die leeg zijn in de
  * shop-rij blijven weg in plaats van dat er iets plausibels wordt ingevuld.
  */
-export function organisatieJsonLd(shop: ShopGegevens | null, siteUrl: string) {
+export function organisatieJsonLd(
+  shop: ShopGegevens | null,
+  siteUrl: string,
+  opties: {
+    /**
+     * Andere schrijfwijzen van dezelfde merknaam, bijvoorbeeld met spaties.
+     * Alleen echte varianten van de naam; geen zoekwoorden en geen domeinen
+     * die we niet bezitten.
+     */
+    naamVarianten?: string[];
+  } = {},
+) {
+  const basis = siteUrl.replace(/\/$/, "");
+  const naam = shop?.name || undefined;
+  const varianten = opties.naamVarianten?.filter((v) => v && v !== naam);
+
   const adres =
     shop?.address_city || shop?.address_street || shop?.address_postal
       ? {
@@ -71,22 +86,41 @@ export function organisatieJsonLd(shop: ShopGegevens | null, siteUrl: string) {
     shop?.btw ? { "@type": "PropertyValue", name: "BTW", value: shop.btw } : null,
   ].filter(Boolean);
 
+  // Twee knopen in een @graph, aan elkaar geknoopt met @id. De Organization
+  // zegt wie we zijn en voor welk land; de WebSite koppelt de merknaam aan dit
+  // domein. Dat tweede is wat je nodig hebt om op je eigen naam te ranken:
+  // zonder WebSite-knoop moet Google de naam puur uit de teksten afleiden.
   return {
     "@context": "https://schema.org",
-    "@type": "OnlineStore",
-    name: shop?.name || undefined,
-    url: siteUrl,
-    description: shop?.description || undefined,
-    logo: shop?.logo_url || `${siteUrl.replace(/\/$/, "")}/icon.png`,
-    email: shop?.email || undefined,
-    telephone: shop?.phone || undefined,
-    address: adres,
-    // Dit is het punt van dit bestand: expliciet zeggen voor welk land en in
-    // welke taal deze site bedoeld is.
-    areaServed: LEVERLANDEN.map((land) => ({ "@type": "Country", name: land })),
-    inLanguage: "nl-NL",
-    currenciesAccepted: "EUR",
-    ...(identifiers.length > 0 ? { identifier: identifiers } : {}),
+    "@graph": [
+      {
+        "@type": "OnlineStore",
+        "@id": `${basis}/#organisatie`,
+        name: naam,
+        ...(varianten && varianten.length > 0 ? { alternateName: varianten } : {}),
+        url: siteUrl,
+        description: shop?.description || undefined,
+        logo: shop?.logo_url || `${basis}/icon.png`,
+        email: shop?.email || undefined,
+        telephone: shop?.phone || undefined,
+        address: adres,
+        // Dit is het punt van dit bestand: expliciet zeggen voor welk land en
+        // in welke taal deze site bedoeld is.
+        areaServed: LEVERLANDEN.map((land) => ({ "@type": "Country", name: land })),
+        inLanguage: "nl-NL",
+        currenciesAccepted: "EUR",
+        ...(identifiers.length > 0 ? { identifier: identifiers } : {}),
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${basis}/#website`,
+        url: siteUrl,
+        name: naam,
+        ...(varianten && varianten.length > 0 ? { alternateName: varianten } : {}),
+        inLanguage: "nl-NL",
+        publisher: { "@id": `${basis}/#organisatie` },
+      },
+    ],
   };
 }
 

@@ -10,7 +10,7 @@ import { AnalyticsTracker } from "@/components/analytics-tracker";
 import { CartAbandonTracker } from "@/components/cart-abandon-tracker";
 import { GA4 } from "@/components/ga4";
 import { ConsentNotice } from "@/components/consent-notice";
-import { hreflangVoor, OG_LOCALE } from "@/lib/geo-nl";
+import { hreflangVoor, OG_LOCALE, organisatieJsonLd } from "@/lib/geo-nl";
 
 // Measurement-ID per Vercel-project instellen; zonder ID laadt GA4 niet.
 const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID || "";
@@ -62,6 +62,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="nl" data-shop="kamagrasite" className={`${manrope.variable} ${spaceGrotesk.variable}`}>
       <head>
+        {/* Organization met areaServed NL en BE, inLanguage nl-NL en EUR.
+            Staat in de layout en dus op elke pagina: het gaat over de site
+            als geheel, niet over een losse pagina. */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organisatieJsonLd(null, String("https://kamagrasite.nl"))) }}
+        />
         {/* Hier stond een regel die alvast verbinding maakte met de host van de
             database. Die stond daarmee in de head van elke pagina en noemde de
             projectnaam in de broncode. Beelden lopen nu via /media, /img en
