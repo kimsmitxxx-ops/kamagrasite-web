@@ -17,7 +17,7 @@ export function Header({ categories }: { categories: { slug: string; name: strin
       <div className="mx-auto max-w-7xl px-4">
         <div className="flex items-center gap-4 py-3">
           <Link href="/" className="font-display text-xl font-semibold tracking-tight">
-            kamagra<span className="text-accent">expert</span>
+            kamagra<span className="text-accent">site</span>
           </Link>
           <form
             onSubmit={(e) => { e.preventDefault(); router.push(`/winkel?q=${encodeURIComponent(q)}`); }}

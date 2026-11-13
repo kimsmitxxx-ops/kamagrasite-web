@@ -22,7 +22,7 @@ export function Footer() {
             </span>
             <span className="leading-none">
               <span className="text-primary-foreground">Kamagra</span>{" "}
-              <span className="text-accent">Expert</span>
+              <span className="text-accent">Site</span>
             </span>
           </Link>
           <p className="mt-3 text-sm text-primary-foreground/70 max-w-sm leading-relaxed">

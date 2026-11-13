@@ -149,7 +149,7 @@ export function Header(_props: HeaderProps = {}) {
           </span>
           <span className="leading-none text-base uppercase font-semibold tracking-wider">
             <span className="text-primary-foreground">KAMAGRA</span>{" "}
-            <span className="text-accent">EXPERT</span>
+            <span className="text-accent">SITE</span>
           </span>
         </Link>
         <form action="/winkel" method="get" className="hidden md:flex flex-1 max-w-2xl mx-auto">
