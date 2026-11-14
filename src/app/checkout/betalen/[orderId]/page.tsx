@@ -84,10 +84,12 @@ export default async function BetalenPage({ params }: { params: { orderId: strin
         <Betaalgegevens orderId={order.id} totaalCenten={order.total_cents} gegevens={gegevens} />
       ) : (
         /* Terugval: wij tonen de bankgegevens niet zelf, dus haalt de klant ze
-           op bij Paytail. Dit formulier post rechtstreeks naar hun stap 2 en
-           slaat hun bevestigscherm over. */
-        <form action={paytail.paytail_base_url} method="POST" className="mt-6 text-center">
-          <input type="hidden" name="step" value="2" />
+           op bij Paytail. Een GET naar hun formulier met de velden in de
+           querystring: het oude formulier staat dan helemaal voorgevuld, het
+           nieuwe (Laravel, sinds 10 november 2026) alleen het bedrag. Geen
+           POST naar hun stap 2 meer: dat geeft op het nieuwe formulier een
+           405, en die foutpagina kreeg de klant dan te zien. */
+        <form action={paytail.paytail_base_url} method="GET" className="mt-6 text-center">
           <input type="hidden" name="return" value={returnUrl} />
           <input type="hidden" name="payers_name" value={order.customer_name || ""} />
           <input type="hidden" name="user_postcode" value={order.shipping_postal || ""} />
@@ -97,9 +99,10 @@ export default async function BetalenPage({ params }: { params: { orderId: strin
           <div className="rounded-xl border-2 border-accent bg-surface p-6 text-left text-sm text-text-muted">
             <p>
               Klik hieronder voor de bankgegevens: het rekeningnummer (IBAN), de naam van de ontvanger, het bedrag van{" "}
-              <strong className="text-text tabular">{formatEUR(order.total_cents)}</strong> en de omschrijving. Zet bij
-              de omschrijving alleen je bestelnummer <strong className="font-mono text-text">{ref}</strong> en verder
-              niets, anders weigert de bank de betaling.
+              <strong className="text-text tabular">{formatEUR(order.total_cents)}</strong> en de omschrijving. Vraagt
+              het betaalscherm om je naam, postcode, land en bestelnummer, vul dan als bestelnummer{" "}
+              <strong className="font-mono text-text">{ref}</strong> in. Zet bij de omschrijving van je overboeking
+              alleen dat bestelnummer en verder niets, anders weigert de bank de betaling.
             </p>
           </div>
           <PaytailStep2Button
