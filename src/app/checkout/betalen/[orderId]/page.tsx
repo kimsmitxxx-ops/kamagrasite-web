@@ -5,6 +5,7 @@ import type { Metadata } from "next";
 import { Copy, Clock, Building2, Package } from "lucide-react";
 import { getOrderForPayment, getOrderItemsForPayment, getPaytailConfig, formatEUR } from "@/lib/queries";
 import { haalBetaalgegevens } from "@/lib/paytail";
+import { meldFout } from "@/lib/fout-melden";
 import { Betaalgegevens } from "@/components/shop/betaalgegevens";
 import { PaytailStep2Button } from "@/components/shop/paytail-step2-button";
 
@@ -69,6 +70,18 @@ export default async function BetalenPage({ params }: { params: { orderId: strin
       : // shop-dash haalt de rekening op en legt hem meteen vast bij de
         // bestelling; die hoort bij deze ene bestelling en geldt 24 uur.
         await haalBetaalgegevens(order.id, order.shop_id);
+
+  // De terugvalknop is een noodoplossing, dus het hoort op te vallen als een
+  // klant hem te zien krijgt. shop-dash logt zelf al waarom het misging;
+  // dit zegt dát het de klant raakte.
+  if (!gegevens && paytail.paytail_eigen_blok !== false) {
+    await meldFout({
+      bron: "checkout/betalen",
+      bericht: `geen bankgegevens voor ${ref}: klant kreeg de terugvalknop naar Paytail`,
+      niveau: "warn",
+      context: { order: ref, bedrag: order.total_cents },
+    });
+  }
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">

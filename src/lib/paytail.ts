@@ -16,6 +16,8 @@
  * Paytail stuurt.
  */
 
+import { meldFout } from "./fout-melden";
+
 const TIMEOUT_MS = 12000;
 
 export type PaytailBetaalgegevens = {
@@ -43,7 +45,12 @@ async function vraagDash(actie: "gegevens" | "betaald", orderId: string, shopId:
     signal: AbortSignal.timeout(TIMEOUT_MS),
   });
   if (!res.ok) {
-    console.error(`paytail (${actie}): shop-dash gaf status`, res.status, await res.text().catch(() => ""));
+    const antwoord = await res.text().catch(() => "");
+    await meldFout({
+      bron: "lib/paytail",
+      bericht: `shop-dash weigerde "${actie}" voor bestelling ${orderId}`,
+      context: { status: res.status, antwoord: antwoord.slice(0, 300), actie },
+    });
     return null;
   }
   return (await res.json().catch(() => null)) as { ok?: boolean; gegevens?: PaytailBetaalgegevens } | null;
@@ -55,7 +62,7 @@ export async function haalBetaalgegevens(orderId: string, shopId: string): Promi
     const j = await vraagDash("gegevens", orderId, shopId);
     return j?.gegevens || null;
   } catch (e) {
-    console.error("paytail: gegevens ophalen mislukte", e);
+    await meldFout({ bron: "lib/paytail", bericht: `gegevens ophalen mislukte voor bestelling ${orderId}`, fout: e });
     return null;
   }
 }
@@ -66,7 +73,7 @@ export async function meldBetaald(orderId: string, shopId: string): Promise<bool
     const j = await vraagDash("betaald", orderId, shopId);
     return Boolean(j?.ok);
   } catch (e) {
-    console.error("paytail: betaling melden mislukte", e);
+    await meldFout({ bron: "lib/paytail", bericht: `betaling melden mislukte voor bestelling ${orderId}`, fout: e });
     return false;
   }
 }
