@@ -96,12 +96,20 @@ export default async function BetalenPage({ params }: { params: { orderId: strin
           <input type="hidden" name="user_country" value={order.shipping_country || "NL"} />
           <input type="hidden" name="order_number" value={ref} />
           <input type="hidden" name="amount" value={(order.total_cents / 100).toFixed(2)} />
+          {/* Het nieuwe formulier leest andere querynamen dan het oude (name,
+              postcode, country, order_id in plaats van payers_name,
+              user_postcode, user_country, order_number). Allebei meesturen,
+              dan staat het op beide formulieren voorgevuld. */}
+          <input type="hidden" name="name" value={order.customer_name || ""} />
+          <input type="hidden" name="postcode" value={order.shipping_postal || ""} />
+          <input type="hidden" name="country" value={order.shipping_country || "NL"} />
+          <input type="hidden" name="order_id" value={ref} />
           <div className="rounded-xl border-2 border-accent bg-surface p-6 text-left text-sm text-text-muted">
             <p>
               Klik hieronder voor de bankgegevens: het rekeningnummer (IBAN), de naam van de ontvanger, het bedrag van{" "}
-              <strong className="text-text tabular">{formatEUR(order.total_cents)}</strong> en de omschrijving. Vraagt
-              het betaalscherm om je naam, postcode, land en bestelnummer, vul dan als bestelnummer{" "}
-              <strong className="font-mono text-text">{ref}</strong> in. Zet bij de omschrijving van je overboeking
+              <strong className="text-text tabular">{formatEUR(order.total_cents)}</strong> en de omschrijving. Op het
+              betaalscherm staan je naam, postcode, land en bestelnummer al ingevuld; controleer dat het bestelnummer{" "}
+              <strong className="font-mono text-text">{ref}</strong> is. Zet bij de omschrijving van je overboeking
               alleen dat bestelnummer en verder niets, anders weigert de bank de betaling.
             </p>
           </div>
