@@ -18,7 +18,16 @@
 
 import { meldFout } from "./fout-melden";
 
-const TIMEOUT_MS = 12000;
+/**
+ * Hoe lang we op shop-dash wachten. shop-dash doet in het ergste geval één
+ * poging van tien seconden plus een snelle herkansing, dus 22 seconden dekt
+ * dat ruim. Twaalf seconden deed dat niet: dan brak deze kant af terwijl
+ * shop-dash de rekening nog binnenkreeg en bij de bestelling zette, en kreeg
+ * de klant de terugvalknop voor niets. De route die dit aanroept moet dan
+ * wel langer mogen leven dan de standaard tien seconden van Vercel, vandaar
+ * `maxDuration` op de betaalpagina en de orders-route.
+ */
+const TIMEOUT_MS = 22000;
 
 export type PaytailBetaalgegevens = {
   bedrag: string;
@@ -32,7 +41,7 @@ export type PaytailBetaalgegevens = {
   registratienummer: string | null;
 };
 
-async function vraagDash(actie: "gegevens" | "betaald", orderId: string, shopId: string) {
+async function vraagDash(actie: "gegevens" | "betaald", orderId: string, shopId: string, timeoutMs = TIMEOUT_MS) {
   const dash = process.env.SHOP_DASH_URL || "https://shop-dash-ruby.vercel.app";
   const res = await fetch(`${dash}/api/paytail`, {
     method: "POST",
@@ -42,7 +51,7 @@ async function vraagDash(actie: "gegevens" | "betaald", orderId: string, shopId:
     },
     body: JSON.stringify({ actie, orderId, shopId }),
     cache: "no-store",
-    signal: AbortSignal.timeout(TIMEOUT_MS),
+    signal: AbortSignal.timeout(timeoutMs),
   });
   if (!res.ok) {
     const antwoord = await res.text().catch(() => "");
@@ -57,9 +66,14 @@ async function vraagDash(actie: "gegevens" | "betaald", orderId: string, shopId:
 }
 
 /** Verse bankgegevens voor deze bestelling; shop-dash legt ze ook vast. */
-export async function haalBetaalgegevens(orderId: string, shopId: string): Promise<PaytailBetaalgegevens | null> {
+export async function haalBetaalgegevens(
+  orderId: string,
+  shopId: string,
+  /** Korter voor de checkout, die de klant laat wachten; de betaalpagina haalt het later alsnog. */
+  timeoutMs = TIMEOUT_MS,
+): Promise<PaytailBetaalgegevens | null> {
   try {
-    const j = await vraagDash("gegevens", orderId, shopId);
+    const j = await vraagDash("gegevens", orderId, shopId, timeoutMs);
     return j?.gegevens || null;
   } catch (e) {
     await meldFout({ bron: "lib/paytail", bericht: `gegevens ophalen mislukte voor bestelling ${orderId}`, fout: e });

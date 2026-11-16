@@ -6,6 +6,9 @@ import { unitDiscountPct } from "@/lib/bulk-discount";
 import { SHIPPING_FEE_CENTS } from "@/lib/shipping";
 
 export const dynamic = "force-dynamic";
+// De route wacht op Paytail (via shop-dash) en op de mails; zonder dit kapt
+// Vercel hem na tien seconden af, midden in dat wachten.
+export const maxDuration = 30;
 // Hoort bij force-dynamic: de gedeelde Supabase-client cachet sinds de
 // TTFB-ronde standaard, en hier moet elke lees juist vers zijn.
 export const fetchCache = "force-no-store";
@@ -265,7 +268,9 @@ ${notitie}` : notitie })
     paytailShop = (data as PaytailShopRij | null) ?? null;
 
     if (paytailShop?.paytail_enabled && paytailShop.paytail_base_url && paytailShop.paytail_eigen_blok !== false) {
-      await haalBetaalgegevens(order.id, SHOP_ID);
+      // Acht seconden: de klant wacht hier op zijn bevestiging. Lukt het niet
+      // binnen die tijd, dan haalt de betaalpagina de rekening alsnog op.
+      await haalBetaalgegevens(order.id, SHOP_ID, 8000);
     }
   } catch (e) {
     console.error("Paytail-gegevens bij de bestelling vastleggen mislukte (niet fataal):", e);

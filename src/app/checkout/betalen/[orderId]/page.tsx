@@ -9,6 +9,11 @@ import { meldFout } from "@/lib/fout-melden";
 import { Betaalgegevens } from "@/components/shop/betaalgegevens";
 import { PaytailStep2Button } from "@/components/shop/paytail-step2-button";
 
+// De pagina wacht tot 22 seconden op de bankgegevens (lib/paytail.ts).
+// Zonder dit kapt Vercel de functie na tien seconden af en ziet de klant een
+// foutpagina in plaats van de terugvalknop.
+export const maxDuration = 30;
+
 export const dynamic = "force-dynamic";
 // Hoort bij force-dynamic: de gedeelde Supabase-client cachet sinds de
 // TTFB-ronde standaard, en hier moet elke lees juist vers zijn.

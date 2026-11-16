@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { getOrderForPayment } from "@/lib/queries";
 import { meldBetaald } from "@/lib/paytail";
 
+// Wacht op shop-dash, die op Paytail wacht; zie lib/paytail.ts.
+export const maxDuration = 30;
+
 export const dynamic = "force-dynamic";
 // Hoort bij force-dynamic: de gedeelde Supabase-client cachet sinds de
 // TTFB-ronde standaard, en hier moet elke lees juist vers zijn.
