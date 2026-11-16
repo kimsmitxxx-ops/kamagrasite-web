@@ -524,10 +524,11 @@ export async function markeerGegevensMail(orderId: string, gelukt: boolean): Pro
 /**
  * Heeft deze shop een verzendroute voor mail?
  *
- * shop-dash weigert met "SMTP niet geconfigureerd voor deze shop" zolang
- * shops.settings.smtp leeg is, en dat is hier zo. De bedankt-pagina beloofde
- * intussen wel een bevestigingsmail. Liever niets beweren dan iets beweren
- * dat niet gebeurt; zodra de mailbox er staat klopt de tekst vanzelf weer.
+ * shop-dash weigert met "SMTP niet geconfigureerd voor deze shop" als er
+ * helemaal geen weg is ingesteld. Deze shop verstuurt via de KingSMTP-API
+ * (shops.settings.kingsmtp). De bedankt-pagina beloofde eerder een
+ * bevestigingsmail terwijl er niets stond; liever niets beweren dan iets
+ * beweren dat niet gebeurt.
  *
  * Bij twijfel luidt het antwoord nee: een mislukte lees mag geen belofte
  * opleveren.
@@ -544,8 +545,17 @@ export async function heeftMailroute(): Promise<boolean> {
       console.error("mailroute uitlezen mislukte", error);
       return false;
     }
-    const smtp = (data?.settings as { smtp?: { host?: string } } | null)?.smtp;
-    return Boolean(smtp?.host);
+    const inst = data?.settings as {
+      smtp?: { host?: string };
+      smtp_transactioneel?: { host?: string };
+      kingsmtp?: { api_key?: string };
+    } | null;
+    // Drie wegen, en eentje is genoeg. De orderbevestiging is bij shop-dash een
+    // transactioneel sjabloon, en daarvoor gaat de KingSMTP-API voor op een
+    // mailbox: een shop met alleen kingsmtp verstuurt die mail dus wel. Keek
+    // deze functie alleen naar settings.smtp, dan zei de bedankt-pagina
+    // onterecht dat er geen bevestiging komt.
+    return Boolean(inst?.kingsmtp?.api_key || inst?.smtp_transactioneel?.host || inst?.smtp?.host);
   } catch (e) {
     console.error("mailroute uitlezen gooide", e);
     return false;

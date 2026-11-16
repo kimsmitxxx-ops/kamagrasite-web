@@ -75,7 +75,7 @@ const faq = [
 ];
 
 const timeline = [
-  { t: "Stap 1", h: "Bestelling geplaatst", d: "Je krijgt meteen je bestelnummer en de betaalgegevens op het scherm." },
+  { t: "Stap 1", h: "Bestelling geplaatst", d: "Je bestelnummer en de betaalgegevens staan meteen op het scherm, en je krijgt ze ook per mail." },
   { t: "Stap 2", h: "Betaling binnen", d: "Je maakt het bedrag over per bankoverschrijving. Zodra we het zien, is je order in behandeling." },
   { t: "Stap 3", h: "Order ingepakt", d: "Wij controleren sterkte, batchcode en houdbaarheidsdatum per item en pakken neutraal in." },
   { t: "Stap 4", h: "Bij PostNL / DPD", d: "Zodra het label actief is, kun je het pakket volgen met track & trace." },
