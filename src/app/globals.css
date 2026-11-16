@@ -3,12 +3,13 @@
 @tailwind utilities;
 
 /*
- * kamagraexpert.com design tokens (Tailwind v3 alpha-value compatibel).
+ * kamagrasite.nl design tokens (Tailwind v3 alpha-value compatibel).
  * Kleuren als space-separated RGB triplets zodat opacity modifiers werken:
  * bg-primary/95 → rgb(var(--color-primary) / 0.95).
  */
 :root {
-  /* Kamagraexpert — lichter frisser mint/teal thema */
+  /* Kamagra Site - licht mint/teal thema. Heette hier tot 16 nov 2026 nog
+     Kamagraexpert, een merk dat op 26 okt is opgeheven. */
 
   /* Surfaces (heel licht bijna wit, met subtiele mint-tint) */
   --color-background: 250 253 252;
@@ -25,7 +26,7 @@
   --color-primary-muted: 45 106 98;
   --color-primary-foreground: 240 250 248;
 
-  /* Accent (fris mint-teal — kamagraexpert brand color) */
+  /* Accent (fris mint-teal - de merkkleur van Kamagra Site) */
   --color-accent: 55 173 155;
   --color-accent-soft: 110 209 191;
   --color-accent-muted: 39 143 128;
@@ -36,6 +37,15 @@
   --color-text-muted: 76 96 90;
   --color-text-subtle: 128 148 140;
   --color-foreground: 22 46 42;
+
+  /* Lichte tinten tussen wit en het donkere teal. Van bijna wit naar
+     duidelijk zichtbaar; wash is voor grote vlakken, tint voor een blok dat
+     eruit mag springen, veil voor een rand of een subtiele hover. */
+  --color-wash: 246 252 250;
+  --color-wash-warm: 250 252 249;
+  --color-tint: 226 243 237;
+  --color-tint-strong: 205 234 225;
+  --color-veil: 236 247 243;
 
   /* Borders (licht mint-grijs) */
   --color-border: 216 232 226;
@@ -57,13 +67,15 @@
 html, body {
   background-color: rgb(var(--color-background));
   color: rgb(var(--color-text));
-  font-family: var(--font-manrope), "Manrope", system-ui, sans-serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
 .font-display {
-  font-family: var(--font-space-grotesk), "Space Grotesk", var(--font-manrope), "Manrope", sans-serif;
-  letter-spacing: -0.02em;
+  font-family: var(--font-display), Georgia, serif;
+  /* Newsreader is een serif; de stevige negatieve tracking van de vorige
+     schreefloze kop hoort hier niet. */
+  letter-spacing: -0.005em;
 }
 
 .tabular {

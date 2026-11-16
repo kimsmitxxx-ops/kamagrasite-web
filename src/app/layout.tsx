@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
-import { Manrope, Space_Grotesk } from "next/font/google";
+import { Source_Sans_3, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/components/shop/cart-store";
 import { Header } from "@/components/shop/header";
@@ -21,18 +21,31 @@ const CartDrawer = dynamic(
   { ssr: false },
 );
 
-// Self-hosted fonts via next/font: elimineert render-blocking Google Fonts request
-const manrope = Manrope({
+// Self-hosted fonts via next/font: geen render-blocking verzoek naar Google.
+//
+// Het paar is bewust niet Manrope + Space Grotesk. Dat is de typografie van
+// anabolenpro, waar deze repo een fork van is, en daardoor leek dit ondanks
+// een eigen kleurenpalet nog steeds dezelfde winkel. Source Sans leest rustig
+// op lange lappen tekst en Source Serif geeft de koppen een redactionele toon,
+// wat past bij een site die het vooral van uitleg moet hebben.
+//
+// De variabelen heten naar hun rol en niet naar het font, zodat een volgende
+// wissel hier gebeurt en niet ook in globals.css en tailwind.config.ts.//
+// Source Serif en niet Newsreader: next/font kent de metrics van Newsreader
+// niet, dus dan krijgt de fallback geen size-adjust en springt de pagina bij
+// het laden. Source Serif staat in capsize-font-metrics.json en hoort
+// bovendien bij dezelfde superfamilie als Source Sans.
+const fontSans = Source_Sans_3({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
-  variable: "--font-manrope",
+  variable: "--font-sans",
 });
-const spaceGrotesk = Space_Grotesk({
+const fontDisplay = Source_Serif_4({
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
+  weight: ["400", "500", "600"],
   display: "swap",
-  variable: "--font-space-grotesk",
+  variable: "--font-display",
 });
 
 // Defer chat-widget - niet kritiek voor FCP/LCP; pas hydrateren na main content
@@ -60,7 +73,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="nl" data-shop="kamagrasite" className={`${manrope.variable} ${spaceGrotesk.variable}`}>
+    <html lang="nl" data-shop="kamagrasite" className={`${fontSans.variable} ${fontDisplay.variable}`}>
       <head>
         {/* Organization met areaServed NL en BE, inLanguage nl-NL en EUR.
             Staat in de layout en dus op elke pagina: het gaat over de site

@@ -92,38 +92,38 @@ export default async function HomePage() {
 
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary-soft to-primary" />
+        <div className="absolute inset-0 bg-gradient-to-br from-wash via-veil to-tint" />
         <div
-          className="absolute inset-0 opacity-25"
+          className="absolute inset-0 opacity-70"
           style={{
             backgroundImage:
-              "radial-gradient(circle at 20% 30%, var(--color-accent) 0%, transparent 40%), radial-gradient(circle at 80% 70%, var(--color-accent-soft) 0%, transparent 35%)",
+              "radial-gradient(circle at 20% 30%, rgb(var(--color-accent) / 0.30) 0%, transparent 40%), radial-gradient(circle at 80% 70%, rgb(var(--color-accent-soft) / 0.28) 0%, transparent 35%)",
           }}
         />
         <div className="relative mx-auto max-w-7xl px-4 py-16 md:py-24 grid lg:grid-cols-[1.1fr_1fr] gap-12 items-center">
-          <div className="text-primary-foreground">
-            <span className="inline-flex items-center gap-2 rounded-sm border border-primary-foreground/20 bg-primary-foreground/5 px-3 py-1 text-xs uppercase tracking-[0.18em] text-accent-soft">
+          <div className="text-text">
+            <span className="inline-flex items-center gap-2 rounded-sm border border-border bg-paper-soft px-3 py-1 text-xs uppercase tracking-[0.18em] text-accent-muted">
               <Pill size={12} /> Directe import - Ajanta, Centurion &amp; Sunrise Remedies
             </span>
             <h1 className="mt-5 font-display text-4xl md:text-6xl leading-[1.05] tracking-tight">
               Generieke ED-medicatie
               <br />
-              <span className="text-accent-soft">zonder merktoeslag.</span>
-              <span className="block mt-3 text-base md:text-lg font-sans font-normal tracking-normal text-primary-foreground/70">
-                Sildenafil · Tadalafil · Vardenafil · Dapoxetine - zonder recept, discreet verpakt, vandaag verstuurd.
+              <span className="text-accent-muted">zonder merktoeslag.</span>
+              <span className="block mt-3 text-base md:text-lg font-sans font-normal tracking-normal text-text-muted">
+                Sildenafil · Tadalafil · Vardenafil · Dapoxetine - zonder recept, discreet verpakt, snel verstuurd.
               </span>
             </h1>
-            <p className="mt-5 text-lg text-primary-foreground/80 max-w-xl leading-relaxed">
+            <p className="mt-5 text-lg text-text-muted max-w-xl leading-relaxed">
               Kamagra, Cenforce, Vidalista en Vilitra - chemisch identiek aan Viagra, Cialis
               en Levitra maar voor een fractie van de prijs. Directe import van gecertificeerde
               Indiase fabrikanten. Bulk-korting vanaf 5 stuks, neutrale verpakking en
-              binnen 24 uur op de post.
+              op de post zodra je betaling binnen is.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link href="/winkel" className="inline-flex items-center gap-2 rounded bg-accent px-6 h-12 text-accent-foreground font-medium hover:bg-accent-muted transition-colors">
                 Bekijk producten <ArrowRight size={16} />
               </Link>
-              <Link href="/kennisbank" className="inline-flex items-center gap-2 rounded border border-primary-foreground/25 px-6 h-12 text-primary-foreground/90 font-medium hover:bg-primary-foreground/10 transition-colors">
+              <Link href="/kennisbank" className="inline-flex items-center gap-2 rounded border border-border-strong px-6 h-12 text-text font-medium hover:bg-veil transition-colors">
                 Kennisbank
               </Link>
             </div>
@@ -134,10 +134,10 @@ export default async function HomePage() {
               <Link
                 key={c.slug}
                 href={c.to}
-                className="group relative overflow-hidden rounded-lg border border-primary-foreground/10 bg-primary-foreground/5 p-4 hover:border-accent transition-colors"
+                className="group relative overflow-hidden rounded-lg border border-border bg-paper-soft p-4 hover:border-accent transition-colors"
               >
-                <p className="text-xs uppercase tracking-wider text-accent-soft">{c.name}</p>
-                <p className="mt-2 text-sm text-primary-foreground/80 leading-snug">{c.tagline}</p>
+                <p className="text-xs uppercase tracking-wider text-accent-muted">{c.name}</p>
+                <p className="mt-2 text-sm text-text-muted leading-snug">{c.tagline}</p>
                 <ArrowRight size={14} className="mt-4 text-accent group-hover:translate-x-1 transition-transform" />
               </Link>
             ))}
@@ -204,7 +204,7 @@ export default async function HomePage() {
       )}
 
       {/* Categorieën */}
-      <section className="bg-surface py-16">
+      <section className="bg-wash py-16">
         <div className="mx-auto max-w-7xl px-4">
           <p className="text-xs uppercase tracking-[0.15em] text-accent font-semibold">Categorieën</p>
           <h2 className="mt-2 font-display text-3xl md:text-4xl">Kies je wat je nodig hebt</h2>
@@ -250,7 +250,7 @@ export default async function HomePage() {
       )}
 
       {/* Trust bar */}
-      <section className="bg-surface py-14">
+      <section className="bg-veil py-14">
         <div className="mx-auto max-w-7xl px-4 grid gap-6 md:grid-cols-3">
           <div className="rounded-lg border border-border bg-background p-6">
             <Truck size={22} className="text-accent" />

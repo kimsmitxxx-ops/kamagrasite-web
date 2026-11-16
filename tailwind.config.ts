@@ -9,6 +9,16 @@ export default {
       colors: {
         background: withAlpha("--color-background"),
         surface: withAlpha("--color-surface"),
+        // De lichte tussenstappen; zie globals.css voor waarom ze er zijn.
+        wash: {
+          DEFAULT: withAlpha("--color-wash"),
+          warm: withAlpha("--color-wash-warm"),
+        },
+        tint: {
+          DEFAULT: withAlpha("--color-tint"),
+          strong: withAlpha("--color-tint-strong"),
+        },
+        veil: withAlpha("--color-veil"),
         paper: {
           DEFAULT: withAlpha("--color-paper"),
           soft: withAlpha("--color-paper-soft"),
@@ -58,8 +68,8 @@ export default {
         },
       },
       fontFamily: {
-        sans: ["Manrope", "system-ui", "sans-serif"],
-        display: ["Space Grotesk", "Manrope", "sans-serif"],
+        sans: ["var(--font-sans)", "system-ui", "sans-serif"],
+        display: ["var(--font-display)", "Georgia", "serif"],
       },
       boxShadow: {
         card: "0 1px 2px rgba(17, 36, 30, 0.06), 0 2px 10px rgba(17, 36, 30, 0.06)",
