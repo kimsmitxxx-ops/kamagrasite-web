@@ -13,11 +13,12 @@ export const metadata: Metadata = {
   alternates: alternatesNL("/kennisbank/"),
 };
 
-export default async function KennisbankPage({
-  searchParams,
-}: {
-  searchParams: { cat?: string };
-}) {
+export default async function KennisbankPage(
+  props: {
+    searchParams: Promise<{ cat?: string }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   const articles = await listBlogPosts(50);
   const initialTab = (["kennis", "onderzoek", "nieuws"] as const).find((t) => t === searchParams.cat) || "alle";
 

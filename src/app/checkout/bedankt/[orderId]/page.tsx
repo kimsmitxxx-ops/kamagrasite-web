@@ -24,13 +24,14 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default async function BedanktPage({
-  params,
-  searchParams,
-}: {
-  params: { orderId: string };
-  searchParams: { paytail?: string };
-}) {
+export default async function BedanktPage(
+  props: {
+    params: Promise<{ orderId: string }>;
+    searchParams: Promise<{ paytail?: string }>;
+  }
+) {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
   const [order, payment, mailroute] = await Promise.all([
     getOrderForConfirmation(params.orderId),
     getShopPaymentInstructions(),

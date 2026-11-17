@@ -49,7 +49,8 @@ export const metadata: Metadata = {
  * slaan we over). De eerste springt aan als het ophalen mislukt, de tweede als
  * shops.paytail_eigen_blok op false staat.
  */
-export default async function BetalenPage({ params }: { params: { orderId: string } }) {
+export default async function BetalenPage(props: { params: Promise<{ orderId: string }> }) {
+  const params = await props.params;
   const [order, paytail] = await Promise.all([getOrderForPayment(params.orderId), getPaytailConfig()]);
 
   if (!order) notFound();
@@ -64,7 +65,7 @@ export default async function BetalenPage({ params }: { params: { orderId: strin
   // Het domein uit de shop-instellingen, met de host van dit verzoek als
   // terugval: Paytail wil een volledige return-URL en die mag niet per
   // ongeluk naar een andere winkel wijzen.
-  const domein = paytail.domain || headers().get("host") || "";
+  const domein = paytail.domain || (await headers()).get("host") || "";
   const returnUrl = `https://${domein}/checkout/bedankt/${order.id}?paytail=1`;
 
   const regels = await getOrderItemsForPayment(order.id);

@@ -17,7 +17,11 @@ export const fetchCache = "force-no-store";
  */
 const TOEGESTAAN = new Set(["product-media", "blog-images"]);
 
-export async function GET(_req: Request, { params }: { params: { bucket: string; pad: string[] } }) {
-  if (!TOEGESTAAN.has(params.bucket)) return new Response("Niet gevonden", { status: 404 });
-  return proxyStorage(params.bucket, params.pad);
+export async function GET(
+ _req: Request,
+ props: { params: Promise<{ bucket: string; pad: string[] }> }
+) {
+ const params = await props.params;
+ if (!TOEGESTAAN.has(params.bucket)) return new Response("Niet gevonden", { status: 404 });
+ return proxyStorage(params.bucket, params.pad);
 }

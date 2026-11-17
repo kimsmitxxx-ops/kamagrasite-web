@@ -13,7 +13,7 @@ export * from "./sessie-kern";
  * cookies zetten.
  */
 export async function huidigeKlant() {
-  const toegang = cookies().get(COOKIE_TOEGANG)?.value;
+  const toegang = (await cookies()).get(COOKIE_TOEGANG)?.value;
   if (!toegang) return null;
   return klantBijToken(toegang);
 }

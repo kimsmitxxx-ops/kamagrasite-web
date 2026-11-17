@@ -25,13 +25,14 @@ export async function generateStaticParams(): Promise<Record<string, string>[]> 
 
 export const revalidate = 300;
 
-export async function generateMetadata({
-  params,
-  searchParams,
-}: {
-  params: { categorie: string };
-  searchParams: { stock?: string; stof?: string; vorm?: string; q?: string };
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ categorie: string }>;
+    searchParams: Promise<{ stock?: string; stof?: string; vorm?: string; q?: string }>;
+  }
+): Promise<Metadata> {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
   const cat = await getCategory(params.categorie);
   if (!cat) return { title: "Niet gevonden" };
 
@@ -55,13 +56,14 @@ export async function generateMetadata({
   };
 }
 
-export default async function CategoryPage({
-  params,
-  searchParams,
-}: {
-  params: { categorie: string };
-  searchParams: { stock?: string; stof?: string; vorm?: string; q?: string };
-}) {
+export default async function CategoryPage(
+  props: {
+    params: Promise<{ categorie: string }>;
+    searchParams: Promise<{ stock?: string; stof?: string; vorm?: string; q?: string }>;
+  }
+) {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
   const [cat, allProducts, allCategories, buyPages] = await Promise.all([
     getCategory(params.categorie),
     listProducts({ categorySlug: params.categorie }),

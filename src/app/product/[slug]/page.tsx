@@ -28,7 +28,8 @@ export async function generateStaticParams(): Promise<Record<string, string>[]> 
 
 export const revalidate = 300;
 
-export async function generateMetadata({ params }: { params: { categorie: string; slug: string } }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<{ categorie: string; slug: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const p = await getProduct(params.slug) as any;
   if (!p) return { title: "Niet gevonden" };
   const noindex = p.noindex === true;
@@ -54,7 +55,8 @@ export async function generateMetadata({ params }: { params: { categorie: string
   };
 }
 
-export default async function ProductDetailPage({ params }: { params: { slug: string } }) {
+export default async function ProductDetailPage(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const p = await getProduct(params.slug) as any;
   if (!p) notFound();
 

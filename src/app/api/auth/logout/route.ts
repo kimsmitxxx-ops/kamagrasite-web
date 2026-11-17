@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 export const fetchCache = "force-no-store";
 
 export async function POST(req: Request) {
-  const toegang = cookies().get(COOKIE_TOEGANG)?.value;
+  const toegang = (await cookies()).get(COOKIE_TOEGANG)?.value;
   if (toegang) await meldAf(toegang);
 
   const res = NextResponse.redirect(new URL("/", req.url), { status: 303 });

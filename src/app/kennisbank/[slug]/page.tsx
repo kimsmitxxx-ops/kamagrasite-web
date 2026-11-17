@@ -14,7 +14,8 @@ export async function generateStaticParams() {
   return posts.map((p) => ({ slug: p.slug }));
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const params = await props.params;
   const p = await getBlogPost(params.slug);
   if (!p) return { title: "Niet gevonden" };
   return {
@@ -31,7 +32,8 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default async function KennisbankDetail({ params }: { params: { slug: string } }) {
+export default async function KennisbankDetail(props: { params: Promise<{ slug: string }> }) {
+  const params = await props.params;
   const p = await getBlogPost(params.slug);
   if (!p) notFound();
 
