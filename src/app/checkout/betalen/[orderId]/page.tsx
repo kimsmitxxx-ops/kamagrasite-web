@@ -98,16 +98,16 @@ export default async function BetalenPage({ params }: { params: { orderId: strin
         </p>
       </div>
 
-      {gegevens ? (
+      {gegevens && (
         <Betaalgegevens orderId={order.id} totaalCenten={order.total_cents} gegevens={gegevens} />
-      ) : (
-        /* Terugval: wij tonen de bankgegevens niet zelf, dus haalt de klant ze
-           op bij Paytail. Een GET naar hun formulier met de velden in de
-           querystring: het oude formulier staat dan helemaal voorgevuld, het
-           nieuwe (Laravel, sinds 10 november 2026) alleen het bedrag. Geen
-           POST naar hun stap 2 meer: dat geeft op het nieuwe formulier een
-           405, en die foutpagina kreeg de klant dan te zien. */
-        <form action={paytail.paytail_base_url} method="GET" className="mt-6 text-center">
+      )}
+
+      {/* ALTIJD-TERUGVAL: de knop naar de betaalpartner staat er altijd, ook als
+          wij de bankgegevens zelf laten zien. Laadt dat blok niet, of gaat er
+          verderop iets mis, dan kan de klant altijd nog zelf de gegevens
+          ophalen in plaats van op een pagina te stranden waar niets staat.
+          Hij is dan wel duidelijk de reserve: andere tekst, rustiger kader. */}
+        <form action={paytail.paytail_base_url} method="GET" className={gegevens ? "mt-10 text-center" : "mt-6 text-center"}>
           <input type="hidden" name="return" value={returnUrl} />
           <input type="hidden" name="payers_name" value={order.customer_name || ""} />
           <input type="hidden" name="user_postcode" value={order.shipping_postal || ""} />
@@ -122,6 +122,18 @@ export default async function BetalenPage({ params }: { params: { orderId: strin
           <input type="hidden" name="postcode" value={order.shipping_postal || ""} />
           <input type="hidden" name="country" value={order.shipping_country || "NL"} />
           <input type="hidden" name="order_id" value={ref} />
+          {gegevens ? (
+            /* De gegevens staan hierboven al. Dit is de reserve-uitgang: komt
+               er boven niets in beeld, dan haalt je ze rechtstreeks bij de
+               betaalpartner en hoeft je niet te bellen. */
+            <div className="rounded-xl border border-border bg-surface p-4 text-left text-sm text-text-muted">
+              <p>
+                Zie je de bankgegevens hierboven niet staan, of lukt het kopiëren niet? Haal ze dan rechtstreeks
+                bij onze betaalpartner. Het gaat om dezelfde bestelling: zet bij de omschrijving alleen 
+                <strong className="font-mono text-text">{ref}</strong>.
+              </p>
+            </div>
+          ) : (
           <div className="rounded-xl border-2 border-accent bg-surface p-6 text-left text-sm text-text-muted">
             <p>
               Klik hieronder voor de bankgegevens: het rekeningnummer (IBAN), de naam van de ontvanger, het bedrag van{" "}
@@ -131,8 +143,9 @@ export default async function BetalenPage({ params }: { params: { orderId: strin
               alleen dat bestelnummer en verder niets, anders weigert de bank de betaling.
             </p>
           </div>
+          )}
           <PaytailStep2Button
-            label={paytail.paytail_btn_label || "Naar de betaalgegevens"}
+            label={gegevens ? "Betaalgegevens bij onze betaalpartner" : paytail.paytail_btn_label || "Naar de betaalgegevens"}
             color={paytail.paytail_btn_color || "#1a1a2e"}
             textColor={paytail.paytail_btn_text_color || "#f5f0e5"}
             orderReference={ref}
@@ -141,7 +154,6 @@ export default async function BetalenPage({ params }: { params: { orderId: strin
             Je gaat naar het beveiligde betaalscherm van onze betaalpartner.
           </p>
         </form>
-      )}
 
       <section className="mt-8 rounded-xl border border-border bg-surface p-6">
         <h2 className="font-display text-lg text-text inline-flex items-center gap-2">
