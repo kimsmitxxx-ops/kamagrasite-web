@@ -11,6 +11,18 @@ import { BookOpen, Truck, ShieldCheck, PackageCheck, Sparkles } from "lucide-rea
 import { MERCHANT_RETURN_POLICY } from "@/lib/return-policy";
 import { alternatesNL } from "@/lib/geo-nl";
 
+// Lege lijst, met opzet. Zonder generateStaticParams zet Next dit segment niet
+// in de prerender-manifest, en dan krijgt de route op Vercel geen ISR: elke
+// aanvraag rendert opnieuw en de HTML gaat uit met "private, no-store". Lokaal
+// met `next start` zie je dat niet. Met een lege lijst wordt er bij de build
+// niets gerenderd, maar krijgt elke slug bij de eerste aanvraag een
+// ISR-render die `revalidate` seconden blijft staan (dynamicParams staat
+// standaard op true).
+export async function generateStaticParams(): Promise<Record<string, string>[]> {
+  return [];
+}
+
+
 export const revalidate = 300;
 
 export async function generateMetadata({
