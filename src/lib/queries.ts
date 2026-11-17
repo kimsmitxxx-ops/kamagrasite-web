@@ -300,6 +300,29 @@ export async function listBuyPages(): Promise<BuyPage[]> {
   } catch { return []; }
 }
 
+/**
+ * De stadspagina's, op tag in plaats van op een lijst in de code.
+ *
+ * Deze acht pagina's waren weespagina's: ze stonden in de sitemap maar er
+ * linkte geen enkele pagina naartoe, niet uit het menu en niet uit de footer.
+ * Ze zijn daardoor alleen via Google te vinden en krijgen geen interne
+ * linkwaarde. Via de tag verschijnt een nieuwe stad die in shop-dash wordt
+ * aangemaakt vanzelf in de footer.
+ */
+export async function listStadPaginas(): Promise<BuyPage[]> {
+  const { data, error } = await supabase.from("buy_pages")
+    .select(BUY_PAGE_COLS)
+    .eq("shop_id", SHOP_ID)
+    .eq("is_published", true)
+    .eq("tag", "stad")
+    .order("nav_label");
+  if (error) {
+    console.error("stadspagina's ophalen mislukte", error);
+    return [];
+  }
+  return (data ?? []) as unknown as BuyPage[];
+}
+
 export async function getBuyPage(slug: string): Promise<BuyPage | null> {
   try {
     const { data } = await supabase.from("buy_pages")

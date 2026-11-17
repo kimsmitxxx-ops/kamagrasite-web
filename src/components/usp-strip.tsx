@@ -50,21 +50,20 @@ export function UspStrip({ items, variant = "compact", tone = "default", classNa
       {/* Desktop - evenly distributed */}
       <ul
         className={cn(
-          "hidden md:grid items-center gap-4",
+          "hidden md:flex flex-wrap items-center justify-between gap-x-8 gap-y-2",
           className,
         )}
-        style={{ gridTemplateColumns: `repeat(${items.length}, minmax(0, 1fr))` }}
       >
         {items.map(({ icon: Icon, title }) => (
           <li
             key={title}
             className={cn(
-              "inline-flex items-center justify-center gap-2 text-sm font-medium",
+              "inline-flex items-center gap-2 text-sm font-medium",
               itemText,
             )}
           >
             <Icon size={16} className={cn("shrink-0", iconColor)} />
-            <span className="truncate">{title}</span>
+            <span>{title}</span>
           </li>
         ))}
       </ul>

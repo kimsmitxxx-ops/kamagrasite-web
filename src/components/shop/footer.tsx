@@ -3,6 +3,7 @@ import { PaymentRow } from "@/components/payment-row";
 import { NewsletterForm } from "@/components/newsletter-form";
 import { Mail, Pill, PackageCheck, Clock } from "lucide-react";
 import { mainCategories, STOF_FILTERS } from "./data";
+import { listStadPaginas } from "@/lib/queries";
 
 const KENNISBANK_LINKS = [
   { href: "/kennisbank/kamagra-vs-viagra-verschil-uitleg", label: "Kamagra vs Viagra" },
@@ -11,7 +12,8 @@ const KENNISBANK_LINKS = [
   { href: "/kennisbank/dapoxetine-uitgestelde-ejaculatie-hoe-werkt-het", label: "Dapoxetine bij PE" },
 ];
 
-export function Footer() {
+export async function Footer() {
+  const steden = await listStadPaginas();
   return (
     <footer className="mt-20 bg-primary text-primary-foreground">
       <div className="mx-auto max-w-7xl px-4 py-14 grid gap-12 lg:grid-cols-[1.2fr_3fr]">
@@ -45,7 +47,7 @@ export function Footer() {
           </ul>
         </div>
 
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
           <div>
             <h4 className="font-display text-base mb-3 text-primary-foreground">Middelen</h4>
             <ul className="space-y-2 text-sm">
@@ -106,6 +108,20 @@ export function Footer() {
               <li><a href="/sitemap.xml" className="text-primary-foreground/70 hover:text-accent">Sitemap</a></li>
             </ul>
           </div>
+          {steden.length > 0 && (
+            <div>
+              <h4 className="font-display text-base mb-3 text-primary-foreground">Per stad</h4>
+              <ul className="space-y-2 text-sm">
+                {steden.map((p) => (
+                  <li key={p.slug}>
+                    <Link href={`/${p.slug}`} className="text-primary-foreground/70 hover:text-accent">
+                      {p.nav_label || p.h1}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
 
