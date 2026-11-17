@@ -110,7 +110,9 @@ export async function Footer() {
           </div>
           {steden.length > 0 && (
             <div>
-              <h4 className="font-display text-base mb-3 text-primary-foreground">Per stad</h4>
+              <h4 className="font-display text-base mb-3 text-primary-foreground">
+                <Link href="/steden/" className="hover:text-accent">Per stad</Link>
+              </h4>
               <ul className="space-y-2 text-sm">
                 {steden.map((p) => (
                   <li key={p.slug}>

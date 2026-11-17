@@ -3,6 +3,7 @@ import { preorder } from "@/lib/preorder";
 import { listProducts, listBlogPosts, listCategories, listFeaturedProducts } from "@/lib/queries";
 import { ProductCard } from "@/components/product-card";
 import { HomeUspBar } from "@/components/shop/home-usp-bar";
+import { StadKiezer } from "@/components/shop/stad-kiezer";
 import { ArticleCard } from "@/components/article-card";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { NewsletterForm } from "@/components/newsletter-form";
@@ -146,6 +147,12 @@ export default async function HomePage() {
       </section>
 
       <HomeUspBar />
+
+      {/* "Is het bij mij in de buurt te koop" is de vraag waar de stadspagina's
+          op ranken, dus die hoort hoog op de homepage en niet onderaan. */}
+      <section className="mx-auto max-w-3xl px-4 pt-12">
+        <StadKiezer />
+      </section>
 
       {/* Featured products */}
       {featured.length > 0 && (

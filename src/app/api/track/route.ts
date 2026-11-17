@@ -33,6 +33,9 @@ const ALLOWED_EVENTS = new Set([
   "add_payment_info",
   "product_list_view",
   "product_click",
+  // Welke stad iemand in de stadskiezer invult. Hiermee bepalen we op echte
+  // vraag welke stad een eigen pagina verdient, in plaats van op een gok.
+  "stad_gekozen",
   "search",
   "calculator_used",
   "cta_click",
