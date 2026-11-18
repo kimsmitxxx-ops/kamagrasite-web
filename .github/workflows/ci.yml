@@ -1,0 +1,30 @@
+# Typecheck en bekende kwetsbaarheden bij elke push.
+#
+# Er draaide niets automatisch, en next.config.js stond op ignoreBuildErrors:
+# een typefout viel pas op Vercel op, of helemaal niet. Die vlag is eruit en
+# de ongebruikte shadcn-componenten die de fouten veroorzaakten zijn
+# verwijderd, dus deze controle is vanaf nu zinvol.
+name: ci
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  controle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Typecheck
+        run: node node_modules/typescript/bin/tsc --noEmit
+      - name: Kwetsbaarheden met een niet-brekende fix
+        # Een probleem zonder fix, of een dat een major vraagt, staat in het
+        # verslag maar blokkeert niet: dat is een planningsbesluit.
+        run: npm audit --omit=dev --json | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{const j=JSON.parse(s);const metFix=Object.values(j.vulnerabilities||{}).filter(v=>["high","critical"].includes(v.severity)&&v.fixAvailable===true);if(metFix.length){console.error("Fixbaar maar niet gefixt:",metFix.map(v=>v.name).join(", "));process.exit(1)}})'
