@@ -109,12 +109,16 @@ export default async function HomePage() {
             <span className="inline-flex items-center gap-2 rounded-sm border border-border bg-paper-soft px-3 py-1 text-xs uppercase tracking-[0.18em] text-accent-muted">
               <Pill size={12} /> Directe import - Ajanta, Centurion &amp; Sunrise Remedies
             </span>
+            {/* De H1 van de oude site was "Kamagra Kopen en Bestellen" en daar
+                rankt het domein op; die term staat ook in de titel en de
+                meta-description. Hier stond "Generieke ED-medicatie zonder
+                merktoeslag": mooi gezegd, maar niemand zoekt erop. */}
             <h1 className="mt-5 font-display text-4xl md:text-6xl leading-[1.05] tracking-tight">
-              Generieke ED-medicatie
+              Kamagra kopen
               <br />
-              <span className="text-accent-muted">zonder merktoeslag.</span>
+              <span className="text-accent-muted">en bestellen</span>
               <span className="block mt-3 text-base md:text-lg font-sans font-normal tracking-normal text-text-muted">
-                Sildenafil · Tadalafil · Vardenafil · Dapoxetine - zonder recept, discreet verpakt, snel verstuurd.
+                Rechtstreeks van Ajanta Pharma, zonder recept besteld en neutraal verpakt verstuurd.
               </span>
             </h1>
             <p className="mt-5 text-lg text-text-muted max-w-xl leading-relaxed">

@@ -3,7 +3,7 @@ import { useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { MapPin, Search, Store, Truck, ArrowRight } from "lucide-react";
 import { track } from "@/lib/analytics";
-import { zoekSteden, vindStad, type Land, type Stad } from "@/lib/steden-nl";
+import { zoekSteden, vindStad, STEDEN_MET_PAGINA, type Land, type Stad } from "@/lib/steden-nl";
 
 /**
  * Kies je stad en zie wat er in jouw plaats mogelijk is.
@@ -65,7 +65,7 @@ export function StadKiezer({ compact = false }: { compact?: boolean }) {
       <div className="flex items-start gap-2.5">
         <MapPin size={18} className="mt-0.5 shrink-0 text-accent" />
         <div>
-          <h2 className="font-display text-xl text-text">Kamagra in jouw stad</h2>
+          <h2 className="font-display text-xl text-text">Kamagra kopen in jouw stad</h2>
           <p className="mt-1 text-sm text-text-muted">
             Kies je plaats en je ziet meteen wat er in jouw stad kan en wat niet.
           </p>
@@ -133,6 +133,25 @@ export function StadKiezer({ compact = false }: { compact?: boolean }) {
       </form>
 
       {gekozen && <Antwoord stad={gekozen} onOpnieuw={opnieuw} />}
+
+      {/* Vaste links naar de stadspagina's, met de zoekterm als ankertekst.
+          De kiezer erboven is voor de bezoeker; dit is wat de stadspagina's
+          interne linkwaarde geeft op precies de term waarop ze moeten ranken.
+          Zonder deze links waren het weespagina's. */}
+      {!gekozen && !geenTreffer && (
+        <div className="mt-4 border-t border-border pt-3">
+          <p className="text-xs uppercase tracking-wider text-text-subtle">Veelgezocht</p>
+          <ul className="mt-2 flex flex-wrap gap-x-4 gap-y-1.5 text-sm">
+            {STEDEN_MET_PAGINA.map((s) => (
+              <li key={s.pagina}>
+                <Link href={`/${s.pagina}/`} className="text-text-muted hover:text-accent hover:underline">
+                  Kamagra kopen {s.naam}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {geenTreffer && (
         <div className="mt-4 rounded-md border border-border bg-wash p-4 text-sm text-text-muted">

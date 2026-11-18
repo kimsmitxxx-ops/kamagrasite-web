@@ -46,8 +46,12 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://kamagrasite.nl"),
     // Taal en land expliciet, zie lib/geo-nl.ts.
     alternates: { languages: hreflangVoor("/") },
-  title: { default: "Kamagra Site - generieke ED-medicatie zonder recept, snel verzonden", template: "%s · Kamagra Site" },
-  description: "Kamagra, Cenforce, Vidalista en Vilitra: sildenafil, tadalafil en vardenafil direct geïmporteerd van gecertificeerde fabrikanten. Discrete verzending vanaf NL, geen recept nodig.",
+  // De oude site rankt met "Kamagra Kopen - Bestel jouw kamagra binnen 24
+  // uur!" en dat is de term waar het domein het van moet hebben. De belofte van
+  // 24 uur staat er bewust niet meer in: je pakket gaat de deur uit zodra de
+  // betaling binnen is, en dat is geen 24-uursgarantie.
+  title: { default: "Kamagra kopen en bestellen | Kamagrasite.nl", template: "%s · Kamagra Site" },
+  description: "Kamagra kopen en bestellen bij Kamagrasite.nl. Kamagra, Cenforce, Vidalista en Vilitra rechtstreeks van de fabrikant, zonder recept, neutraal verpakt en verstuurd vanuit Nederland.",
   robots: { index: true, follow: true },
   icons: {
     icon: [{ url: "/icon.png", type: "image/png" }],
