@@ -23,6 +23,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE}/bezorging/`, changeFrequency: "monthly" as const, priority: 0.4 },
     { url: `${BASE}/steden/`, changeFrequency: "monthly" as const, priority: 0.6 },
     { url: `${BASE}/contact/`, changeFrequency: "monthly" as const, priority: 0.3 },
+    // Deze drie stonden er niet in terwijl ze wel bestaan en indexeerbaar zijn.
+    // Retourneren hoort erbij omdat die pagina meeweegt in het vertrouwen dat
+    // een bezoeker in de winkel heeft; voorwaarden en privacy zijn de pagina's
+    // waar een koper naar zoekt voordat hij bestelt.
+    { url: `${BASE}/retourneren/`, changeFrequency: "monthly" as const, priority: 0.4 },
+    { url: `${BASE}/voorwaarden/`, changeFrequency: "yearly" as const, priority: 0.2 },
+    { url: `${BASE}/privacy/`, changeFrequency: "yearly" as const, priority: 0.2 },
   ];
 
   // Koop-pagina's staan hoog in de sitemap: dit zijn de pagina's die op de
