@@ -78,9 +78,17 @@ export async function listProducts(opts: { categorySlug?: string; tag?: string; 
     }
     if (opts.tag) q = q.contains("tags", [opts.tag]);
     if (opts.limit) q = q.limit(opts.limit);
-    const { data } = await q;
-    return (data ?? []) as Product[];
-  } catch { return []; }
+    const { data, error } = await q;
+    // PostgREST geeft bij een mislukte embed een foutobject in plaats van
+    // rijen. Dat werd hier stil een lege lijst, en een lege lijst ziet eruit
+    // als een shop zonder producten. De omzetting gaat daarom via unknown en
+    // de fout gaat naar het logboek.
+    if (error) console.error("producten ophalen mislukte", error);
+    return (data ?? []) as unknown as Product[];
+  } catch (e) {
+    console.error("producten ophalen gooide", e);
+    return [];
+  }
 }
 
 export async function getProduct(slug: string) {
