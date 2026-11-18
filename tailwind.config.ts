@@ -19,6 +19,8 @@ export default {
           strong: withAlpha("--color-tint-strong"),
         },
         veil: withAlpha("--color-veil"),
+        // Het enige lichte vlak met kleur: een zweem van de merkroze.
+        "rose-wash": withAlpha("--color-rose-wash"),
         paper: {
           DEFAULT: withAlpha("--color-paper"),
           soft: withAlpha("--color-paper-soft"),

@@ -159,7 +159,9 @@ export function Header(_props: HeaderProps = {}) {
               type="search"
               name="q"
               placeholder={lang === "EN" ? "Search products" : "Zoek producten - bv. kamagra, cenforce, vidalista"}
-              className="w-full h-10 pl-10 pr-3 rounded-md border border-accent/40 bg-success-soft text-sm font-medium text-primary placeholder:text-primary/55 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:border-accent shadow-sm"
+              /* Stond op bg-success-soft: een lichtgroen vlak midden in de
+                 witte balk, overgebleven uit het oude palet. */
+              className="w-full h-10 pl-10 pr-3 rounded-md border border-border bg-wash text-sm font-medium text-text placeholder:text-text-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:border-accent"
             />
           </div>
         </form>

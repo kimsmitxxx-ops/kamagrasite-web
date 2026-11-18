@@ -76,13 +76,13 @@ function maintenancePage(message: string | null): string {
 <title>Binnenkort open | Kamagra Site</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{min-height:100vh;display:flex;align-items:center;justify-content:center;background:rgb(22 62 58);color:rgb(240 250 248);font-family:system-ui,-apple-system,sans-serif;padding:24px}
+body{min-height:100vh;display:flex;align-items:center;justify-content:center;background:rgb(26 26 30);color:rgb(250 250 251);font-family:system-ui,-apple-system,sans-serif;padding:24px}
 .c{max-width:460px;text-align:center}
-.logo{width:52px;height:52px;border-radius:50%;background:rgb(55 173 155);color:rgb(12 34 30);display:inline-flex;align-items:center;justify-content:center;font-size:22px;font-weight:700}
+.logo{width:52px;height:52px;border-radius:50%;background:rgb(236 16 101);color:rgb(255 255 255);display:inline-flex;align-items:center;justify-content:center;font-size:22px;font-weight:700}
 h1{margin-top:24px;font-size:26px;font-weight:600;letter-spacing:-0.01em;line-height:1.3}
-p{margin-top:14px;color:rgb(240 250 248 / 0.72);font-size:15px;line-height:1.65}
-.bar{margin:28px auto 0;height:2px;width:160px;background:linear-gradient(to right,transparent,rgb(110 209 191),transparent);border-radius:1px}
-a{color:rgb(110 209 191)}
+p{margin-top:14px;color:rgb(250 250 251 / 0.72);font-size:15px;line-height:1.65}
+.bar{margin:28px auto 0;height:2px;width:160px;background:linear-gradient(to right,transparent,rgb(249 138 183),transparent);border-radius:1px}
+a{color:rgb(249 138 183)}
 </style></head>
 <body><div class="c">
 <div class="logo">K</div>

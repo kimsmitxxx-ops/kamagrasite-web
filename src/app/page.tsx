@@ -93,12 +93,15 @@ export default async function HomePage() {
 
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-wash via-veil to-tint" />
+        {/* Neutrale ondergrond met één zweem roze rechtsboven. Twee gloeden op
+            70% maakten van de hele hero een roze vlak; de kleur hoort in de
+            knop en de kop te zitten, niet in de achtergrond. */}
+        <div className="absolute inset-0 bg-gradient-to-b from-paper-soft via-wash to-tint" />
         <div
-          className="absolute inset-0 opacity-70"
+          className="absolute inset-0"
           style={{
             backgroundImage:
-              "radial-gradient(circle at 20% 30%, rgb(var(--color-accent) / 0.30) 0%, transparent 40%), radial-gradient(circle at 80% 70%, rgb(var(--color-accent-soft) / 0.28) 0%, transparent 35%)",
+              "radial-gradient(60% 55% at 88% 12%, rgb(var(--color-accent) / 0.07) 0%, transparent 70%)",
           }}
         />
         <div className="relative mx-auto max-w-7xl px-4 py-16 md:py-24 grid lg:grid-cols-[1.1fr_1fr] gap-12 items-center">

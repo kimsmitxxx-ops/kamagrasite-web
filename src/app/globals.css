@@ -8,52 +8,62 @@
  * bg-primary/95 → rgb(var(--color-primary) / 0.95).
  */
 :root {
-  /* Kamagra Site - licht mint/teal thema. Heette hier tot 16 nov 2026 nog
-     Kamagraexpert, een merk dat op 26 okt is opgeheven. */
+  /*
+   * Kamagra Site - antraciet met roze accent.
+   *
+   * Het mint/teal-palet dat hier tot 18 nov 2026 stond kwam uit de
+   * anabolenpro-fork: alleen de tinten waren verschoven, de opzet was dezelfde
+   * en daardoor bleef het die winkel lijken. Deze kleuren komen uit het logo
+   * dat al sinds 2020 op kamagrasite.nl staat: donkergrijs voor de letters,
+   * rgb(236 16 101) voor "SITE". Die roze is uit het bestand gemeten, niet
+   * gekozen, zodat de site en het logo dezelfde kleur hebben.
+   */
 
-  /* Surfaces (heel licht bijna wit, met subtiele mint-tint) */
-  --color-background: 250 253 252;
-  --color-surface: 232 244 240;
-  --color-paper: 240 249 246;
-  --color-paper-soft: 253 254 253;
-  --color-paper-ink: 18 46 42;
-  --color-paper-ink-muted: 74 100 92;
-  --color-paper-border: 214 228 222;
+  /* Vlakken: neutraal, een spoor warm zodat wit niet klinisch wordt. */
+  --color-background: 252 252 253;
+  --color-surface: 243 243 245;
+  --color-paper: 248 248 250;
+  --color-paper-soft: 255 255 255;
+  --color-paper-ink: 24 24 27;
+  --color-paper-ink-muted: 82 82 91;
+  --color-paper-border: 228 228 231;
 
-  /* Primary (donker teal panel — voor hero + footer) */
-  --color-primary: 22 62 58;
-  --color-primary-soft: 32 82 76;
-  --color-primary-muted: 45 106 98;
-  --color-primary-foreground: 240 250 248;
+  /* Primary: het antraciet van de logoletters, voor donkere panelen. */
+  --color-primary: 26 26 30;
+  --color-primary-soft: 44 44 50;
+  --color-primary-muted: 68 68 76;
+  --color-primary-foreground: 250 250 251;
 
-  /* Accent (fris mint-teal - de merkkleur van Kamagra Site) */
-  --color-accent: 55 173 155;
-  --color-accent-soft: 110 209 191;
-  --color-accent-muted: 39 143 128;
-  --color-accent-foreground: 12 34 30;
+  /* Accent: de roze uit het logo. */
+  --color-accent: 236 16 101;
+  --color-accent-soft: 249 138 183;
+  --color-accent-muted: 190 10 79;
+  --color-accent-foreground: 255 255 255;
 
-  /* Text */
-  --color-text: 22 46 42;
-  --color-text-muted: 76 96 90;
-  --color-text-subtle: 128 148 140;
-  --color-foreground: 22 46 42;
+  /* Tekst */
+  --color-text: 24 24 27;
+  --color-text-muted: 90 90 99;
+  --color-text-subtle: 140 140 150;
+  --color-foreground: 24 24 27;
 
-  /* Lichte tinten tussen wit en het donkere teal. Van bijna wit naar
-     duidelijk zichtbaar; wash is voor grote vlakken, tint voor een blok dat
-     eruit mag springen, veil voor een rand of een subtiele hover. */
-  --color-wash: 246 252 250;
-  --color-wash-warm: 250 252 249;
-  --color-tint: 226 243 237;
-  --color-tint-strong: 205 234 225;
-  --color-veil: 236 247 243;
+  /* Lichte tinten tussen wit en antraciet. wash voor grote vlakken, tint voor
+     een blok dat eruit mag springen, veil voor een rand of subtiele hover.
+     Rose-wash is het enige vlak met kleur erin, voor een accentblok. */
+  --color-wash: 249 249 251;
+  --color-wash-warm: 252 251 250;
+  --color-tint: 240 240 243;
+  --color-tint-strong: 228 228 233;
+  --color-veil: 245 245 248;
+  --color-rose-wash: 253 241 246;
 
-  /* Borders (licht mint-grijs) */
-  --color-border: 216 232 226;
-  --color-border-strong: 190 212 205;
+  /* Randen */
+  --color-border: 228 228 233;
+  --color-border-strong: 206 206 213;
 
-  /* Semantic */
-  --color-success: 31 142 81;
-  --color-success-soft: 220 245 230;
+  /* Semantisch. Het groen is flink gedempt: het hoort "op voorraad" te zeggen
+     en niet de kleur van de site te worden. */
+  --color-success: 47 122 86;
+  --color-success-soft: 229 242 235;
   --color-danger: 194 69 69;
   --color-danger-soft: 251 226 226;
   --color-warning: 184 134 31;
