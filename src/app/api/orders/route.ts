@@ -63,9 +63,89 @@ export async function POST(req: NextRequest) {
     customerId = typeof data === "string" ? data : null;
   } catch {}
 
-  // Bulk discount per item-qty applied (shared logic met checkout)
+  // De prijs komt uit de database, niet uit het verzoek.
+  //
+  // Hier werd `it.price_cents` uit de body gebruikt, met als enige controle
+  // dat het een getal was dat niet negatief is. Wie zelf een POST opstelde
+  // bepaalde daarmee zijn eigen bedrag, en omdat er per overboeking betaald
+  // wordt kwam dat bedrag ook zo op de betaalpagina en de factuur terecht.
+  // De kortingscode en de verzendkosten werden al wel serverkant bepaald;
+  // de prijs was de laatste die de browser nog mocht invullen.
+  //
+  // Opzoeken gebeurt op slug en sku, niet op products.id. Het veld `id` uit
+  // de mand is namelijk de slug (zie add-to-cart-button en product-card) en
+  // products.id is een uuid: een `in("id", [...])` met een slug erin geeft
+  // 22P02 en dus geen prijs maar een fout. Een echte uuid die toch
+  // meegestuurd wordt pakken we wel mee, vandaar de uuid-filter. En omdat
+  // product-card de slug in het veld `sku` zet, gaan beide sleutels langs
+  // beide kolommen; dat vangt ook een mand die nog van voor deze wijziging
+  // in localStorage staat.
+  //
+  // Losse `in`-queries per kolom en geen `.or()` met een zelfgebouwde
+  // filterstring: een sku met een komma of een aanhalingsteken erin zou die
+  // string breken, en dan krijg je stil de verkeerde rijen terug.
+  const tekst = (v: any) => (typeof v === "string" ? v.trim() : "");
+  const isUuid = (v: string) => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(v);
+  const ids = Array.from(new Set(items.map((it: any) => tekst(it.id)).filter(isUuid)));
+  const sleutels = Array.from(
+    new Set(items.flatMap((it: any) => [tekst(it.id), tekst(it.sku)]).filter(Boolean)),
+  );
+  const prijsPerId = new Map<string, number>();
+  const prijsPerSlug = new Map<string, number>();
+  const prijsPerSku = new Map<string, number>();
+  try {
+    const kolommen = "id, sku, slug, price_cents";
+    const [opId, opSlug, opSku] = await Promise.all([
+      ids.length
+        ? supabase.from("products").select(kolommen).eq("shop_id", SHOP_ID).in("id", ids)
+        : Promise.resolve({ data: [], error: null }),
+      sleutels.length
+        ? supabase.from("products").select(kolommen).eq("shop_id", SHOP_ID).in("slug", sleutels)
+        : Promise.resolve({ data: [], error: null }),
+      sleutels.length
+        ? supabase.from("products").select(kolommen).eq("shop_id", SHOP_ID).in("sku", sleutels)
+        : Promise.resolve({ data: [], error: null }),
+    ]);
+    if (opId.error) throw opId.error;
+    if (opSlug.error) throw opSlug.error;
+    if (opSku.error) throw opSku.error;
+    for (const r of [...(opId.data || []), ...(opSlug.data || []), ...(opSku.data || [])] as any[]) {
+      if (typeof r.price_cents === "number") {
+        prijsPerId.set(r.id, r.price_cents);
+        if (r.slug) prijsPerSlug.set(tekst(r.slug), r.price_cents);
+        if (r.sku) prijsPerSku.set(tekst(r.sku), r.price_cents);
+      }
+    }
+  } catch (e) {
+    // Niet doorgaan met de prijs uit de browser: dat is precies het gat dat
+    // hier gedicht wordt. Liever een bestelling die niet lukt.
+    console.error("bestelling: prijzen ophalen mislukte", e);
+    return NextResponse.json({ error: "Bestellen lukte even niet. Probeer het opnieuw of mail ons." }, { status: 503 });
+  }
+
+  const zoekPrijs = (it: any): number | undefined => {
+    const id = tekst(it.id);
+    const sku = tekst(it.sku);
+    return prijsPerId.get(id) ?? prijsPerSlug.get(id) ?? prijsPerSku.get(sku) ?? prijsPerSlug.get(sku);
+  };
+
+  const onbekend: string[] = [];
+  const serverItems = items.map((it: any) => {
+    const prijs = zoekPrijs(it);
+    if (prijs == null) onbekend.push(tekst(it.name) || tekst(it.sku) || tekst(it.id));
+    return { ...it, price_cents: prijs ?? 0 };
+  });
+  if (onbekend.length > 0) {
+    return NextResponse.json(
+      { error: `Dit product is niet meer beschikbaar: ${onbekend.join(", ")}. Verwijder het uit je mandje en probeer opnieuw.` },
+      { status: 400 },
+    );
+  }
+
+  // Bulk discount per item-qty applied (shared logic met checkout) - rekent
+  // over de serverprijs, niet over het bedrag uit de body.
   let subtotal = 0;
-  const adjustedItems = items.map((it: any) => {
+  const adjustedItems = serverItems.map((it: any) => {
     const pct = unitDiscountPct(it.qty);
     const unitAdj = Math.round(it.price_cents * (1 - pct / 100));
     subtotal += unitAdj * it.qty;

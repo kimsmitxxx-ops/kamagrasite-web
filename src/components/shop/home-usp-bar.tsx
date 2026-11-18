@@ -10,5 +10,14 @@ const ITEMS = [
 ];
 
 export function HomeUspBar() {
-  return <UspStrip items={ITEMS} variant="compact" className="text-text" />;
+  // De balk stond zonder container in de pagina en liep dus van schermrand tot
+  // schermrand: het eerste item plakte tegen de linkerrand en het laatste viel
+  // half buiten beeld. Hij hoort binnen dezelfde kolombreedte als de rest.
+  return (
+    <div className="border-y border-border bg-wash">
+      <div className="mx-auto max-w-7xl px-4 py-3">
+        <UspStrip items={ITEMS} variant="compact" className="text-text" />
+      </div>
+    </div>
+  );
 }

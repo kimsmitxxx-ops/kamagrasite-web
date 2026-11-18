@@ -64,7 +64,7 @@ export function Header(_props: HeaderProps = {}) {
     <div ref={langRef} className="relative">
       <button
         onClick={() => setLangOpen((v) => !v)}
-        className="inline-flex items-center gap-1.5 rounded-sm border border-primary-foreground/15 px-2 py-0.5 text-xs font-semibold text-primary-foreground hover:bg-primary-soft"
+        className="inline-flex items-center gap-1.5 rounded-sm border border-border px-2 py-0.5 text-xs font-semibold text-text hover:bg-veil"
         aria-haspopup="listbox"
         aria-expanded={langOpen}
       >
@@ -102,9 +102,9 @@ export function Header(_props: HeaderProps = {}) {
   const current = TOPBAR_ITEMS[topIdx];
 
   return (
-    <header className="sticky top-0 z-40 bg-primary/95 backdrop-blur border-b border-primary-soft text-primary-foreground">
+    <header className="sticky top-0 z-40 bg-background/95 backdrop-blur border-b border-border text-text">
       {/* Top utility bar */}
-      <div className="bg-primary text-primary-foreground/90 text-xs">
+      <div className="bg-background text-text text-xs">
         <div className="mx-auto max-w-7xl px-4 h-9 flex items-center relative">
           {/* Desktop: all three items evenly spaced, centered */}
           <div className="hidden md:grid w-full grid-cols-3 items-center justify-items-center gap-4">
@@ -134,23 +134,23 @@ export function Header(_props: HeaderProps = {}) {
         <button
           type="button"
           onClick={() => setMobileOpen(true)}
-          className="lg:hidden -ml-1 p-1.5 text-primary-foreground hover:text-accent"
+          className="lg:hidden -ml-1 p-1.5 text-text hover:text-accent"
           aria-label="Menu openen"
         >
           <Menu size={22} />
         </button>
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 font-display"
-          aria-label="kamagrasite home"
-        >
-          <span className="inline-flex h-8 w-8 items-center justify-center rounded-md bg-accent/15 text-accent ring-1 ring-accent/30">
-            <Pill size={15} strokeWidth={2.25} className="-rotate-45" />
-          </span>
-          <span className="leading-none text-base uppercase font-semibold tracking-wider">
-            <span className="text-primary-foreground">KAMAGRA</span>{" "}
-            <span className="text-accent">SITE</span>
-          </span>
+        {/* Het echte logo van kamagrasite.nl, zoals het al sinds 2020 op het
+            domein staat. Hiervoor stond hier een nagemaakt merkteken: een
+            pil-icoon met de naam in twee kleuren. Het origineel staat op wit,
+            wat meteen de reden is dat deze balk wit moest worden. */}
+        <Link href="/" className="inline-flex items-center" aria-label="Kamagrasite home">
+          <img
+            src="/logo-kamagrasite.jpg"
+            alt="Kamagrasite.nl - officieel importeur"
+            width={421}
+            height={77}
+            className="h-9 w-auto sm:h-10"
+          />
         </Link>
         <form action="/winkel" method="get" className="hidden md:flex flex-1 max-w-2xl mx-auto">
           <div className="relative w-full">
@@ -166,7 +166,7 @@ export function Header(_props: HeaderProps = {}) {
         <nav className="ml-auto flex items-center gap-0.5">
           <Link
             href="/account"
-            className="hidden md:inline-flex h-9 w-9 items-center justify-center rounded text-primary-foreground hover:bg-primary-soft"
+            className="hidden md:inline-flex h-9 w-9 items-center justify-center rounded text-text hover:bg-veil"
             aria-label="Account"
           >
             <User size={19} />
@@ -174,7 +174,7 @@ export function Header(_props: HeaderProps = {}) {
           <button
             type="button"
             onClick={openCart}
-            className="relative inline-flex h-9 w-9 items-center justify-center rounded text-primary-foreground hover:bg-primary-soft"
+            className="relative inline-flex h-9 w-9 items-center justify-center rounded text-text hover:bg-veil"
             aria-label="Winkelwagen"
           >
             <ShoppingBag size={19} />
@@ -188,30 +188,30 @@ export function Header(_props: HeaderProps = {}) {
       </div>
 
       {/* Nav row with mega menus - centered */}
-      <div className="hidden lg:block border-t border-primary-soft relative" onMouseLeave={() => setOpenMega(null)}>
+      <div className="hidden lg:block border-t border-border relative" onMouseLeave={() => setOpenMega(null)}>
         <div className="mx-auto max-w-7xl px-4 h-11 flex items-center justify-center gap-1 text-[15px]">
           {/* Winkel */}
           <div className="relative" onMouseEnter={() => setOpenMega("winkel")}>
             <button
               className={`h-11 inline-flex items-center gap-1.5 px-4 font-semibold uppercase tracking-wider text-[13px] border-b-2 transition-colors ${
                 openMega === "winkel"
-                  ? "border-accent bg-primary-soft text-accent"
-                  : "border-accent/70 bg-primary-soft/40 text-accent hover:bg-primary-soft hover:text-accent"
+                  ? "border-accent bg-veil text-accent"
+                  : "border-accent/70 bg-veil text-accent hover:bg-veil hover:text-accent"
               }`}
             >
               <Store size={15} strokeWidth={2.25} /> Winkel <ChevronDown size={13} />
             </button>
             {openMega === "winkel" && (
-              <div className="absolute top-full left-0 mt-px bg-primary border border-primary-soft shadow-lift text-primary-foreground rounded-b-lg p-4 w-[280px] z-50">
+              <div className="absolute top-full left-0 mt-px bg-background border border-border shadow-lift text-text rounded-b-lg p-4 w-[280px] z-50">
                 <p className="text-xs uppercase tracking-wider text-accent-soft font-semibold mb-3 inline-flex items-center gap-1.5 px-2">
                   <Store size={12} /> Categorieën
                 </p>
                 <div className="space-y-1 text-sm">
-                  <Link href="/winkel" onClick={() => setOpenMega(null)} className="block rounded px-2 py-1.5 text-primary-foreground/80 hover:bg-primary-soft hover:text-accent">
+                  <Link href="/winkel" onClick={() => setOpenMega(null)} className="block rounded px-2 py-1.5 text-text-muted hover:bg-veil hover:text-accent">
                     Alle producten
                   </Link>
                   {mainCategories.map((c) => (
-                    <Link key={c.slug} href={c.to} onClick={() => setOpenMega(null)} className="block rounded px-2 py-1.5 text-primary-foreground/80 hover:bg-primary-soft hover:text-accent">
+                    <Link key={c.slug} href={c.to} onClick={() => setOpenMega(null)} className="block rounded px-2 py-1.5 text-text-muted hover:bg-veil hover:text-accent">
                       {c.name}
                     </Link>
                   ))}
@@ -223,34 +223,46 @@ export function Header(_props: HeaderProps = {}) {
           <Link
             href="/lab"
             onMouseEnter={() => setOpenMega(null)}
-            className="h-11 inline-flex items-center px-4 font-medium text-primary-foreground hover:text-accent border-b-2 border-transparent hover:border-accent transition-colors"
+            className="h-11 inline-flex items-center px-4 font-medium text-text hover:text-accent border-b-2 border-transparent hover:border-accent transition-colors"
           >
             Kwaliteit
+          </Link>
+
+          {/* De stadspagina's waren weespagina's: ze stonden in de sitemap maar
+              geen enkele pagina linkte ernaar. Ze zijn samen goed voor ruim een
+              kwart van de kliks, dus ze horen in het hoofdmenu en niet alleen
+              onderin de footer. */}
+          <Link
+            href="/steden/"
+            onMouseEnter={() => setOpenMega(null)}
+            className="h-11 inline-flex items-center px-4 font-medium text-text hover:text-accent border-b-2 border-transparent hover:border-accent transition-colors"
+          >
+            Steden
           </Link>
 
           {/* Kennisbank */}
           <div className="relative" onMouseEnter={() => setOpenMega("kennisbank")}>
             <button
-              className={`h-11 inline-flex items-center gap-1 px-4 font-medium text-primary-foreground hover:text-accent border-b-2 transition-colors ${openMega === "kennisbank" ? "border-accent text-accent" : "border-transparent"}`}
+              className={`h-11 inline-flex items-center gap-1 px-4 font-medium text-text hover:text-accent border-b-2 transition-colors ${openMega === "kennisbank" ? "border-accent text-accent" : "border-transparent"}`}
             >
               Kennisbank <ChevronDown size={13} />
             </button>
             {openMega === "kennisbank" && (
-              <div className="absolute top-full left-0 mt-px bg-primary border border-primary-soft shadow-lift text-primary-foreground rounded-b-lg p-4 w-[260px] z-50">
+              <div className="absolute top-full left-0 mt-px bg-background border border-border shadow-lift text-text rounded-b-lg p-4 w-[260px] z-50">
                 <p className="text-xs uppercase tracking-wider text-accent-soft font-semibold mb-3 inline-flex items-center gap-1.5 px-2">
                   <BookOpen size={12} /> Kennisbank
                 </p>
                 <div className="space-y-1 text-sm">
-                  <Link href="/kennisbank" onClick={() => setOpenMega(null)} className="block rounded px-2 py-1.5 text-primary-foreground/80 hover:bg-primary-soft hover:text-accent">
+                  <Link href="/kennisbank" onClick={() => setOpenMega(null)} className="block rounded px-2 py-1.5 text-text-muted hover:bg-veil hover:text-accent">
                     Alle artikelen
                   </Link>
-                  <Link href="/kennisbank?cat=kennis" onClick={() => setOpenMega(null)} className="block rounded px-2 py-1.5 text-primary-foreground/80 hover:bg-primary-soft hover:text-accent">
+                  <Link href="/kennisbank?cat=kennis" onClick={() => setOpenMega(null)} className="block rounded px-2 py-1.5 text-text-muted hover:bg-veil hover:text-accent">
                     Kennis
                   </Link>
-                  <Link href="/kennisbank?cat=onderzoek" onClick={() => setOpenMega(null)} className="block rounded px-2 py-1.5 text-primary-foreground/80 hover:bg-primary-soft hover:text-accent">
+                  <Link href="/kennisbank?cat=onderzoek" onClick={() => setOpenMega(null)} className="block rounded px-2 py-1.5 text-text-muted hover:bg-veil hover:text-accent">
                     Onderzoek
                   </Link>
-                  <Link href="/kennisbank?cat=nieuws" onClick={() => setOpenMega(null)} className="block rounded px-2 py-1.5 text-primary-foreground/80 hover:bg-primary-soft hover:text-accent">
+                  <Link href="/kennisbank?cat=nieuws" onClick={() => setOpenMega(null)} className="block rounded px-2 py-1.5 text-text-muted hover:bg-veil hover:text-accent">
                     Nieuws
                   </Link>
                 </div>
@@ -261,7 +273,7 @@ export function Header(_props: HeaderProps = {}) {
           <Link
             href="/contact"
             onMouseEnter={() => setOpenMega(null)}
-            className="h-11 inline-flex items-center px-4 font-medium text-primary-foreground hover:text-accent border-b-2 border-transparent hover:border-accent transition-colors"
+            className="h-11 inline-flex items-center px-4 font-medium text-text hover:text-accent border-b-2 border-transparent hover:border-accent transition-colors"
           >
             Contact
           </Link>

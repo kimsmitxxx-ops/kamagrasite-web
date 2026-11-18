@@ -1,20 +1,36 @@
 "use client";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 import { Check, Beaker, Pill } from "lucide-react";
 import { STOF_FILTERS, VORM_FILTERS } from "./data";
 
 interface Props {
-  stockOnly: boolean;
+  /** Laat weg om de stand uit de URL te lezen in plaats van uit de server. */
+  stockOnly?: boolean;
   activeStof?: string;
   activeVorm?: string;
   /** Vormen die in deze lijst daadwerkelijk voorkomen; leeg = vorm-filter verbergen. */
   vormen?: string[];
 }
 
-export function CatalogFilters({ stockOnly, activeStof = "", activeVorm = "", vormen = [] }: Props) {
+export function CatalogFilters({
+  stockOnly: stockProp,
+  activeStof: stofProp,
+  activeVorm: vormProp,
+  vormen = [],
+}: Props) {
   const router = useRouter();
   const pathname = usePathname();
+  const sp = useSearchParams();
+
+  // Zonder meegegeven stand leest de component de URL zelf. Dat is nodig op de
+  // categoriepagina: die mag searchParams niet server-side lezen, want met de
+  // lege generateStaticParams erbij geeft dat in Next 15 een harde fout
+  // (DYNAMIC_SERVER_USAGE) en dus een 500. /winkel zelf is wel dynamisch en
+  // geeft de stand nog wel mee; beide wegen werken.
+  const stockOnly = stockProp ?? sp.get("stock") === "1";
+  const activeStof = stofProp ?? (sp.get("stof") || "").toLowerCase();
+  const activeVorm = vormProp ?? (sp.get("vorm") || "").toLowerCase();
 
   const setParam = useCallback(
     (key: string, value: string | null) => {

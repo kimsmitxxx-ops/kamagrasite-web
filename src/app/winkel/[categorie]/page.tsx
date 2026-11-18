@@ -1,9 +1,11 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { isPreorder, preorder, schemaAvailability } from "@/lib/preorder";
 import { notFound } from "next/navigation";
 import { getCategory, listProducts, listCategories, sortProducts, listBuyPages } from "@/lib/queries";
 import { ProductCard } from "@/components/product-card";
 import { CatalogFilters } from "@/components/shop/catalog-filters";
+import { CatalogClientGrid, type GridProduct } from "@/components/shop/catalog-client-grid";
 import { CollapsibleIntro } from "@/components/shop/collapsible-intro";
 import { BuyPageLinks } from "@/components/shop/buy-page-links";
 import type { Metadata } from "next";
@@ -28,10 +30,8 @@ export const revalidate = 300;
 export async function generateMetadata(
   props: {
     params: Promise<{ categorie: string }>;
-    searchParams: Promise<{ stock?: string; stof?: string; vorm?: string; q?: string }>;
   }
 ): Promise<Metadata> {
-  const searchParams = await props.searchParams;
   const params = await props.params;
   const cat = await getCategory(params.categorie);
   if (!cat) return { title: "Niet gevonden" };
@@ -39,8 +39,14 @@ export async function generateMetadata(
   // De koop-pagina (/<categorie>-kopen) is de ranking-target voor "<naam>
   // kopen". Deze pagina is de browse-weergave en krijgt daarom een eigen
   // invalshoek in de title, zodat de twee niet om dezelfde query vechten.
-  const filtered = Boolean(searchParams?.stock || searchParams?.stof || searchParams?.vorm || searchParams?.q);
-
+  //
+  // searchParams wordt hier niet meer gelezen, ook niet voor de robots-regel.
+  // Een metadata-functie die searchParams leest maakt de route dynamisch, en
+  // dat botst met de lege generateStaticParams hieronder: samen geven ze in
+  // Next 15 een harde DYNAMIC_SERVER_USAGE-fout, dus een 500 op elke
+  // categoriepagina. De canonical naar de schone URL vangt de
+  // filtercombinaties af, en de filters wisselen de URL client-side met
+  // router.replace; dat voert Google niet uit.
   return {
     title: cat.meta_title || `${cat.name} assortiment - alle varianten en prijzen`,
     description:
@@ -51,7 +57,7 @@ export async function generateMetadata(
     // schone URL en uit de index houden, anders indexeert Google elke
     // filtercombinatie als losse pagina.
     alternates: alternatesNL(`/winkel/${cat.slug}/`),
-    robots: filtered ? { index: false, follow: true } : { index: true, follow: true },
+    robots: { index: true, follow: true },
     openGraph: { title: cat.name, description: cat.description || undefined, type: "website" },
   };
 }
@@ -59,10 +65,8 @@ export async function generateMetadata(
 export default async function CategoryPage(
   props: {
     params: Promise<{ categorie: string }>;
-    searchParams: Promise<{ stock?: string; stof?: string; vorm?: string; q?: string }>;
   }
 ) {
-  const searchParams = await props.searchParams;
   const params = await props.params;
   const [cat, allProducts, allCategories, buyPages] = await Promise.all([
     getCategory(params.categorie),
@@ -72,25 +76,11 @@ export default async function CategoryPage(
   ]);
   if (!cat) notFound();
 
-  const stockOnly = searchParams.stock === "1";
-  const stof = (searchParams.stof || "").toLowerCase();
-  const vorm = (searchParams.vorm || "").toLowerCase();
-  const q = (searchParams.q || "").trim().toLowerCase();
   const vormen = Array.from(new Set(allProducts.map((p) => p.package_type).filter(Boolean) as string[]));
-
-  const filtered = allProducts.filter((p) => {
-    // "Alleen op voorraad" sluit ook een pre-order uit: die ligt niet op de
-    // plank, hoe goed de levertijd er ook bij staat.
-    if (stockOnly && (p.availability === "OutOfStock" || isPreorder(p))) return false;
-    if (stof && !(p.stof_slugs || []).includes(stof)) return false;
-    if (vorm && p.package_type !== vorm) return false;
-    if (q) {
-      const hay = `${p.name} ${p.slug} ${(p.tags || []).join(" ")} ${(p.stof_slugs || []).join(" ")} ${p.subtitle || ""}`.toLowerCase();
-      if (!hay.includes(q)) return false;
-    }
-    return true;
-  });
-  const products = sortProducts(filtered);
+  // Ongefilterd en gesorteerd. Het filteren zit in CatalogClientGrid, in de
+  // browser, zodat deze pagina geen searchParams hoeft te lezen en dus een
+  // ISR-render mag blijven.
+  const products = sortProducts(allProducts);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -162,7 +152,14 @@ export default async function CategoryPage(
               ))}
             </div>
           </div>
-          <CatalogFilters stockOnly={stockOnly} activeStof={stof} activeVorm={vorm} vormen={vormen} />
+          {/* Zonder meegegeven stand leest dit component de URL zelf; deze
+              pagina mag searchParams niet server-side lezen.
+              De Suspense is verplicht: useSearchParams in een statisch
+              gerenderde pagina zonder grens laat Next afbreken met
+              BAILOUT_TO_CLIENT_SIDE_RENDERING, en dat is weer een 500. */}
+          <Suspense fallback={<div className="h-48 rounded-lg border border-border bg-surface" />}>
+            <CatalogFilters vormen={vormen} />
+          </Suspense>
           {/* Interne links naar de koop-pagina's - die moeten op de
               transactionele termen ranken en hebben links nodig. */}
           <BuyPageLinks pages={buyPages.slice(0, 8)} title="Kopen per soort" compact />
@@ -176,35 +173,10 @@ export default async function CategoryPage(
           </div>
         </aside>
 
-        <div className="min-w-0">
-          {products.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-paper-border bg-paper-soft p-10 text-center text-text-muted">
-              Geen producten met deze filters.
-            </div>
-          ) : (
-            <>
-              <p className="text-sm text-text-muted">{products.length} producten</p>
-              <div className="mt-4 grid gap-5 grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                {products.map((p) => (
-                  <Link key={p.id} href={`/product/${p.slug}`} className="block">
-                    <ProductCard
-                      image={p.image_url || "/assets/cat-erectie.webp"}
-                      name={p.name}
-                      slug={p.slug}
-                      priceFrom={p.price_cents / 100}
-                      inStock={p.availability !== "OutOfStock"}
-                      preorderLabel={preorder(p)?.kaartLabel}
-                      tag={p.tags?.[0]}
-                      category={p.categories?.name}
-                      shortDescription={p.subtitle || undefined}
-                      usps={p.usps}
-                    />
-                  </Link>
-                ))}
-              </div>
-            </>
-          )}
-        </div>
+        {/* Het grid filtert in de browser op dezelfde URL-parameters. */}
+        <Suspense fallback={<div className="min-w-0 h-96 rounded-2xl border border-border bg-surface" />}>
+          <CatalogClientGrid products={products as unknown as GridProduct[]} />
+        </Suspense>
       </div>
 
       {/* Lange SEO-body onder het product-grid (categorie koopgids) */}
