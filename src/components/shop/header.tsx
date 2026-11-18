@@ -12,7 +12,10 @@ import {
   Pill,
   Store,
   BookOpen,
+  MapPin,
 } from "lucide-react";
+import { SearchAutocomplete } from "./search-autocomplete";
+import { STEDEN_MET_PAGINA } from "@/lib/steden-nl";
 import { mainCategories } from "./data";
 import { useCart } from "./cart-store";
 import { MobileMenuDrawer } from "./mobile-menu-drawer";
@@ -152,19 +155,16 @@ export function Header(_props: HeaderProps = {}) {
             className="h-9 w-auto sm:h-10"
           />
         </Link>
-        <form action="/winkel" method="get" className="hidden md:flex flex-1 max-w-2xl mx-auto">
-          <div className="relative w-full">
-            <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-accent-muted" />
-            <input
-              type="search"
-              name="q"
-              placeholder={lang === "EN" ? "Search products" : "Zoek producten - bv. kamagra, cenforce, vidalista"}
-              /* Stond op bg-success-soft: een lichtgroen vlak midden in de
-                 witte balk, overgebleven uit het oude palet. */
-              className="w-full h-10 pl-10 pr-3 rounded-md border border-border bg-wash text-sm font-medium text-text placeholder:text-text-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:border-accent"
-            />
-          </div>
-        </form>
+        {/* Zoeken met suggesties, zoals kamagrashop. Hiervoor stond hier een
+            gewoon formulier dat je naar /winkel?q= stuurde: je zag pas na een
+            paginawissel of er iets was. Nu komen de producten meteen onder de
+            balk tevoorschijn, met foto en prijs. Enter blijft naar /winkel
+            gaan, dus wie dat gewend is merkt er niets van. */}
+        <div className="hidden md:flex flex-1 max-w-2xl mx-auto">
+          <SearchAutocomplete
+            placeholder={lang === "EN" ? "Search products" : "Zoek producten - bv. kamagra, cenforce, vidalista"}
+          />
+        </div>
         <nav className="ml-auto flex items-center gap-0.5">
           <Link
             href="/account"
@@ -230,17 +230,45 @@ export function Header(_props: HeaderProps = {}) {
             Kwaliteit
           </Link>
 
-          {/* De stadspagina's waren weespagina's: ze stonden in de sitemap maar
-              geen enkele pagina linkte ernaar. Ze zijn samen goed voor ruim een
-              kwart van de kliks, dus ze horen in het hoofdmenu en niet alleen
-              onderin de footer. */}
-          <Link
-            href="/steden/"
-            onMouseEnter={() => setOpenMega(null)}
-            className="h-11 inline-flex items-center px-4 font-medium text-text hover:text-accent border-b-2 border-transparent hover:border-accent transition-colors"
-          >
-            Steden
-          </Link>
+          {/* Steden. De stadspagina's waren weespagina's: ze stonden in de
+              sitemap maar geen enkele pagina linkte ernaar, terwijl ze samen
+              goed zijn voor ruim een kwart van de kliks. Vandaar een eigen
+              uitklapmenu in plaats van alleen een regel in de footer.
+              De lijst komt uit lib/steden-nl.ts, want de header is een
+              clientonderdeel en kan de database niet zelf bevragen. */}
+          <div className="relative" onMouseEnter={() => setOpenMega("steden")}>
+            <button
+              className={`h-11 inline-flex items-center gap-1 px-4 font-medium text-text hover:text-accent border-b-2 transition-colors ${openMega === "steden" ? "border-accent text-accent" : "border-transparent"}`}
+            >
+              Steden <ChevronDown size={13} />
+            </button>
+            {openMega === "steden" && (
+              <div className="absolute top-full left-0 mt-px bg-background border border-border shadow-lift text-text rounded-b-lg p-4 w-[300px] z-50">
+                <p className="text-xs uppercase tracking-wider text-accent font-semibold mb-3 inline-flex items-center gap-1.5 px-2">
+                  <MapPin size={12} /> Kamagra per stad
+                </p>
+                <div className="grid grid-cols-2 gap-x-2 gap-y-1 text-sm">
+                  {STEDEN_MET_PAGINA.map((s) => (
+                    <Link
+                      key={s.pagina}
+                      href={`/${s.pagina}/`}
+                      onClick={() => setOpenMega(null)}
+                      className="block rounded px-2 py-1.5 text-text-muted hover:bg-veil hover:text-accent"
+                    >
+                      {s.naam}
+                    </Link>
+                  ))}
+                </div>
+                <Link
+                  href="/steden/"
+                  onClick={() => setOpenMega(null)}
+                  className="mt-3 block rounded px-2 py-1.5 text-sm font-medium text-accent hover:bg-veil"
+                >
+                  Alle steden en bezorging &rarr;
+                </Link>
+              </div>
+            )}
+          </div>
 
           {/* Kennisbank */}
           <div className="relative" onMouseEnter={() => setOpenMega("kennisbank")}>

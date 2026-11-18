@@ -95,6 +95,17 @@ a{color:rgb(249 138 183)}
 export async function middleware(request: NextRequest) {
   const res = NextResponse.next();
 
+  // Op je eigen machine nooit de onderhoudspagina. De vlag staat in de
+  // database en die is gedeeld met productie, dus wie lokaal werkte kreeg
+  // "Binnenkort open" te zien en moest elke keer de previewsleutel erbij
+  // zoeken. Eén cookie weg of een andere browser en je keek weer tegen die
+  // pagina aan. Dit raakt alleen localhost; op elk ander domein verandert er
+  // niets.
+  const host = request.headers.get("host") || "";
+  if (host.startsWith("localhost") || host.startsWith("127.0.0.1") || host.startsWith("[::1]")) {
+    return res;
+  }
+
   // Previewsleutel uit de URL halen en in een cookie zetten, zodat je daarna
   // gewoon door de site kunt klikken zonder hem overal aan te plakken.
   const token = bypassToken();

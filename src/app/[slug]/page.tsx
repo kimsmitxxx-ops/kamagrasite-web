@@ -215,7 +215,14 @@ export default async function BuyPage(props: { params: Promise<{ slug: string }>
       )}
 
       <section id="aanbod" className="mt-10 scroll-mt-28">
-        <h2 className="font-display text-2xl text-primary">Het aanbod</h2>
+        <div className="flex flex-wrap items-baseline justify-between gap-3">
+          <h2 className="font-display text-2xl text-primary">Het aanbod</h2>
+          {/* Deze pagina toont een selectie. Wie iets anders zoekt moet niet
+              terug hoeven naar het menu: de hele catalogus staat hier. */}
+          <Link href="/winkel/" className="text-sm font-medium text-accent hover:underline">
+            Bekijk het volledige aanbod &rarr;
+          </Link>
+        </div>
         {products.length === 0 ? (
           <p className="mt-4 rounded-2xl border border-dashed border-paper-border bg-paper-soft p-10 text-center text-text-muted">
             Er staan nu geen producten bij deze selectie.{" "}
