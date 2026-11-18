@@ -45,7 +45,7 @@ const fontDisplay = Source_Serif_4({
 export const metadata: Metadata = {
   metadataBase: new URL("https://kamagrasite.nl"),
     // Taal en land expliciet, zie lib/geo-nl.ts.
-    alternates: { languages: hreflangVoor("/") },
+    alternates: { canonical: "/", languages: hreflangVoor("/") },
   // De oude site rankt met "Kamagra Kopen - Bestel jouw kamagra binnen 24
   // uur!" en dat is de term waar het domein het van moet hebben. De belofte van
   // 24 uur staat er bewust niet meer in: je pakket gaat de deur uit zodra de

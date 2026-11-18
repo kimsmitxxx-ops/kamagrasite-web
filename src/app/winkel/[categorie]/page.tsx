@@ -58,7 +58,7 @@ export async function generateMetadata(
     // filtercombinatie als losse pagina.
     alternates: alternatesNL(`/winkel/${cat.slug}/`),
     robots: { index: true, follow: true },
-    openGraph: { title: cat.name, description: cat.description || undefined, type: "website" },
+    openGraph: { title: cat.name, description: cat.description || undefined, type: "website", images: [{ url: "/opengraph-image.png", width: 1200, height: 630 }] },
   };
 }
 

@@ -55,7 +55,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
       `${page.h1} bij Kamagra Site. Prijs per stuk vergelijken, discreet verpakt en snel verstuurd vanuit Nederland.`,
     alternates: alternatesNL(page.canonical_url || `/${page.slug}`),
     robots: page.noindex ? { index: false, follow: false } : { index: true, follow: true },
-    openGraph: { title: page.h1, description: page.intro || undefined, type: "website" },
+    openGraph: { title: page.h1, description: page.intro || undefined, type: "website", images: [{ url: "/opengraph-image.png", width: 1200, height: 630 }] },
   };
 }
 
