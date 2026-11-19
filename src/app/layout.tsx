@@ -9,6 +9,7 @@ import { AnalyticsTracker } from "@/components/analytics-tracker";
 import { CartAbandonTracker } from "@/components/cart-abandon-tracker";
 import { GA4 } from "@/components/ga4";
 import { ConsentNotice } from "@/components/consent-notice";
+import { getShop } from "@/lib/queries";
 import { hreflangVoor, OG_LOCALE, organisatieJsonLd } from "@/lib/geo-nl";
 import { CartDrawer, WhatsAppFab } from "@/components/uitgesteld";
 
@@ -42,7 +43,19 @@ const fontDisplay = Source_Serif_4({
   variable: "--font-display",
 });
 
-export const metadata: Metadata = {
+/**
+ * Metadata wordt opgebouwd in plaats van vast gezet, zodat de robots-tag
+ * dezelfde schakelaar volgt als robots.txt: shops.noindex.
+ *
+ * Hiervoor stond hier hard "index, follow" terwijl robots.txt wel naar die
+ * vlag keek. Op de staging-URL gaf dat een tegenstrijdigheid: crawlen
+ * verboden, maar de pagina zelf riep dat hij geindexeerd mocht worden. En bij
+ * de livegang zou je twee dingen moeten omzetten in plaats van een.
+ */
+export async function generateMetadata(): Promise<Metadata> {
+  const shop = await getShop().catch(() => null);
+  const magInIndex = shop?.noindex === false;
+  return {
   metadataBase: new URL("https://kamagrasite.nl"),
     // Taal en land expliciet, zie lib/geo-nl.ts.
     alternates: { canonical: "/", languages: hreflangVoor("/") },
@@ -52,7 +65,7 @@ export const metadata: Metadata = {
   // betaling binnen is, en dat is geen 24-uursgarantie.
   title: { default: "Kamagra kopen en bestellen | Kamagrasite.nl", template: "%s · Kamagra Site" },
   description: "Kamagra kopen en bestellen bij Kamagrasite.nl. Kamagra, Cenforce, Vidalista en Vilitra rechtstreeks van de fabrikant, zonder recept, neutraal verpakt en verstuurd vanuit Nederland.",
-  robots: { index: true, follow: true },
+  robots: magInIndex ? { index: true, follow: true } : { index: false, follow: false },
   icons: {
     icon: [{ url: "/icon.png", type: "image/png" }],
     apple: [{ url: "/apple-icon.png", type: "image/png" }],
@@ -61,7 +74,8 @@ export const metadata: Metadata = {
       locale: OG_LOCALE,
     images: [{ url: "/opengraph-image.png", width: 1200, height: 630 }],
   },
-};
+  };
+}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
