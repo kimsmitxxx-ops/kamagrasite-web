@@ -19,6 +19,8 @@ import { Breadcrumb } from "@/components/breadcrumb";
 import { BULK_TIERS } from "@/lib/bulk-discount";
 import { MERCHANT_RETURN_POLICY } from "@/lib/return-policy";
 import { alternatesNL } from "@/lib/geo-nl";
+import { getCategory } from "@/lib/queries";
+import { CategorieWeergave, categorieMetadata } from "@/components/shop/categorie-weergave";
 
 /**
  * Transactionele koop-pagina op root-niveau: /kamagra-kopen.
@@ -47,7 +49,14 @@ export const revalidate = 300;
 export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const params = await props.params;
   const page = await getBuyPage(params.slug);
-  if (!page) return { title: "Niet gevonden" };
+  // Geen koop-pagina? Dan kan het een categorie zijn. Die staan sinds 19 nov
+  // 2026 op het schone adres /<categorie> in plaats van /winkel/<categorie>,
+  // net zoals /cenforce-200 en /cobra-120-mg gewoon op de hoofdmap staan.
+  if (!page) {
+    const cat = await getCategory(params.slug);
+    if (cat) return categorieMetadata({ params: Promise.resolve({ categorie: params.slug }) });
+    return { title: "Niet gevonden" };
+  }
   return {
     title: page.meta_title || page.h1,
     description:
@@ -63,7 +72,11 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
 export default async function BuyPage(props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
   const page = await getBuyPage(params.slug);
-  if (!page) notFound();
+  if (!page) {
+    const cat = await getCategory(params.slug);
+    if (cat) return <CategorieWeergave params={Promise.resolve({ categorie: params.slug })} />;
+    notFound();
+  }
 
   const [products, allPages, blogs] = await Promise.all([
     resolveBuyPageProducts(page),
@@ -247,7 +260,7 @@ export default async function BuyPage(props: { params: Promise<{ slug: string }>
                   slug={p.slug}
                   priceFrom={p.price_cents / 100}
                   inStock={p.availability !== "OutOfStock"}
-                  preorderLabel={preorder(p)?.kaartLabel}
+                  preorderLabel={preorder(p)?.kaartLabel}
                   category={p.categories?.name}
                   shortDescription={p.subtitle || undefined}
                   usps={p.usps}

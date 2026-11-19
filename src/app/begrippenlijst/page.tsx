@@ -65,7 +65,7 @@ const TERMS: Term[] = [
     short: "Tablet die je oplost in water",
     body: "Kamagra bruistabletten los je op in een half glas water. De werkzame stof is al opgelost zodra je drinkt, waardoor de opname meestal iets sneller gaat dan bij een gewone tablet. Praktisch voor wie moeite heeft met slikken. De dosering is gelijk: 100 mg sildenafil per tablet.",
     related: ["sildenafil", "onset"],
-    link: "/winkel/kamagra",
+    link: "/kamagra/",
   },
   {
     id: "cenforce",
@@ -73,7 +73,7 @@ const TERMS: Term[] = [
     short: "Sildenafil van Centurion Laboratories",
     body: "Productlijn met sildenafil in 50, 100, 150 en 200 mg. Doordat de lijn zo veel sterktes heeft kun je rustig opbouwen: begin op 50 of 100 mg en ga pas hoger als dat echt nodig blijkt. Cenforce D combineert 100 mg sildenafil met 60 mg dapoxetine.",
     related: ["sildenafil", "centurion", "titratie"],
-    link: "/winkel/cenforce",
+    link: "/cenforce/",
   },
   {
     id: "centurion",
@@ -153,7 +153,7 @@ const TERMS: Term[] = [
     short: "Sildenafil van Ajanta Pharma",
     body: "De bekendste generieke sildenafil-lijn, standaard 100 mg per eenheid. Verkrijgbaar als tablet, oral jelly, kauwtablet, zuigtablet (Polo) en bruistablet. De werkzame stof is in alle vormen dezelfde. Het verschil zit in hoe snel je lichaam hem opneemt en hoe prettig je de inname vindt.",
     related: ["sildenafil", "ajanta", "oral-jelly"],
-    link: "/winkel/kamagra",
+    link: "/kamagra/",
   },
   {
     id: "lovegra",
@@ -190,7 +190,7 @@ const TERMS: Term[] = [
     short: "Sildenafil in gelvorm, in sachets",
     body: "Zakje gel met 100 mg sildenafil dat je leegknijpt in je mond en doorslikt. Omdat de stof al is opgelost begint de opname meteen en treedt het effect doorgaans sneller in dan bij een tablet. Praktisch voor wie moeite heeft met slikken, en de smaakjes maken het minder klinisch.",
     related: ["kamagra", "onset"],
-    link: "/winkel/kamagra",
+    link: "/kamagra/",
   },
   {
     id: "pde5-remmer",
@@ -256,7 +256,7 @@ const TERMS: Term[] = [
     short: "Sildenafil 100 mg plus dapoxetine 60 mg",
     body: "Combinatietablet van Sunrise Remedies voor wie zowel een erectieprobleem heeft als te snel klaarkomt. Twee werkzame stoffen betekent ook twee bijwerkingenprofielen en twee sets wisselwerkingen, dus begin hier niet mee als je nog nooit een van beide los hebt gebruikt.",
     related: ["sildenafil", "dapoxetine", "sunrise"],
-    link: "/winkel/combo-preparaten",
+    link: "/combo-preparaten/",
   },
   {
     id: "tadalafil",
@@ -295,7 +295,7 @@ const TERMS: Term[] = [
     short: "Tadalafil van Centurion Laboratories",
     body: "Tadalafil-lijn in 20, 40, 60 en 80 mg, plus Vidalista Black. Let op de sterktes: de gangbare dosering tadalafil is 10 tot 20 mg, dus de hoge varianten zijn fors en geven navenant meer kans op rug- en hoofdpijn. Super Vidalista combineert tadalafil met dapoxetine.",
     related: ["tadalafil", "centurion", "titratie"],
-    link: "/winkel/vidalista",
+    link: "/vidalista/",
   },
   {
     id: "vilitra",
@@ -303,7 +303,7 @@ const TERMS: Term[] = [
     short: "Vardenafil van Centurion Laboratories",
     body: "Vardenafil in 20, 40 en 60 mg. De standaarddosering vardenafil is 10 tot 20 mg, dus ook hier geldt: niet bovenaan beginnen.",
     related: ["vardenafil", "centurion"],
-    link: "/winkel/vilitra",
+    link: "/vilitra/",
   },
   {
     id: "werkingsduur",
@@ -326,7 +326,7 @@ const TERMS: Term[] = [
     short: "Tablet die je laat oplossen in de mond",
     body: "Kamagra Polo is een tablet met 100 mg sildenafil die je op de tong laat smelten of opzuigt. Je hebt er geen water bij nodig, wat discreet is, en een deel van de stof wordt al via het mondslijmvlies opgenomen.",
     related: ["kamagra", "onset"],
-    link: "/winkel/kamagra",
+    link: "/kamagra/",
   },
 ];
 

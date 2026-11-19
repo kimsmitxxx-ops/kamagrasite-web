@@ -79,7 +79,7 @@ export default async function HomePage() {
           name: c.name,
           tagline: c.description || mainCategories[i % mainCategories.length].tagline,
           image: c.hero_image || mainCategories[i % mainCategories.length].image,
-          to: `/winkel/${c.slug}`,
+          to: `/${c.slug}/`,
         }))
       : mainCategories;
 

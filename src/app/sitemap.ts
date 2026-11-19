@@ -44,7 +44,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }));
 
   const categoryRoutes = categories.map((c) => ({
-    url: `${BASE}/winkel/${c.slug}/`,
+    url: `${BASE}/${c.slug}/`,
     changeFrequency: "daily" as const,
     priority: 0.85,
   }));

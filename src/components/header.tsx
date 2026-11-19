@@ -54,7 +54,7 @@ export function Header({ categories }: { categories: { slug: string; name: strin
         {/* Categorie strip */}
         <div className="hidden gap-3 overflow-x-auto border-t border-primary-muted/40 pb-2 pt-2 md:flex">
           {categories.map((c) => (
-            <Link key={c.slug} href={`/winkel/${c.slug}`} className="shrink-0 rounded-full bg-primary-soft px-3 py-1 text-xs hover:bg-primary-muted">
+            <Link key={c.slug} href={`/${c.slug}/`} className="shrink-0 rounded-full bg-primary-soft px-3 py-1 text-xs hover:bg-primary-muted">
               {c.name}
             </Link>
           ))}
@@ -66,7 +66,7 @@ export function Header({ categories }: { categories: { slug: string; name: strin
             <Link href="/account" className="block rounded px-3 py-2 text-sm">Account</Link>
             <div className="border-t border-primary-muted/40 pt-2">
               {categories.map((c) => (
-                <Link key={c.slug} href={`/winkel/${c.slug}`} className="block rounded px-3 py-1.5 text-sm">{c.name}</Link>
+                <Link key={c.slug} href={`/${c.slug}/`} className="block rounded px-3 py-1.5 text-sm">{c.name}</Link>
               ))}
             </div>
           </div>

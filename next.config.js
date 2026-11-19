@@ -52,22 +52,22 @@ module.exports = {
       // Categoriepagina's: WooCommerce gebruikt /product-category/, deze site
       // /winkel/. Waar de categorie hier niet bestaat gaat hij naar de
       // koop-pagina die hetzelfde onderwerp dekt.
-      { source: "/product-category/kamagra", destination: "/winkel/kamagra/", permanent: true },
-      { source: "/product-category/cenforce", destination: "/winkel/cenforce/", permanent: true },
-      { source: "/product-category/vidalista", destination: "/winkel/vidalista/", permanent: true },
-      { source: "/product-category/vilitra", destination: "/winkel/vilitra/", permanent: true },
-      { source: "/product-category/sildalis", destination: "/winkel/combo-preparaten/", permanent: true },
+      { source: "/product-category/kamagra", destination: "/kamagra/", permanent: true },
+      { source: "/product-category/cenforce", destination: "/cenforce/", permanent: true },
+      { source: "/product-category/vidalista", destination: "/vidalista/", permanent: true },
+      { source: "/product-category/vilitra", destination: "/vilitra/", permanent: true },
+      { source: "/product-category/sildalis", destination: "/combo-preparaten/", permanent: true },
       // sildaforce is sildenafil in tabletvorm, zelfde schap als Cenforce
-      { source: "/product-category/sildaforce", destination: "/winkel/sildaforce/", permanent: true },
+      { source: "/product-category/sildaforce", destination: "/sildaforce/", permanent: true },
       { source: "/product-category/oral-jelly", destination: "/kamagra-jelly-kopen/", permanent: true },
       { source: "/product-category/sildenafil", destination: "/sildenafil-100mg-bestellen/", permanent: true },
-      { source: "/product-category/viagra", destination: "/winkel/merkmiddelen/", permanent: true },
+      { source: "/product-category/viagra", destination: "/merkmiddelen/", permanent: true },
       { source: "/product-category/voor-vrouwen", destination: "/lovegra/", permanent: true },
       { source: "/product-category/cialis", destination: "/tadalafil-kopen/", permanent: true },
       { source: "/product-category/tadalafil", destination: "/tadalafil-kopen/", permanent: true },
       { source: "/product-category/vardenafil", destination: "/vardenafil/", permanent: true },
       { source: "/product-category/dapoxetine", destination: "/super-kamagra/", permanent: true },
-      { source: "/product-category/cobra", destination: "/winkel/cobra/", permanent: true },
+      { source: "/product-category/cobra", destination: "/cobra/", permanent: true },
 
       // Productredirects: er zijn er nog maar twee nodig.
       //

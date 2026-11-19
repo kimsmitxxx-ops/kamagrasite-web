@@ -82,7 +82,7 @@ export default async function WinkelIndexPage(
               {categories.map((c) => (
                 <Link
                   key={c.slug}
-                  href={`/winkel/${c.slug}`}
+                  href={`/${c.slug}/`}
                   className="block rounded px-2 py-1.5 text-primary-foreground/80 hover:bg-primary-soft hover:text-accent"
                 >
                   {c.name}
