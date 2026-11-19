@@ -33,6 +33,13 @@ const TOPBAR_ITEMS = [
   { Icon: Pill, text: "Sildenafil, tadalafil, vardenafil & dapoxetine" },
 ];
 
+// De vier merken die los in de balk staan, en de rest die onder "Meer"
+// valt. Vier is wat er past naast Steden, Kennisbank, Kwaliteit en Contact
+// zonder dat de balk op een telefoonformaat omvalt.
+const NAV_MERK_SLUGS = ["kamagra", "cenforce", "vidalista", "vilitra"];
+const NAV_MERKEN = mainCategories.filter((c) => NAV_MERK_SLUGS.includes(c.slug));
+const NAV_OVERIG = mainCategories.filter((c) => !NAV_MERK_SLUGS.includes(c.slug));
+
 export interface HeaderProps {
   variant?: "default" | "minimal";
 }
@@ -193,30 +200,45 @@ export function Header(_props: HeaderProps = {}) {
       <div className="hidden lg:block border-t border-border relative" onMouseLeave={() => setOpenMega(null)}>
         <div className="mx-auto max-w-7xl px-4 h-11 flex items-center justify-center gap-1 text-[15px]">
           {/* Winkel */}
+          {/* De merken staan los in de balk in plaats van weggestopt achter
+              een knop "Winkel". Iemand die op kamagra zoekt wil Kamagra zien
+              staan, niet eerst een winkelmenu openklappen. Het scheelt een
+              klik, het zet de productnamen in de navigatie van elke pagina, en
+              het maakt de balk meteen anders dan die van de andere shops. */}
+          {NAV_MERKEN.map((c) => (
+            <Link
+              key={c.slug}
+              href={c.to}
+              onMouseEnter={() => setOpenMega(null)}
+              className="h-11 inline-flex items-center px-3 font-medium text-text hover:text-accent border-b-2 border-transparent hover:border-accent transition-colors"
+            >
+              {c.name}
+            </Link>
+          ))}
+
+          {/* De rest van het assortiment, plus de weg naar de hele catalogus. */}
           <div className="relative" onMouseEnter={() => setOpenMega("winkel")}>
             <button
-              className={`h-11 inline-flex items-center gap-1.5 px-4 font-semibold uppercase tracking-wider text-[13px] border-b-2 transition-colors ${
-                openMega === "winkel"
-                  ? "border-accent bg-veil text-accent"
-                  : "border-accent/70 bg-veil text-accent hover:bg-veil hover:text-accent"
+              className={`h-11 inline-flex items-center gap-1 px-3 font-medium border-b-2 transition-colors ${
+                openMega === "winkel" ? "border-accent text-accent" : "border-transparent text-text hover:text-accent"
               }`}
             >
-              <Store size={15} strokeWidth={2.25} /> Winkel <ChevronDown size={13} />
+              Meer <ChevronDown size={13} />
             </button>
             {openMega === "winkel" && (
               <div className="absolute top-full left-0 mt-px bg-background border border-border shadow-lift text-text rounded-b-lg p-4 w-[280px] z-50">
-                <p className="text-xs uppercase tracking-wider text-accent-soft font-semibold mb-3 inline-flex items-center gap-1.5 px-2">
-                  <Store size={12} /> Categorieën
+                <p className="text-xs uppercase tracking-wider text-accent font-semibold mb-3 inline-flex items-center gap-1.5 px-2">
+                  <Store size={12} /> Overig assortiment
                 </p>
                 <div className="space-y-1 text-sm">
-                  <Link href="/winkel" onClick={() => setOpenMega(null)} className="block rounded px-2 py-1.5 text-text-muted hover:bg-veil hover:text-accent">
-                    Alle producten
-                  </Link>
-                  {mainCategories.map((c) => (
+                  {NAV_OVERIG.map((c) => (
                     <Link key={c.slug} href={c.to} onClick={() => setOpenMega(null)} className="block rounded px-2 py-1.5 text-text-muted hover:bg-veil hover:text-accent">
                       {c.name}
                     </Link>
                   ))}
+                  <Link href="/winkel" onClick={() => setOpenMega(null)} className="mt-2 block rounded px-2 py-1.5 font-medium text-accent hover:bg-veil">
+                    Alle producten &rarr;
+                  </Link>
                 </div>
               </div>
             )}

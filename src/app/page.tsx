@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { BESTSELLER_PEILDATUM, sorteerOpVerkoop } from "@/lib/bestsellers";
 import { preorder } from "@/lib/preorder";
 import { listProducts, listBlogPosts, listCategories, listFeaturedProducts } from "@/lib/queries";
 import { ProductCard } from "@/components/product-card";
@@ -41,7 +42,7 @@ const HOMEPAGE_FAQ = [
   {
     question: "Hoe lang duurt de verzending?",
     answer:
-      "Zodra de betaling binnen is, maken we de bestelling klaar via PostNL. NL binnen 1 werkdag, BE 1-2 werkdagen. Neutrale verpakking zonder productnaam op het label - de bezorger ziet een gewoon pakket.",
+      "Zodra je betaling binnen is, maken we je bestelling klaar en gaat die met PostNL of DPD de deur uit. Daarna is het in Nederland 1 tot 2 werkdagen onderweg en in Belgie 1 tot 3. Neutrale verpakking zonder productnaam op het label: de bezorger ziet een gewoon pakket.",
   },
   {
     question: "Hoe wordt betaald?",
@@ -76,6 +77,10 @@ export default async function HomePage() {
 
   const bestsellers = dbProducts.slice(0, 4);
   const featured = featuredProducts.slice(0, 8);
+  // De echte top 5, op volgorde van verkoop in de huidige shop. Uitverkochte
+  // artikelen vallen eruit; een bestsellerblok vol "niet leverbaar" helpt
+  // niemand verder.
+  const top5 = sorteerOpVerkoop(dbProducts, 5);
 
   const faqJsonLd = {
     "@context": "https://schema.org",
@@ -161,20 +166,30 @@ export default async function HomePage() {
         <StadKiezer />
       </section>
 
-      {/* Featured products */}
-      {featured.length > 0 && (
+      {/* Top 5 meest verkocht.
+          Hier stond "Meest bestelde producten" boven een handmatig
+          uitgelicht-lijstje, met "Best beoordeeld" erboven terwijl er geen
+          beoordelingen zijn. Nu staat er wat er echt verkocht is: de volgorde
+          komt uit de WooCommerce-shop die nu op het domein draait, zie
+          lib/bestsellers.ts. Valt die lijst om wat voor reden ook leeg, dan
+          vult het uitgelicht-lijstje hem op en vervalt de verkoopclaim. */}
+      {(top5.length > 0 || featured.length > 0) && (
         <section className="mx-auto max-w-7xl px-4 py-16">
           <div className="flex items-baseline justify-between">
             <div>
-              <p className="text-xs uppercase tracking-[0.15em] text-accent font-semibold">Best beoordeeld</p>
-              <h2 className="mt-2 font-display text-3xl md:text-4xl">Meest bestelde producten</h2>
+              <p className="text-xs uppercase tracking-[0.15em] text-accent font-semibold">
+                {top5.length > 0 ? `Op basis van verkopen, ${BESTSELLER_PEILDATUM}` : "Uitgelicht"}
+              </p>
+              <h2 className="mt-2 font-display text-3xl md:text-4xl">
+                {top5.length > 0 ? "Top 5 meest verkocht" : "Uitgelichte producten"}
+              </h2>
             </div>
             <Link href="/winkel" className="text-sm text-accent hover:text-accent-muted inline-flex items-center gap-1">
               Volledige catalogus <ArrowRight size={14} />
             </Link>
           </div>
-          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {featured.map((p) => (
+          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
+            {(top5.length > 0 ? top5 : featured.slice(0, 5)).map((p, i) => (
               <Link key={p.id} href={`/product/${p.slug}`} className="block">
                 <ProductCard
                   image={p.image_url || "/assets/cat-kamagra.jpg"}
@@ -183,7 +198,7 @@ export default async function HomePage() {
                   priceFrom={p.price_cents / 100}
                   inStock={p.availability !== "OutOfStock"}
                   preorderLabel={preorder(p)?.kaartLabel}
-                  tag="Uitgelicht"
+                  tag={top5.length > 0 ? `Nr. ${i + 1}` : "Uitgelicht"}
                   category={p.categories?.name}
                   shortDescription={p.subtitle || undefined}
                 />
