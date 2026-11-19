@@ -2,7 +2,7 @@ import { supabase, createServiceClient, type Product, type Category, type BlogPo
 
 // Hardcoded shop_id voor kamagrasite - fallback voor scoped JWT die niet werkt.
 // RLS-policies in shop-dash migration 051 staan anon SELECT toe op deze shop.
-const SHOP_ID = "209efc65-a11e-499c-a74a-3d1c5043758f";
+export const SHOP_ID = "209efc65-a11e-499c-a74a-3d1c5043758f";
 
 // Volgorde waarin productlijnen in het grid verschijnen. Kamagra is de bekendste
 // naam en de meest gezochte term, daarna de overige sildenafil-lijnen, dan

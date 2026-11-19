@@ -64,6 +64,13 @@ export function organisatieJsonLd(
      * die we niet bezitten.
      */
     naamVarianten?: string[];
+    /**
+     * Andere domeinen van dezelfde organisatie, als volledige URL. Hiermee
+     * zeg je tegen Google dat het om één entiteit gaat. Alleen domeinen die
+     * we werkelijk bezitten; een domein van iemand anders hier opvoeren is
+     * een claim die je niet kunt waarmaken.
+     */
+    sameAs?: string[];
   } = {},
 ) {
   const basis = siteUrl.replace(/\/$/, "");
@@ -109,6 +116,7 @@ export function organisatieJsonLd(
         areaServed: LEVERLANDEN.map((land) => ({ "@type": "Country", name: land })),
         inLanguage: "nl-NL",
         currenciesAccepted: "EUR",
+        ...(opties.sameAs && opties.sameAs.length > 0 ? { sameAs: opties.sameAs } : {}),
         ...(identifiers.length > 0 ? { identifier: identifiers } : {}),
       },
       {
