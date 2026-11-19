@@ -126,14 +126,14 @@ export default async function CategoryPage(
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[260px_1fr]">
         <aside className="space-y-4 lg:sticky lg:top-32 lg:self-start">
-          <div className="rounded-lg border border-primary-muted bg-primary p-4 text-primary-foreground">
-            <h4 className="text-xs uppercase tracking-wider text-accent-soft font-semibold mb-3 inline-flex items-center gap-1.5">
+          <div className="rounded-lg border border-border bg-wash p-4 text-text">
+            <h4 className="text-xs uppercase tracking-wider text-accent font-semibold mb-3 inline-flex items-center gap-1.5">
               <BookOpen size={12} /> Categorieën
             </h4>
             <div className="space-y-1 text-sm">
               <Link
                 href="/winkel"
-                className="block rounded px-2 py-1.5 text-primary-foreground/80 hover:bg-primary-soft hover:text-accent"
+                className="block rounded px-2 py-1.5 text-text-muted hover:bg-veil hover:text-accent"
               >
                 Alle producten
               </Link>
@@ -144,7 +144,7 @@ export default async function CategoryPage(
                   className={`block rounded px-2 py-1.5 ${
                     c.slug === cat.slug
                       ? "bg-accent text-accent-foreground font-semibold"
-                      : "text-primary-foreground/80 hover:bg-primary-soft hover:text-accent"
+                      : "text-text-muted hover:bg-veil hover:text-accent"
                   }`}
                 >
                   {c.name}

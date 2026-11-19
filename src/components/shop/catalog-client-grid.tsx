@@ -82,7 +82,6 @@ export function CatalogClientGrid({ products }: { products: GridProduct[] }) {
                     priceFrom={p.price_cents / 100}
                     inStock={p.availability !== "OutOfStock"}
                     preorderLabel={preorder(p as never)?.kaartLabel}
-                    tag={p.tags?.[0] ?? undefined}
                     category={p.categories?.name ?? undefined}
                     shortDescription={p.subtitle || undefined}
                     usps={p.usps ?? undefined}

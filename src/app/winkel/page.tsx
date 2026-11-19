@@ -112,8 +112,7 @@ export default async function WinkelIndexPage(
                   slug={p.slug}
                   priceFrom={p.price_cents / 100}
                   inStock={p.availability !== "OutOfStock"}
-                  preorderLabel={preorder(p)?.kaartLabel}
-                  tag={p.tags?.[0]}
+                  preorderLabel={preorder(p)?.kaartLabel}
                   category={p.categories?.name}
                   shortDescription={p.subtitle || undefined}
                   usps={p.usps}
