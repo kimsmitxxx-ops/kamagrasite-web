@@ -247,17 +247,22 @@ export default async function HomePage() {
             </Link>
           </div>
           <div className="mt-8 grid gap-6 md:grid-cols-3">
+            {/* ArticleCard maakt zelf al een <a>. Hier stond daar nog een
+                Link omheen, en een link in een link is ongeldige HTML: de
+                browser sluit de buitenste zelf, waardoor de DOM afweek van wat
+                de server stuurde. Dat gaf op de homepage een harde
+                hydratiefout (React #418), op geen enkele andere pagina. */}
             {dbArticles.map((a: any) => (
-              <Link key={a.id} href={`/kennisbank/${a.slug}`} className="block group">
-                <ArticleCard
-                  title={a.title}
-                  image={a.image_url || "/assets/cat-kamagra.jpg"}
-                  excerpt={a.excerpt || ""}
-                  kindTag={a.category || "Kennis"}
-                  publishedAt={new Date(a.published_at).toLocaleDateString("nl-NL", { day: "numeric", month: "short", year: "numeric" })}
-                  author={{ name: a.author || "Redactie", credentials: "" }}
-                />
-              </Link>
+              <ArticleCard
+                key={a.id}
+                href={`/kennisbank/${a.slug}`}
+                title={a.title}
+                image={a.image_url || "/assets/cat-kamagra.jpg"}
+                excerpt={a.excerpt || ""}
+                kindTag={a.category || "Kennis"}
+                publishedAt={new Date(a.published_at).toLocaleDateString("nl-NL", { day: "numeric", month: "short", year: "numeric" })}
+                author={{ name: a.author || "Redactie", credentials: "" }}
+              />
             ))}
           </div>
         </section>
