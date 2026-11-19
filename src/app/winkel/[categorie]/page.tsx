@@ -120,7 +120,7 @@ export default async function CategoryPage(
         <Sparkles size={18} className="text-accent shrink-0 mt-0.5" />
         <div className="text-sm">
           <p className="font-semibold text-text">Bulk-korting actief op {cat.name.toLowerCase()}</p>
-          <p className="text-text-muted">Vanaf 5 items <strong>10% korting</strong> · Vanaf 10 items <strong>15% korting</strong> - automatisch verrekend in de mand.</p>
+          <p className="text-text-muted">Vanaf 3 items <strong>10% korting</strong> · vanaf 5 items <strong>15%</strong> · vanaf 10 items <strong>20%</strong> - automatisch verrekend in de mand.</p>
         </div>
       </div>
 

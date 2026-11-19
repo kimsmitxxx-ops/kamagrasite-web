@@ -7,8 +7,9 @@ import { SHIPPING_FEE_CENTS } from "./shipping";
 // 5+ items = 10%, 10+ items = 15%. Server (orders API) en client
 // (winkelmand/checkout) gebruiken dezelfde logica.
 export const BULK_TIERS = [
-  { qty: 10, pct: 15 },
-  { qty: 5, pct: 10 },
+  { qty: 10, pct: 20 },
+  { qty: 5, pct: 15 },
+  { qty: 3, pct: 10 },
 ];
 
 export function unitDiscountPct(qty: number): number {

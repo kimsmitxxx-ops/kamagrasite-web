@@ -137,7 +137,7 @@ export default async function HomePage() {
             <p className="mt-5 text-lg text-text-muted max-w-xl leading-relaxed">
               Kamagra, Cenforce, Vidalista en Vilitra - chemisch identiek aan Viagra, Cialis
               en Levitra maar voor een fractie van de prijs. Directe import van gecertificeerde
-              Indiase fabrikanten. Bulk-korting vanaf 5 stuks, neutrale verpakking en
+              Indiase fabrikanten. Bulk-korting vanaf 3 stuks, neutrale verpakking en
               op de post zodra je betaling binnen is.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
