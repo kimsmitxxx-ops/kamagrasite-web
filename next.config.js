@@ -31,6 +31,13 @@ module.exports = {
       // site heten ze /kennisbank/*. Redirect zodat oude bodies niet 404 geven.
       { source: "/onderzoek/:slug", destination: "/kennisbank/:slug/", permanent: true },
 
+      // /kamagra-kopen was een pagina van onszelf: hij stond niet op de oude
+      // site en had nul kliks en nul vertoningen, terwijl de homepage 136
+      // kliks per jaar haalt op precies die term. Twee eigen pagina's om
+      // hetzelfde woord is er een te veel. De uitleg staat nu op de homepage
+      // (src/content/homepage-body.ts) en deze URL gaat daar permanent heen.
+      { source: "/kamagra-kopen", destination: "/", permanent: true },
+
       // ---------------------------------------------------------------------
       // Overname van de WooCommerce-shop op kamagrasite.nl. Onderbouwing en
       // cijfers per URL staan in URL-OVERNAME.md; die zijn uit Search Console

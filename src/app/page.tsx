@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { HOMEPAGE_BODY_HTML, HOMEPAGE_BODY_FAQ } from "@/content/homepage-body";
 import { BESTSELLER_PEILDATUM, sorteerOpVerkoop } from "@/lib/bestsellers";
 import { preorder } from "@/lib/preorder";
 import { listProducts, listBlogPosts, listCategories, listFeaturedProducts } from "@/lib/queries";
@@ -56,6 +57,13 @@ const HOMEPAGE_FAQ = [
   },
 ];
 
+// De vragen van de homepage plus die van de verhuisde pagina, ontdubbeld op
+// het onderwerp: beide hadden er een over het recept.
+const ALLE_VRAGEN = [
+  ...HOMEPAGE_FAQ.map((f) => ({ question: f.question, answer: f.answer })),
+  ...HOMEPAGE_BODY_FAQ.map((f) => ({ question: f.q, answer: f.a })),
+].filter((v, i, lijst) => lijst.findIndex((x) => x.question.toLowerCase() === v.question.toLowerCase()) === i);
+
 export default async function HomePage() {
   const [dbProducts, dbArticles, dbCategories, featuredProducts] = await Promise.all([
     listProducts({ limit: 24 }),
@@ -85,7 +93,7 @@ export default async function HomePage() {
   const faqJsonLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: HOMEPAGE_FAQ.map((f) => ({
+    mainEntity: ALLE_VRAGEN.map((f) => ({
       "@type": "Question",
       name: f.question,
       acceptedAnswer: { "@type": "Answer", text: f.answer },
@@ -309,12 +317,25 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* De uitleg die hiervoor op /kamagra-kopen stond. Die pagina hebben wij
+          zelf gemaakt en had nul kliks; de homepage rankt al op die term. Twee
+          eigen pagina's om hetzelfde woord is er een te veel, dus de URL gaat
+          nu met een 301 hierheen en de tekst staat waar hij meetelt. */}
+      <section className="bg-wash py-16">
+        <div className="mx-auto max-w-3xl px-4">
+          <div
+            className="prose prose-sm sm:prose max-w-none text-text [&_h2]:font-display [&_h2]:text-2xl [&_h2]:mt-8 [&_h2]:mb-3 [&_h2]:text-text [&_h3]:font-display [&_h3]:text-xl [&_h3]:mt-6 [&_h3]:mb-2 [&_p]:text-text-muted [&_p]:leading-relaxed [&_li]:text-text-muted [&_a]:text-accent [&_a]:underline [&_strong]:text-text"
+            dangerouslySetInnerHTML={{ __html: HOMEPAGE_BODY_HTML }}
+          />
+        </div>
+      </section>
+
       {/* FAQ */}
       <section className="mx-auto max-w-4xl px-4 py-16">
         <p className="text-xs uppercase tracking-[0.15em] text-accent font-semibold">Veelgestelde vragen</p>
         <h2 className="mt-2 font-display text-3xl md:text-4xl">Direct antwoord</h2>
         <div className="mt-8">
-          <FaqAccordion items={HOMEPAGE_FAQ.map((f) => ({ question: f.question, answer: f.answer }))} />
+          <FaqAccordion items={ALLE_VRAGEN} />
         </div>
       </section>
 
