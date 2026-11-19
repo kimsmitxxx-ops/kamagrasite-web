@@ -8,10 +8,12 @@
  * direct op de pagina. Blijkt uit de meting dat een stad vaak gevraagd wordt
  * (event `stad_gekozen`), dan krijgt die alsnog een echte eigen pagina.
  *
- * Per stad staat alleen de provincie erbij. Dat is een hard gegeven en het
- * maakt het antwoord plaatselijk zonder iets te beweren dat we niet kunnen
- * nakijken. Inwonertallen, apotheken in de buurt en dat soort cijfers staan er
- * bewust niet in: die veranderen en zijn hier niet te verifieren.
+ * Per stad staan alleen harde, naslaanbare gegevens: provincie, en voor de
+ * acht steden met een eigen pagina het inwonertal van CBS (zie
+ * INWONERS_BRON). Alles wat niet te controleren is blijft eruit. Er bestaat
+ * bijvoorbeeld geen cijfer over hoeveel mensen per gemeente dit middel
+ * gebruiken, en dat terugrekenen uit een landelijk percentage zou betekenen
+ * dat we een gezondheidsstatistiek verzinnen.
  */
 
 export type Land = "NL" | "BE";
@@ -25,18 +27,23 @@ export interface Stad {
   alias?: string[];
   /** Slug van de eigen pagina, als die bestaat (buy_pages met tag 'stad'). */
   pagina?: string;
+  /**
+   * Inwonertal volgens CBS. Alleen ingevuld voor steden met een eigen pagina;
+   * zie INWONERS_BRON voor tabel en peilmoment.
+   */
+  inwoners?: number;
 }
 
 export const STEDEN: Stad[] = [
   // --- Nederland ---
-  { naam: "Amsterdam", provincie: "Noord-Holland", land: "NL", pagina: "kamagra-amsterdam" },
-  { naam: "Rotterdam", provincie: "Zuid-Holland", land: "NL", pagina: "kamagra-rotterdam" },
-  { naam: "Den Haag", provincie: "Zuid-Holland", land: "NL", alias: ["s-Gravenhage", "Gravenhage"], pagina: "kamagra-den-haag" },
-  { naam: "Utrecht", provincie: "Utrecht", land: "NL", pagina: "utrecht" },
-  { naam: "Eindhoven", provincie: "Noord-Brabant", land: "NL", pagina: "eindhoven" },
-  { naam: "Groningen", provincie: "Groningen", land: "NL", pagina: "kamagra-groningen" },
-  { naam: "Nijmegen", provincie: "Gelderland", land: "NL", pagina: "nijmegen" },
-  { naam: "Leeuwarden", provincie: "Friesland", land: "NL", pagina: "leeuwarden" },
+  { naam: "Amsterdam", provincie: "Noord-Holland", land: "NL", inwoners: 950787, pagina: "kamagra-amsterdam" },
+  { naam: "Rotterdam", provincie: "Zuid-Holland", land: "NL", inwoners: 675253, pagina: "kamagra-rotterdam" },
+  { naam: "Den Haag", provincie: "Zuid-Holland", land: "NL", alias: ["s-Gravenhage", "Gravenhage"], inwoners: 568749, pagina: "kamagra-den-haag" },
+  { naam: "Utrecht", provincie: "Utrecht", land: "NL", inwoners: 379523, pagina: "utrecht" },
+  { naam: "Eindhoven", provincie: "Noord-Brabant", land: "NL", inwoners: 250896, pagina: "eindhoven" },
+  { naam: "Groningen", provincie: "Groningen", land: "NL", inwoners: 244469, pagina: "kamagra-groningen" },
+  { naam: "Nijmegen", provincie: "Gelderland", land: "NL", inwoners: 190483, pagina: "nijmegen" },
+  { naam: "Leeuwarden", provincie: "Friesland", land: "NL", inwoners: 130862, pagina: "leeuwarden" },
   { naam: "Tilburg", provincie: "Noord-Brabant", land: "NL" },
   { naam: "Almere", provincie: "Flevoland", land: "NL" },
   { naam: "Breda", provincie: "Noord-Brabant", land: "NL" },
@@ -160,5 +167,17 @@ export function vindStad(invoer: string, land?: Land): Stad | null {
     kandidaten.find((s) => [s.naam, ...(s.alias ?? [])].some((n) => normaliseer(n) === q)) ?? null
   );
 }
+
+/**
+ * Waar de inwonertallen vandaan komen. Opgehaald bij CBS en niet geschat:
+ * tabel 37230ned (Bevolkingsontwikkeling; regio per maand), stand eind
+ * september 2026. Zet je nieuwe steden erbij, haal het cijfer dan bij dezelfde
+ * tabel op in plaats van het ergens over te typen.
+ */
+export const INWONERS_BRON = {
+  bron: "CBS",
+  tabel: "37230ned",
+  peilmoment: "september 2026",
+} as const;
 
 export const STEDEN_MET_PAGINA = STEDEN.filter((s) => s.pagina);

@@ -14,6 +14,7 @@ import { ProductCard } from "@/components/product-card";
 import { PriceCompareTable } from "@/components/shop/price-compare-table";
 import { BuyPageLinks } from "@/components/shop/buy-page-links";
 import { MedicalDisclaimer } from "@/components/medical-disclaimer";
+import { StadFeiten } from "@/components/shop/stad-feiten";
 import { Breadcrumb } from "@/components/breadcrumb";
 import { BULK_TIERS } from "@/lib/bulk-discount";
 import { MERCHANT_RETURN_POLICY } from "@/lib/return-policy";
@@ -213,6 +214,11 @@ export default async function BuyPage(props: { params: Promise<{ slug: string }>
           </div>
         </div>
       )}
+
+      {/* Alleen op de stadspagina's: provincie, inwonertal en wat er in die
+          stad wel en niet kan. Tot nu toe verschilden die acht pagina's
+          alleen in de plaatsnaam. */}
+      {page.tag === "stad" && <StadFeiten slug={page.slug} />}
 
       <section id="aanbod" className="mt-10 scroll-mt-28">
         <div className="flex flex-wrap items-baseline justify-between gap-3">
