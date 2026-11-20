@@ -73,7 +73,18 @@ export function maatPad(src: string, breedte: number): string | null {
  * wordt; een kaartje van 300 pixels heeft niets aan een 1280-variant.
  */
 export function srcSet(src: string, maxBreedte?: number): string {
-  const bruikbaar = BREEDTES.filter((b) => !maxBreedte || b <= maxBreedte * 2);
+  let bruikbaar: number[] = BREEDTES.filter((b) => !maxBreedte || b <= maxBreedte * 2);
+
+  // Altijd minstens de kleinste maat aanbieden, ook als die groter is dan de
+  // plek waar het beeld staat.
+  //
+  // Zonder deze regel viel precies de grootste verspilling buiten de boot: een
+  // artikelthumbnail staat in een vakje van 112 pixels, dus 112 * 2 = 224, en
+  // dan haalt geen enkele breedte het filter. Die kreeg dan het origineel van
+  // 147 KB voor een plekje van 112 pixels. De 320w-variant is nog steeds
+  // ruimer dan nodig maar scheelt daar het meest van alles.
+  if (!bruikbaar.length) bruikbaar = [BREEDTES[0]];
+
   const delen = bruikbaar
     .map((b) => {
       const p = maatPad(src, b);

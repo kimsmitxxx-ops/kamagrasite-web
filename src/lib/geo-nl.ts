@@ -71,8 +71,23 @@ export function organisatieJsonLd(
      * een claim die je niet kunt waarmaken.
      */
     sameAs?: string[];
+    /**
+     * Verkoopt deze site werkelijk iets? Standaard ja, want dat geldt voor de
+     * shops. Staat dit op false, dan wordt het een gewone Organization zonder
+     * valuta.
+     *
+     * Waarom dit een schakelaar is en geen vaste keuze: anabolenpro.com is op
+     * 28 okt 2026 omgebouwd tot informatiesite en verkoopt niets meer, maar
+     * bleef OnlineStore uitzenden. Google verwachtte daardoor
+     * productfragmenten en zag die ook: op /winstrol, /boldenone en /masteron
+     * stond in november nog "Productfragmenten" als gedetecteerd rich result,
+     * terwijl diezelfde pagina's zich als Drug en MedicalWebPage aandienen.
+     * Dat is in dit vakgebied geen sterk signaal.
+     */
+    verkoopt?: boolean;
   } = {},
 ) {
+  const winkel = opties.verkoopt !== false;
   const basis = siteUrl.replace(/\/$/, "");
   const naam = shop?.name || undefined;
   const varianten = opties.naamVarianten?.filter((v) => v && v !== naam);
@@ -101,7 +116,7 @@ export function organisatieJsonLd(
     "@context": "https://schema.org",
     "@graph": [
       {
-        "@type": "OnlineStore",
+        "@type": winkel ? "OnlineStore" : "Organization",
         "@id": `${basis}/#organisatie`,
         name: naam,
         ...(varianten && varianten.length > 0 ? { alternateName: varianten } : {}),
@@ -115,7 +130,7 @@ export function organisatieJsonLd(
         // in welke taal deze site bedoeld is.
         areaServed: LEVERLANDEN.map((land) => ({ "@type": "Country", name: land })),
         inLanguage: "nl-NL",
-        currenciesAccepted: "EUR",
+        ...(winkel ? { currenciesAccepted: "EUR" } : {}),
         ...(opties.sameAs && opties.sameAs.length > 0 ? { sameAs: opties.sameAs } : {}),
         ...(identifiers.length > 0 ? { identifier: identifiers } : {}),
       },
