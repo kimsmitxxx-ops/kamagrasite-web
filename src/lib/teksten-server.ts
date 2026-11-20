@@ -28,11 +28,23 @@ import { TEKSTEN } from "@/lib/teksten-config";
 /**
  * De lijst wordt bij elk paginaverzoek opgevraagd, dus hij blijft een minuut
  * hangen. Een tekst die een minuut achterloopt kan; een databasebevraging per
- * bezoeker niet. Het dashboard purgt de pagina na opslaan, dus in de praktijk
- * staat het er meteen op.
+ * bezoeker niet. Het dashboard purgt na opslaan op TEKSTEN_TAG, dus in de
+ * praktijk staat het er meteen op.
+ *
+ * Twee lagen die niet hetzelfde doen: CACHE_MS is het geheugen van één
+ * serverproces (scheelt een fetch binnen hetzelfde verzoek en tussen twee
+ * verzoeken op dezelfde instantie), de fetch-cache hieronder is die van Next
+ * en wordt wel door een purge geraakt.
  */
 const CACHE_MS = 60_000;
 let cache: { waarde: Afwijking[]; tot: number } | null = null;
+
+/**
+ * De tag waarop shop-dash de teksten van een site purgt. Ook in de
+ * `/api/revalidate` van de shop zetten, anders blijft een gewijzigde tekst tot
+ * een minuut hangen.
+ */
+export const TEKSTEN_TAG = "teksten";
 
 type Afwijking = { sleutel: string; merk: string; waarde: unknown };
 
@@ -51,7 +63,18 @@ async function haalAfwijkingen(): Promise<Afwijking[]> {
       `${url()}/rest/v1/site_teksten?shop_id=eq.${TEKSTEN.shopId}&select=sleutel,merk,waarde`,
       {
         headers: { apikey: key, Authorization: `Bearer ${key}` },
-        cache: "no-store",
+        // GEEN `cache: "no-store"` hier. Dit bestand wordt via de footer in de
+        // root-layout op élke route aangeroepen, en Next gooit op een
+        // no-store-fetch tijdens een statische render een DynamicServerError.
+        // De `catch` hieronder slikte die op, en daarmee viel de render om: op
+        // 19 nov 2026 gaven /product/<slug>/ en /categorie/<slug>/ van
+        // kamagrashop daardoor ruim een uur een 500, terwijl de homepage en
+        // /winkel/ gewoon doorliepen. Die twee waren de enige routes met
+        // `generateStaticParams` en dus de enige statische; omdat die functie
+        // een lege lijst teruggeeft prerendert de build niets en ziet de build
+        // de fout nooit. Een gecachete lees met een tag mag wel in een
+        // statische render, en de purge doet de rest.
+        next: { revalidate: 60, tags: [TEKSTEN_TAG] },
         signal: AbortSignal.timeout(2500),
       },
     );
