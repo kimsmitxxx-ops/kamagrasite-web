@@ -32,7 +32,7 @@ export function MobileTabBar() {
             <Home size={20} />
             <span>Home</span>
           </Link>
-          <Link href="/winkel" className={tabClass(isActive("/winkel"))}>
+          <Link href="/winkel/" className={tabClass(isActive("/winkel"))}>
             <Store size={20} />
             <span>Winkel</span>
           </Link>
@@ -60,7 +60,7 @@ export function MobileTabBar() {
             </span>
             <span>Wagen</span>
           </button>
-          <Link href="/account" className={tabClass(isActive("/account"))}>
+          <Link href="/account/" className={tabClass(isActive("/account"))}>
             <User size={20} />
             <span>Account</span>
           </Link>

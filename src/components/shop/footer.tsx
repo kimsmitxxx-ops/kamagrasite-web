@@ -40,7 +40,7 @@ export async function Footer() {
               <Clock size={14} className="text-accent" /> Verstuurd zodra je betaling binnen is
             </li>
             <li>
-              <Link href="/contact" className="inline-flex items-center gap-2 text-primary-foreground/80 hover:text-accent">
+              <Link href="/contact/" className="inline-flex items-center gap-2 text-primary-foreground/80 hover:text-accent">
                 <Mail size={14} className="text-accent" /> Contactformulier
               </Link>
             </li>
@@ -59,7 +59,7 @@ export async function Footer() {
                 </li>
               ))}
               <li>
-                <Link href="/winkel" className="text-accent hover:text-accent-soft">
+                <Link href="/winkel/" className="text-accent hover:text-accent-soft">
                   Alle producten →
                 </Link>
               </li>
@@ -70,13 +70,13 @@ export async function Footer() {
             <ul className="space-y-2 text-sm">
               {STOF_FILTERS.map((s) => (
                 <li key={s.slug}>
-                  <Link href={`/winkel?stof=${s.slug}`} className="text-primary-foreground/70 hover:text-accent">
+                  <Link href={`/winkel/?stof=${s.slug}`} className="text-primary-foreground/70 hover:text-accent">
                     {s.label}
                   </Link>
                 </li>
               ))}
               <li>
-                <Link href="/begrippenlijst" className="text-accent hover:text-accent-soft">
+                <Link href="/begrippenlijst/" className="text-accent hover:text-accent-soft">
                   Begrippenlijst →
                 </Link>
               </li>
@@ -92,19 +92,19 @@ export async function Footer() {
                   </Link>
                 </li>
               ))}
-              <li><Link href="/kennisbank" className="text-accent hover:text-accent-soft">Alle artikelen →</Link></li>
+              <li><Link href="/kennisbank/" className="text-accent hover:text-accent-soft">Alle artikelen →</Link></li>
             </ul>
           </div>
           <div>
             <h4 className="font-display text-base mb-3 text-primary-foreground">Service</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/bezorging" className="text-primary-foreground/70 hover:text-accent">Bezorging</Link></li>
-              <li><Link href="/retourneren" className="text-primary-foreground/70 hover:text-accent">Retourneren</Link></li>
-              <li><Link href="/lab" className="text-primary-foreground/70 hover:text-accent">Herkomst &amp; kwaliteit</Link></li>
-              <li><Link href="/contact" className="text-primary-foreground/70 hover:text-accent">Contact</Link></li>
-              <li><Link href="/over-ons" className="text-primary-foreground/70 hover:text-accent">Over ons</Link></li>
-              <li><Link href="/voorwaarden" className="text-primary-foreground/70 hover:text-accent">Voorwaarden</Link></li>
-              <li><Link href="/privacy" className="text-primary-foreground/70 hover:text-accent">Privacy</Link></li>
+              <li><Link href="/bezorging/" className="text-primary-foreground/70 hover:text-accent">Bezorging</Link></li>
+              <li><Link href="/retourneren/" className="text-primary-foreground/70 hover:text-accent">Retourneren</Link></li>
+              <li><Link href="/lab/" className="text-primary-foreground/70 hover:text-accent">Herkomst &amp; kwaliteit</Link></li>
+              <li><Link href="/contact/" className="text-primary-foreground/70 hover:text-accent">Contact</Link></li>
+              <li><Link href="/over-ons/" className="text-primary-foreground/70 hover:text-accent">Over ons</Link></li>
+              <li><Link href="/voorwaarden/" className="text-primary-foreground/70 hover:text-accent">Voorwaarden</Link></li>
+              <li><Link href="/privacy/" className="text-primary-foreground/70 hover:text-accent">Privacy</Link></li>
               <li><a href="/sitemap.xml" className="text-primary-foreground/70 hover:text-accent">Sitemap</a></li>
             </ul>
           </div>
@@ -116,7 +116,7 @@ export async function Footer() {
               <ul className="space-y-2 text-sm">
                 {steden.map((p) => (
                   <li key={p.slug}>
-                    <Link href={`/${p.slug}`} className="text-primary-foreground/70 hover:text-accent">
+                    <Link href={`/${p.slug}/`} className="text-primary-foreground/70 hover:text-accent">
                       {p.nav_label || p.h1}
                     </Link>
                   </li>

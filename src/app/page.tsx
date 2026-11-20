@@ -141,10 +141,10 @@ export default async function HomePage() {
               op de post zodra je betaling binnen is.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
-              <Link href="/winkel" className="inline-flex items-center gap-2 rounded bg-accent px-6 h-12 text-accent-foreground font-medium hover:bg-accent-muted transition-colors">
+              <Link href="/winkel/" className="inline-flex items-center gap-2 rounded bg-accent px-6 h-12 text-accent-foreground font-medium hover:bg-accent-muted transition-colors">
                 Bekijk producten <ArrowRight size={16} />
               </Link>
-              <Link href="/kennisbank" className="inline-flex items-center gap-2 rounded border border-border-strong px-6 h-12 text-text font-medium hover:bg-veil transition-colors">
+              <Link href="/kennisbank/" className="inline-flex items-center gap-2 rounded border border-border-strong px-6 h-12 text-text font-medium hover:bg-veil transition-colors">
                 Kennisbank
               </Link>
             </div>
@@ -192,13 +192,13 @@ export default async function HomePage() {
                 {top5.length > 0 ? "Top 5 meest verkocht" : "Uitgelichte producten"}
               </h2>
             </div>
-            <Link href="/winkel" className="text-sm text-accent hover:text-accent-muted inline-flex items-center gap-1">
+            <Link href="/winkel/" className="text-sm text-accent hover:text-accent-muted inline-flex items-center gap-1">
               Volledige catalogus <ArrowRight size={14} />
             </Link>
           </div>
           <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
             {(top5.length > 0 ? top5 : featured.slice(0, 5)).map((p, i) => (
-              <Link key={p.id} href={`/product/${p.slug}`} className="block">
+              <Link key={p.id} href={`/product/${p.slug}/`} className="block">
                 <ProductCard
                   image={p.image_url || "/assets/cat-kamagra.jpg"}
                   name={p.name}
@@ -222,7 +222,7 @@ export default async function HomePage() {
           <h2 className="font-display text-3xl">Meest bestelde producten</h2>
           <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {bestsellers.map((p) => (
-              <Link key={p.id} href={`/product/${p.slug}`} className="block">
+              <Link key={p.id} href={`/product/${p.slug}/`} className="block">
                 <ProductCard
                   image={p.image_url || "/assets/cat-kamagra.jpg"}
                   name={p.name}
@@ -264,7 +264,7 @@ export default async function HomePage() {
               <p className="text-xs uppercase tracking-[0.15em] text-accent font-semibold">Kennisbank</p>
               <h2 className="mt-2 font-display text-3xl md:text-4xl">Onderbouwd &amp; scherp</h2>
             </div>
-            <Link href="/kennisbank" className="text-sm text-accent hover:text-accent-muted inline-flex items-center gap-1">
+            <Link href="/kennisbank/" className="text-sm text-accent hover:text-accent-muted inline-flex items-center gap-1">
               Alle artikelen <ArrowRight size={14} />
             </Link>
           </div>
@@ -277,7 +277,7 @@ export default async function HomePage() {
             {dbArticles.map((a: any) => (
               <ArticleCard
                 key={a.id}
-                href={`/kennisbank/${a.slug}`}
+                href={`/kennisbank/${a.slug}/`}
                 title={a.title}
                 image={a.image_url || "/assets/cat-kamagra.jpg"}
                 excerpt={a.excerpt || ""}

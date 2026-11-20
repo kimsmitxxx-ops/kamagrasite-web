@@ -140,7 +140,7 @@ export function ContactForm() {
           <div className="flex items-center justify-between gap-4 pt-2">
             <p className="text-xs text-primary-foreground/55">
               Door te versturen ga je akkoord met onze{" "}
-              <Link href="/privacy" className="text-accent hover:underline">
+              <Link href="/privacy/" className="text-accent hover:underline">
                 privacyverklaring
               </Link>
               .

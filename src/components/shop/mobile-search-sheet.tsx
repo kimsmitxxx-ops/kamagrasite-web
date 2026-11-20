@@ -95,7 +95,7 @@ export function MobileSearchSheet({ open, onOpenChange }: MobileSearchSheetProps
               {STOF_FILTERS.map((s) => (
                 <Link
                   key={s.slug}
-                  href={`/winkel?stof=${s.slug}`}
+                  href={`/winkel/?stof=${s.slug}`}
                   onClick={() => onOpenChange(false)}
                   className="px-3 h-8 inline-flex items-center rounded-full border border-border bg-surface text-sm text-text hover:border-accent"
                 >

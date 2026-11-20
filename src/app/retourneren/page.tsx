@@ -101,7 +101,7 @@ export default function RetourPage() {
             <h2 className="font-display text-2xl text-text">Veelgestelde vragen</h2>
             <p className="mt-2 text-sm text-text-muted">
               Twijfel je over jouw situatie?{" "}
-              <Link href="/contact" className="text-accent hover:underline">
+              <Link href="/contact/" className="text-accent hover:underline">
                 Neem contact op
               </Link>
               .
@@ -109,7 +109,7 @@ export default function RetourPage() {
             <div className="mt-6 rounded-md border border-border bg-surface p-5">
               <Mail size={16} className="text-accent" />
               <p className="mt-2 font-medium text-text">Klantenservice</p>
-              <Link href="/contact" className="text-sm text-accent hover:underline">
+              <Link href="/contact/" className="text-sm text-accent hover:underline">
                 Stuur een bericht via het contactformulier
               </Link>
               <p className="mt-2 text-xs text-text-subtle">Antwoord binnen 48 uur.</p>

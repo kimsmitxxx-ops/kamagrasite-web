@@ -141,7 +141,7 @@ export default function HerkomstPage() {
                 <ScanLine size={16} /> Zelf je strip controleren
               </Link>
               <Link
-                href="/winkel"
+                href="/winkel/"
                 className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/20 px-5 py-3 text-sm font-medium hover:bg-primary-soft"
               >
                 Naar de winkel <ArrowRight size={16} />
@@ -261,7 +261,7 @@ export default function HerkomstPage() {
               </ul>
               <p className="mt-5 text-sm text-primary/75 leading-relaxed">
                 Klopt er iets niet, neem dan niets in en{" "}
-                <Link href="/contact" className="text-accent underline">
+                <Link href="/contact/" className="text-accent underline">
                   stuur ons een foto
                 </Link>
                 . We lossen het op in je volgende zending.
@@ -275,7 +275,7 @@ export default function HerkomstPage() {
                 staat alleen onze bedrijfsnaam, niet wat je hebt besteld.
               </p>
               <Link
-                href="/bezorging"
+                href="/bezorging/"
                 className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-accent hover:text-accent-muted"
               >
                 Meer over bezorging <ArrowRight size={14} />
@@ -316,13 +316,13 @@ export default function HerkomstPage() {
           </div>
           <div className="flex flex-wrap gap-3">
             <Link
-              href="/kennisbank"
+              href="/kennisbank/"
               className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-semibold text-accent-foreground hover:bg-accent-soft"
             >
               <BookOpen size={16} /> Naar kennisbank
             </Link>
             <Link
-              href="/winkel"
+              href="/winkel/"
               className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/20 px-5 py-3 text-sm font-medium hover:bg-primary-soft"
             >
               Naar de winkel <ArrowRight size={16} />

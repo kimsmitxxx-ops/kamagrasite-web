@@ -174,7 +174,7 @@ export function Header(_props: HeaderProps = {}) {
         </div>
         <nav className="ml-auto flex items-center gap-0.5">
           <Link
-            href="/account"
+            href="/account/"
             className="hidden md:inline-flex h-9 w-9 items-center justify-center rounded text-text hover:bg-veil"
             aria-label="Account"
           >
@@ -236,7 +236,7 @@ export function Header(_props: HeaderProps = {}) {
                       {c.name}
                     </Link>
                   ))}
-                  <Link href="/winkel" onClick={() => setOpenMega(null)} className="mt-2 block rounded px-2 py-1.5 font-medium text-accent hover:bg-veil">
+                  <Link href="/winkel/" onClick={() => setOpenMega(null)} className="mt-2 block rounded px-2 py-1.5 font-medium text-accent hover:bg-veil">
                     Alle producten &rarr;
                   </Link>
                 </div>
@@ -245,7 +245,7 @@ export function Header(_props: HeaderProps = {}) {
           </div>
 
           <Link
-            href="/lab"
+            href="/lab/"
             onMouseEnter={() => setOpenMega(null)}
             className="h-11 inline-flex items-center px-4 font-medium text-text hover:text-accent border-b-2 border-transparent hover:border-accent transition-colors"
           >
@@ -307,16 +307,16 @@ export function Header(_props: HeaderProps = {}) {
                   <BookOpen size={12} /> Kennisbank
                 </p>
                 <div className="space-y-1 text-sm">
-                  <Link href="/kennisbank" onClick={() => setOpenMega(null)} className="block rounded px-2 py-1.5 text-text-muted hover:bg-veil hover:text-accent">
+                  <Link href="/kennisbank/" onClick={() => setOpenMega(null)} className="block rounded px-2 py-1.5 text-text-muted hover:bg-veil hover:text-accent">
                     Alle artikelen
                   </Link>
-                  <Link href="/kennisbank?cat=kennis" onClick={() => setOpenMega(null)} className="block rounded px-2 py-1.5 text-text-muted hover:bg-veil hover:text-accent">
+                  <Link href="/kennisbank/?cat=kennis" onClick={() => setOpenMega(null)} className="block rounded px-2 py-1.5 text-text-muted hover:bg-veil hover:text-accent">
                     Kennis
                   </Link>
-                  <Link href="/kennisbank?cat=onderzoek" onClick={() => setOpenMega(null)} className="block rounded px-2 py-1.5 text-text-muted hover:bg-veil hover:text-accent">
+                  <Link href="/kennisbank/?cat=onderzoek" onClick={() => setOpenMega(null)} className="block rounded px-2 py-1.5 text-text-muted hover:bg-veil hover:text-accent">
                     Onderzoek
                   </Link>
-                  <Link href="/kennisbank?cat=nieuws" onClick={() => setOpenMega(null)} className="block rounded px-2 py-1.5 text-text-muted hover:bg-veil hover:text-accent">
+                  <Link href="/kennisbank/?cat=nieuws" onClick={() => setOpenMega(null)} className="block rounded px-2 py-1.5 text-text-muted hover:bg-veil hover:text-accent">
                     Nieuws
                   </Link>
                 </div>
@@ -325,7 +325,7 @@ export function Header(_props: HeaderProps = {}) {
           </div>
 
           <Link
-            href="/contact"
+            href="/contact/"
             onMouseEnter={() => setOpenMega(null)}
             className="h-11 inline-flex items-center px-4 font-medium text-text hover:text-accent border-b-2 border-transparent hover:border-accent transition-colors"
           >

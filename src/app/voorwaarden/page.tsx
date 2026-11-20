@@ -146,7 +146,7 @@ export default function VoorwaardenPage() {
 
           <div className="rounded-md border border-border bg-surface p-5 text-sm text-text-muted">
             Vragen over deze voorwaarden? Stel ze via het{" "}
-            <Link href="/contact" className="text-accent hover:underline">
+            <Link href="/contact/" className="text-accent hover:underline">
               contactformulier
             </Link>
             .

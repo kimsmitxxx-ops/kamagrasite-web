@@ -3,6 +3,11 @@
  * Product-catalog + blogs komen uit Supabase; deze file bevat de vaste
  * navigatie-vocabulaire (categorieen, werkzame stoffen, toedieningsvormen)
  * en de fallback-beelden voor de homepage-tegels.
+ *
+ * De `to` van elke categorie wijst naar de schone URL (/kamagra/), niet naar
+ * /winkel/kamagra. Die laatste bestaat nog en leidt permanent om, maar dan is
+ * elke klik in het hoofdmenu een omleiding en dat is precies wat je op een net
+ * verhuisd domein niet wilt.
  */
 
 const catErectie = "/assets/cat-erectie.webp";
@@ -21,35 +26,35 @@ export const mainCategories: MainCategory[] = [
     name: "Kamagra",
     tagline: "Sildenafil 100 mg van Ajanta Pharma, als tablet, jelly, kauwtablet of bruistablet.",
     image: catErectie,
-    to: "/winkel/kamagra",
+    to: "/kamagra/",
   },
   {
     slug: "cenforce",
     name: "Cenforce",
     tagline: "Sildenafil van 50 tot 200 mg, zodat je de dosering precies kunt opbouwen.",
     image: catErectie,
-    to: "/winkel/cenforce",
+    to: "/cenforce/",
   },
   {
     slug: "vidalista",
     name: "Vidalista",
     tagline: "Tadalafil met een werkingsduur tot 36 uur, geen strakke timing nodig.",
     image: catErectie,
-    to: "/winkel/vidalista",
+    to: "/vidalista/",
   },
   {
     slug: "vilitra",
     name: "Vilitra",
     tagline: "Vardenafil, het alternatief voor wie slecht reageert op sildenafil.",
     image: catErectie,
-    to: "/winkel/vilitra",
+    to: "/vilitra/",
   },
   {
     slug: "combo-preparaten",
     name: "Combo-preparaten",
     tagline: "Sildenafil of tadalafil met dapoxetine in een tablet: erectie en uitstel in een.",
     image: catErectie,
-    to: "/winkel/combo-preparaten",
+    to: "/combo-preparaten/",
   },
 ];
 

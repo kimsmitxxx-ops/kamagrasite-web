@@ -20,7 +20,7 @@ export function WinkelmandClient({ t }: { t: Teksten }) {
         <div className="mt-10 rounded-2xl border border-dashed border-paper-border bg-paper-soft p-12 text-center">
           <ShoppingBag className="mx-auto h-12 w-12 text-text-subtle" />
           <p className="mt-3 text-text-muted">{t.mand.leeg}</p>
-          <Link href="/winkel" className="mt-5 inline-flex rounded-full bg-accent px-5 py-2 text-sm font-semibold text-accent-foreground hover:bg-accent-soft">
+          <Link href="/winkel/" className="mt-5 inline-flex rounded-full bg-accent px-5 py-2 text-sm font-semibold text-accent-foreground hover:bg-accent-soft">
             Naar winkel
           </Link>
         </div>
@@ -98,7 +98,7 @@ export function WinkelmandClient({ t }: { t: Teksten }) {
                 </p>
               )}
               <CouponField />
-              <Link href="/checkout" className="mt-5 block rounded-full bg-accent px-5 py-3 text-center text-sm font-semibold text-accent-foreground hover:bg-accent-soft">
+              <Link href="/checkout/" className="mt-5 block rounded-full bg-accent px-5 py-3 text-center text-sm font-semibold text-accent-foreground hover:bg-accent-soft">
                 {t.mand.naarCheckout}
               </Link>
               <p className="mt-3 text-center text-[11px] text-text-subtle">{t.mand.verzendkosten}</p>

@@ -74,7 +74,7 @@ export default async function WinkelIndexPage(
             </h4>
             <div className="space-y-1 text-sm">
               <Link
-                href="/winkel"
+                href="/winkel/"
                 className="block rounded px-2 py-1.5 bg-accent text-accent-foreground font-semibold"
               >
                 Alle producten
@@ -105,7 +105,7 @@ export default async function WinkelIndexPage(
           <h2 className="font-display text-xl">{products.length} producten</h2>
           <div className="mt-5 grid gap-5 grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {products.map((p) => (
-              <Link key={p.id} href={`/product/${p.slug}`} className="block">
+              <Link key={p.id} href={`/product/${p.slug}/`} className="block">
                 <ProductCard
                   image={p.image_url || "/assets/cat-erectie.webp"}
                   name={p.name}

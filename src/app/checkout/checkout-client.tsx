@@ -124,7 +124,7 @@ export function CheckoutClient({ t }: { t: Teksten }) {
   };
 
   if (cart.items.length === 0) {
-    return <div className="mx-auto max-w-md px-4 py-20 text-center text-text-muted">{t.afrekenen.legeMand} <Link href="/winkel" className="text-accent underline">{t.afrekenen.naarWinkel}</Link></div>;
+    return <div className="mx-auto max-w-md px-4 py-20 text-center text-text-muted">{t.afrekenen.legeMand} <Link href="/winkel/" className="text-accent underline">{t.afrekenen.naarWinkel}</Link></div>;
   }
 
   return (

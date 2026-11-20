@@ -68,7 +68,7 @@ export function KennisbankTabs({ articles, initialTab = "alle" }: Props) {
           {filtered.map((a) => (
             <Link
               key={a.id}
-              href={`/kennisbank/${a.slug}`}
+              href={`/kennisbank/${a.slug}/`}
               className="group block overflow-hidden rounded-2xl border border-paper-border bg-paper-soft transition hover:shadow-md"
             >
               {a.image_url && (

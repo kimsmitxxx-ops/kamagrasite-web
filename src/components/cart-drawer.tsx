@@ -39,7 +39,7 @@ export function CartDrawer() {
               <span className="text-sm">Totaal</span>
               <span className="font-display text-xl">{formatEUR(cart.total)}</span>
             </div>
-            <Link href="/checkout" onClick={cart.close} className="block rounded-lg bg-accent px-4 py-3 text-center text-sm font-semibold text-accent-foreground hover:bg-accent-soft">
+            <Link href="/checkout/" onClick={cart.close} className="block rounded-lg bg-accent px-4 py-3 text-center text-sm font-semibold text-accent-foreground hover:bg-accent-soft">
               Afrekenen
             </Link>
           </div>

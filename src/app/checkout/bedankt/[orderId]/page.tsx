@@ -166,7 +166,7 @@ export default async function BedanktPage(
       )}
 
       <div className="mt-10 text-center text-sm text-text-muted">
-        Vragen? <Link href="/contact" className="text-accent hover:underline">Contact opnemen</Link>{" "}
+        Vragen? <Link href="/contact/" className="text-accent hover:underline">Contact opnemen</Link>{" "}
         of stuur ons een chat (rechtsonder).
       </div>
     </div>

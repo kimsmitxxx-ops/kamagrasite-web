@@ -33,10 +33,10 @@ export function Header({ categories }: { categories: { slug: string; name: strin
             </div>
           </form>
           <nav className="ml-auto hidden items-center gap-1 md:flex">
-            <Link href="/winkel" className="rounded-full px-3 py-2 text-sm hover:bg-primary-soft">Winkel</Link>
-            <Link href="/kennisbank" className="rounded-full px-3 py-2 text-sm hover:bg-primary-soft">Kennisbank</Link>
-            <Link href="/lab" className="rounded-full px-3 py-2 text-sm hover:bg-primary-soft">Kwaliteit</Link>
-            <Link href="/account" className="ml-2 inline-flex items-center gap-1.5 rounded-full border border-primary-muted px-3 py-2 text-sm hover:bg-primary-soft">
+            <Link href="/winkel/" className="rounded-full px-3 py-2 text-sm hover:bg-primary-soft">Winkel</Link>
+            <Link href="/kennisbank/" className="rounded-full px-3 py-2 text-sm hover:bg-primary-soft">Kennisbank</Link>
+            <Link href="/lab/" className="rounded-full px-3 py-2 text-sm hover:bg-primary-soft">Kwaliteit</Link>
+            <Link href="/account/" className="ml-2 inline-flex items-center gap-1.5 rounded-full border border-primary-muted px-3 py-2 text-sm hover:bg-primary-soft">
               <User className="h-4 w-4" /> Account
             </Link>
             <button
@@ -61,9 +61,9 @@ export function Header({ categories }: { categories: { slug: string; name: strin
         </div>
         {open && (
           <div className="space-y-1 border-t border-primary-muted/40 pb-3 pt-3 md:hidden">
-            <Link href="/winkel" className="block rounded px-3 py-2 text-sm">Winkel</Link>
-            <Link href="/kennisbank" className="block rounded px-3 py-2 text-sm">Kennisbank</Link>
-            <Link href="/account" className="block rounded px-3 py-2 text-sm">Account</Link>
+            <Link href="/winkel/" className="block rounded px-3 py-2 text-sm">Winkel</Link>
+            <Link href="/kennisbank/" className="block rounded px-3 py-2 text-sm">Kennisbank</Link>
+            <Link href="/account/" className="block rounded px-3 py-2 text-sm">Account</Link>
             <div className="border-t border-primary-muted/40 pt-2">
               {categories.map((c) => (
                 <Link key={c.slug} href={`/${c.slug}/`} className="block rounded px-3 py-1.5 text-sm">{c.name}</Link>

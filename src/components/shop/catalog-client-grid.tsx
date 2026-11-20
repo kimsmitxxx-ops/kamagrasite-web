@@ -74,7 +74,7 @@ export function CatalogClientGrid({ products }: { products: GridProduct[] }) {
             <p className="text-sm text-text-muted">{zichtbaar.length} producten</p>
             <div className="mt-4 grid gap-5 grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {zichtbaar.map((p) => (
-                <Link key={p.id} href={`/product/${p.slug}`} className="block">
+                <Link key={p.id} href={`/product/${p.slug}/`} className="block">
                   <ProductCard
                     image={p.image_url || "/assets/cat-erectie.webp"}
                     name={p.name}

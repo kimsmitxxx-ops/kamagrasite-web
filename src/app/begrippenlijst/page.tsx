@@ -436,7 +436,7 @@ export default function BegrippenlijstPage() {
           </h3>
           <p className="mt-2 text-sm text-text-muted">
             Stuur ons een berichtje via{" "}
-            <Link href="/contact" className="text-accent underline">/contact</Link> - we vullen de
+            <Link href="/contact/" className="text-accent underline">/contact</Link> - we vullen de
             begrippenlijst continu aan op basis van vragen die binnenkomen.
           </p>
         </div>

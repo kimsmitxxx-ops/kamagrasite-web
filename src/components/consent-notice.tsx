@@ -68,7 +68,7 @@ export function ConsentNotice() {
       <p>
         We meten anoniem hoe de site gebruikt wordt. Geen advertenties.{" "}
         <Link
-          href="/privacy"
+          href="/privacy/"
           className="underline underline-offset-2 hover:no-underline"
         >
           Privacybeleid

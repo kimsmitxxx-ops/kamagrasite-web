@@ -25,13 +25,13 @@ export default function NotFound() {
           <Home className="h-4 w-4" /> Naar home
         </Link>
         <Link
-          href="/winkel"
+          href="/winkel/"
           className="inline-flex items-center gap-2 rounded-full border border-border-strong px-5 py-2.5 text-sm font-medium hover:border-accent hover:text-accent"
         >
           <ShoppingBag className="h-4 w-4" /> Naar winkel
         </Link>
         <Link
-          href="/kennisbank"
+          href="/kennisbank/"
           className="inline-flex items-center gap-2 rounded-full border border-border-strong px-5 py-2.5 text-sm font-medium hover:border-accent hover:text-accent"
         >
           <Search className="h-4 w-4" /> Kennisbank

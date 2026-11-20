@@ -107,7 +107,7 @@ export async function CategorieWeergave(
     <div className="mx-auto max-w-7xl px-4 py-10">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="mb-6 text-xs text-text-muted">
-        <Link href="/" className="hover:underline">Home</Link> / <Link href="/winkel" className="hover:underline">Winkel</Link> / <span>{cat.name}</span>
+        <Link href="/" className="hover:underline">Home</Link> / <Link href="/winkel/" className="hover:underline">Winkel</Link> / <span>{cat.name}</span>
       </div>
 
       <h1 className="font-display text-3xl md:text-4xl">{cat.name}</h1>
@@ -131,7 +131,7 @@ export async function CategorieWeergave(
             </h4>
             <div className="space-y-1 text-sm">
               <Link
-                href="/winkel"
+                href="/winkel/"
                 className="block rounded px-2 py-1.5 text-text-muted hover:bg-veil hover:text-accent"
               >
                 Alle producten

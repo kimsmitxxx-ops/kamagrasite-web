@@ -161,7 +161,7 @@ export default function BezorgingPage() {
             <h2 className="mt-3 font-display text-2xl text-text">Veelgestelde vragen</h2>
             <p className="mt-2 text-sm text-text-muted">
               Antwoord niet gevonden? Stuur een bericht via{" "}
-              <Link href="/contact" className="text-accent hover:underline">contact</Link>.
+              <Link href="/contact/" className="text-accent hover:underline">contact</Link>.
             </p>
             <div className="mt-6 rounded-md border border-border bg-surface p-5 text-sm text-text-muted">
               <MapPin size={16} className="text-accent" />

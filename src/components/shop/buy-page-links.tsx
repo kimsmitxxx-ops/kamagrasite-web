@@ -33,7 +33,7 @@ export function BuyPageLinks({
         <ul className="space-y-1 text-sm">
           {items.map((p) => (
             <li key={p.slug}>
-              <Link href={`/${p.slug}`} className="text-text-muted hover:text-accent hover:underline">
+              <Link href={`/${p.slug}/`} className="text-text-muted hover:text-accent hover:underline">
                 {p.h1}
               </Link>
             </li>
@@ -51,7 +51,7 @@ export function BuyPageLinks({
         {items.map((p) => (
           <Link
             key={p.slug}
-            href={`/${p.slug}`}
+            href={`/${p.slug}/`}
             className="group flex items-center justify-between gap-3 rounded-lg border border-border bg-paper-soft px-4 py-3 transition-colors hover:border-accent"
           >
             <span className="text-sm font-medium text-text">{p.h1}</span>

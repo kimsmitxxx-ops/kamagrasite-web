@@ -173,7 +173,7 @@ export default async function BuyPage(props: { params: Promise<{ slug: string }>
         className="mb-6"
         items={[
           { label: "Home", href: "/" },
-          { label: "Winkel", href: "/winkel" },
+          { label: "Alle producten", href: "/winkel/" },
           { label: page.nav_label || page.h1 },
         ]}
       />
@@ -245,7 +245,7 @@ export default async function BuyPage(props: { params: Promise<{ slug: string }>
         {products.length === 0 ? (
           <p className="mt-4 rounded-2xl border border-dashed border-paper-border bg-paper-soft p-10 text-center text-text-muted">
             Er staan nu geen producten bij deze selectie.{" "}
-            <Link href="/winkel" className="text-accent underline">
+            <Link href="/winkel/" className="text-accent underline">
               Bekijk de hele winkel
             </Link>
             .
@@ -253,7 +253,7 @@ export default async function BuyPage(props: { params: Promise<{ slug: string }>
         ) : (
           <div className="mt-5 grid grid-cols-2 gap-5 lg:grid-cols-4">
             {products.map((p) => (
-              <Link key={p.id} href={`/product/${p.slug}`} className="block">
+              <Link key={p.id} href={`/product/${p.slug}/`} className="block">
                 <ProductCard
                   image={p.image_url || "/assets/cat-erectie.webp"}
                   name={p.name}
@@ -308,7 +308,7 @@ export default async function BuyPage(props: { params: Promise<{ slug: string }>
           <ul className="mt-4 space-y-2 text-sm">
             {relatedBlogs.map((b) => (
               <li key={b.id}>
-                <Link href={`/kennisbank/${b.slug}`} className="text-accent underline hover:text-accent-muted">
+                <Link href={`/kennisbank/${b.slug}/`} className="text-accent underline hover:text-accent-muted">
                   {b.title}
                 </Link>
               </li>

@@ -38,12 +38,12 @@ export default async function AccountPage() {
       <p className="mt-2 text-sm text-text-muted">Ingelogd als <strong>{klant.email}</strong></p>
 
       <div className="mt-8 grid gap-3 sm:grid-cols-3">
-        <Link href="/account/orders" className="rounded-2xl border border-paper-border bg-paper-soft p-5 hover:border-accent">
+        <Link href="/account/orders/" className="rounded-2xl border border-paper-border bg-paper-soft p-5 hover:border-accent">
           <Package className="h-5 w-5 text-accent" />
           <p className="mt-2 font-medium">Bestellingen</p>
           <p className="mt-1 text-xs text-text-muted">{orders?.length || 0} recente</p>
         </Link>
-        <Link href="/account" className="rounded-2xl border border-paper-border bg-paper-soft p-5 hover:border-accent">
+        <Link href="/account/" className="rounded-2xl border border-paper-border bg-paper-soft p-5 hover:border-accent">
           <MapPin className="h-5 w-5 text-accent" />
           <p className="mt-2 font-medium">Adressen</p>
           <p className="mt-1 text-xs text-text-muted">Beheer verzendadressen</p>

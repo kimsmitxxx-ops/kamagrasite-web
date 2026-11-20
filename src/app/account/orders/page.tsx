@@ -35,7 +35,7 @@ export default async function OrdersPage() {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10">
-      <Link href="/account" className="inline-flex items-center gap-1 text-xs text-text-muted hover:text-text">
+      <Link href="/account/" className="inline-flex items-center gap-1 text-xs text-text-muted hover:text-text">
         <ArrowLeft className="h-3 w-3" /> Terug naar account
       </Link>
       <h1 className="mt-3 font-display text-3xl">Bestellingen</h1>
@@ -78,7 +78,7 @@ export default async function OrdersPage() {
               ? "Je bestellingen konden even niet worden opgehaald. Probeer het zo nog eens, of mail ons."
               : "Nog geen bestellingen geplaatst."}
           </p>
-          <Link href="/winkel" className="mt-5 inline-flex rounded-full bg-accent px-5 py-2 text-sm font-semibold text-accent-foreground hover:bg-accent-soft">
+          <Link href="/winkel/" className="mt-5 inline-flex rounded-full bg-accent px-5 py-2 text-sm font-semibold text-accent-foreground hover:bg-accent-soft">
             Naar de winkel
           </Link>
         </div>

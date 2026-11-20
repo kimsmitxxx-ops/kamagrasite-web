@@ -121,7 +121,7 @@ export default function PrivacyPage() {
 
           <div className="rounded-md border border-border bg-surface p-5 text-sm text-text-muted">
             Vragen? Stuur ze via het{" "}
-            <Link href="/contact" className="text-accent hover:underline">
+            <Link href="/contact/" className="text-accent hover:underline">
               contactformulier
             </Link>
             .

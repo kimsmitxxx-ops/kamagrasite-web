@@ -44,7 +44,7 @@ export function MobileMenuDrawer({ open, onOpenChange }: Props) {
               {STOF_FILTERS.map((st) => (
                 <li key={st.slug}>
                   <Link
-                    href={`/winkel?stof=${st.slug}`}
+                    href={`/winkel/?stof=${st.slug}`}
                     onClick={close}
                     className="block px-2 py-1.5 rounded text-sm text-primary-foreground/80 hover:bg-primary-soft hover:text-accent"
                   >
@@ -58,32 +58,32 @@ export function MobileMenuDrawer({ open, onOpenChange }: Props) {
           <section className="border-t border-primary-soft pt-4">
             <ul className="space-y-0.5">
               <li>
-                <Link href="/winkel" onClick={close} className="flex items-center gap-3 px-2 py-2.5 rounded text-sm text-primary-foreground/85 hover:bg-primary-soft hover:text-accent">
+                <Link href="/winkel/" onClick={close} className="flex items-center gap-3 px-2 py-2.5 rounded text-sm text-primary-foreground/85 hover:bg-primary-soft hover:text-accent">
                   <Store size={16} className="text-accent" /> Volledige winkel
                 </Link>
               </li>
               <li>
-                <Link href="/begrippenlijst" onClick={close} className="flex items-center gap-3 px-2 py-2.5 rounded text-sm text-primary-foreground/85 hover:bg-primary-soft hover:text-accent">
+                <Link href="/begrippenlijst/" onClick={close} className="flex items-center gap-3 px-2 py-2.5 rounded text-sm text-primary-foreground/85 hover:bg-primary-soft hover:text-accent">
                   <Library size={16} className="text-accent" /> Begrippenlijst
                 </Link>
               </li>
               <li>
-                <Link href="/kennisbank" onClick={close} className="flex items-center gap-3 px-2 py-2.5 rounded text-sm text-primary-foreground/85 hover:bg-primary-soft hover:text-accent">
+                <Link href="/kennisbank/" onClick={close} className="flex items-center gap-3 px-2 py-2.5 rounded text-sm text-primary-foreground/85 hover:bg-primary-soft hover:text-accent">
                   <BookOpen size={16} className="text-accent" /> Kennisbank
                 </Link>
               </li>
               <li>
-                <Link href="/lab" onClick={close} className="flex items-center gap-3 px-2 py-2.5 rounded text-sm text-primary-foreground/85 hover:bg-primary-soft hover:text-accent">
+                <Link href="/lab/" onClick={close} className="flex items-center gap-3 px-2 py-2.5 rounded text-sm text-primary-foreground/85 hover:bg-primary-soft hover:text-accent">
                   <ShieldCheck size={16} className="text-accent" /> Herkomst &amp; kwaliteit
                 </Link>
               </li>
               <li>
-                <Link href="/contact" onClick={close} className="flex items-center gap-3 px-2 py-2.5 rounded text-sm text-primary-foreground/85 hover:bg-primary-soft hover:text-accent">
+                <Link href="/contact/" onClick={close} className="flex items-center gap-3 px-2 py-2.5 rounded text-sm text-primary-foreground/85 hover:bg-primary-soft hover:text-accent">
                   <Mail size={16} className="text-accent" /> Contact
                 </Link>
               </li>
               <li>
-                <Link href="/account" onClick={close} className="flex items-center gap-3 px-2 py-2.5 rounded text-sm text-primary-foreground/85 hover:bg-primary-soft hover:text-accent">
+                <Link href="/account/" onClick={close} className="flex items-center gap-3 px-2 py-2.5 rounded text-sm text-primary-foreground/85 hover:bg-primary-soft hover:text-accent">
                   <User size={16} className="text-accent" /> Account
                 </Link>
               </li>

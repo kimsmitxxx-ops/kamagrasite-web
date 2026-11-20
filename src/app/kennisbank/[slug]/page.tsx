@@ -96,7 +96,7 @@ export default async function KennisbankDetail(props: { params: Promise<{ slug: 
       {profileJsonLd && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(profileJsonLd) }} />
       )}
-      <Link href="/kennisbank" className="inline-flex items-center gap-1 text-xs text-text-muted hover:text-text">
+      <Link href="/kennisbank/" className="inline-flex items-center gap-1 text-xs text-text-muted hover:text-text">
         <ArrowLeft className="h-3 w-3" /> Kennisbank
       </Link>
 

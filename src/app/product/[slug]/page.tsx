@@ -132,7 +132,10 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }} />
       {faqJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />}
 
-      <Link href={catSlug ? `/winkel/${catSlug}` : "/winkel"} className="inline-flex items-center gap-1 text-xs text-text-muted hover:text-text">
+      {/* Naar de schone categorie-URL (/cenforce/) en niet naar
+          /winkel/cenforce: die bestaat nog maar leidt permanent om, dus dit
+          was op elke productpagina een extra rondje. */}
+      <Link href={catSlug ? `/${catSlug}/` : "/winkel/"} className="inline-flex items-center gap-1 text-xs text-text-muted hover:text-text">
         <ArrowLeft className="h-3 w-3" /> Terug naar {p.categories?.name || "winkel"}
       </Link>
 
@@ -255,7 +258,7 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
           <h2 className="font-display text-2xl">Gerelateerde producten</h2>
           <div className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {related.filter((r) => r.id !== p.id).slice(0, 4).map((r) => (
-              <Link key={r.id} href={`/product/${r.slug}`} className="block">
+              <Link key={r.id} href={`/product/${r.slug}/`} className="block">
                 <ProductCard
                   image={r.image_url || "/assets/cat-erectie.webp"}
                   name={r.name}

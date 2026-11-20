@@ -102,7 +102,7 @@ export default async function OverOnsPage() {
               <dt className="w-36 shrink-0 text-text-muted">Fabrikanten</dt>
               <dd className="text-text">
                 Ajanta Pharma, Centurion Laboratories en Sunrise Remedies.{" "}
-                <Link href="/lab" className="text-accent hover:underline">
+                <Link href="/lab/" className="text-accent hover:underline">
                   Meer over herkomst
                 </Link>
               </dd>
@@ -209,7 +209,7 @@ export default async function OverOnsPage() {
               <div className="flex gap-2">
                 <dt className="w-32 text-text-muted">Contact</dt>
                 <dd className="text-text">
-                  <Link className="text-accent hover:underline" href="/contact">
+                  <Link className="text-accent hover:underline" href="/contact/">
                     contactformulier op de site
                   </Link>
                 </dd>
@@ -239,7 +239,7 @@ export default async function OverOnsPage() {
               hartklachten, een lage bloeddruk of gebruik je alfablokkers, overleg dan eerst met een
               arts. Wat die combinaties precies doen staat in onze{" "}
               <Link
-                href="/kennisbank/wisselwerkingen-ed-medicatie-nitraten-alfablokkers"
+                href="/kennisbank/wisselwerkingen-ed-medicatie-nitraten-alfablokkers/"
                 className="text-accent hover:underline"
               >
                 gids over wisselwerkingen
@@ -247,7 +247,7 @@ export default async function OverOnsPage() {
               .
             </p>
             <Link
-              href="/contact"
+              href="/contact/"
               className="mt-6 inline-flex items-center gap-2 h-11 px-5 rounded bg-accent text-accent-foreground text-sm font-semibold hover:bg-accent-soft transition-colors"
             >
               <Mail size={15} /> Stel je vraag

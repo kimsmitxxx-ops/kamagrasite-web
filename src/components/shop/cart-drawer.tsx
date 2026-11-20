@@ -68,7 +68,7 @@ export function CartDrawer() {
           <div className="flex-1 flex flex-col items-center justify-center px-6 text-center gap-4">
             <ShoppingBag size={40} className="text-text-subtle" />
             <p className="text-text-muted">Je winkelmand is leeg.</p>
-            <Link href="/winkel" onClick={() => setOpen(false)}>
+            <Link href="/winkel/" onClick={() => setOpen(false)}>
               <Button variant="secondary" trailingIcon={ArrowRight}>
                 Bekijk de catalogus
               </Button>
@@ -91,7 +91,7 @@ export function CartDrawer() {
                   {it.image && (
                     /* eslint-disable-next-line @next/next/no-img-element */
                     <Link
-                      href={`/product/${it.id}`}
+                      href={`/product/${it.id}/`}
                       onClick={() => setOpen(false)}
                       className="shrink-0"
                       aria-label={`Open ${it.name}`}
@@ -106,7 +106,7 @@ export function CartDrawer() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2">
                       <Link
-                        href={`/product/${it.id}`}
+                        href={`/product/${it.id}/`}
                         onClick={() => setOpen(false)}
                         className="font-medium text-sm text-text leading-snug line-clamp-2 hover:text-accent"
                       >
@@ -234,10 +234,10 @@ export function CartDrawer() {
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-2">
-                <Link href="/winkelmand" onClick={() => setOpen(false)}>
+                <Link href="/winkelmand/" onClick={() => setOpen(false)}>
                   <Button variant="secondary" className="w-full">Winkelmand</Button>
                 </Link>
-                <Link href="/checkout" onClick={() => setOpen(false)}>
+                <Link href="/checkout/" onClick={() => setOpen(false)}>
                   <Button trailingIcon={ArrowRight} className="w-full">Afrekenen</Button>
                 </Link>
               </div>
