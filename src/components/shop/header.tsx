@@ -265,11 +265,13 @@ export function Header(_props: HeaderProps = {}) {
               Steden <ChevronDown size={13} />
             </button>
             {openMega === "steden" && (
-              <div className="absolute top-full left-0 mt-px bg-background border border-border shadow-lift text-text rounded-b-lg p-4 w-[300px] z-50">
+              <div className="absolute top-full left-0 mt-px bg-background border border-border shadow-lift text-text rounded-b-lg p-4 w-[420px] z-50">
                 <p className="text-xs uppercase tracking-wider text-accent font-semibold mb-3 inline-flex items-center gap-1.5 px-2">
                   <MapPin size={12} /> Kamagra per stad
                 </p>
-                <div className="grid grid-cols-2 gap-x-2 gap-y-1 text-sm">
+                {/* Drie kolommen sinds het er zestien zijn; in twee kolommen
+                    werd de lijst zo lang dat hij onder de fold uitkwam. */}
+                <div className="grid grid-cols-3 gap-x-2 gap-y-1 text-sm">
                   {STEDEN_MET_PAGINA.map((s) => (
                     <Link
                       key={s.pagina}

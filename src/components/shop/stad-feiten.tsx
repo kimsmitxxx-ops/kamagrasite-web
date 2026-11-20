@@ -23,7 +23,9 @@ export function StadFeiten({ slug }: { slug: string }) {
 
   return (
     <section className="mt-10 rounded-lg border border-border bg-wash p-5 sm:p-6">
-      <h2 className="font-display text-xl text-text">Kamagra kopen in {stad.naam}</h2>
+      {/* Niet nog een keer "Kamagra kopen in <stad>": dat staat al in de H1
+          erboven, en twee keer dezelfde kop op een pagina helpt niemand. */}
+      <h2 className="font-display text-xl text-text">{stad.naam} in het kort</h2>
 
       <dl className="mt-4 grid gap-4 sm:grid-cols-2">
         <div className="flex gap-3">

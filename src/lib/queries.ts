@@ -311,7 +311,7 @@ export async function listBuyPages(): Promise<BuyPage[]> {
 /**
  * De stadspagina's, op tag in plaats van op een lijst in de code.
  *
- * Deze acht pagina's waren weespagina's: ze stonden in de sitemap maar er
+ * Deze pagina's waren weespagina's: ze stonden in de sitemap maar er
  * linkte geen enkele pagina naartoe, niet uit het menu en niet uit de footer.
  * Ze zijn daardoor alleen via Google te vinden en krijgen geen interne
  * linkwaarde. Via de tag verschijnt een nieuwe stad die in shop-dash wordt

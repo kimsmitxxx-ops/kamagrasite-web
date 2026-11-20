@@ -1,19 +1,29 @@
 /**
  * Steden voor de stadskiezer.
  *
- * Waarom een lijst in de code en geen pagina per stad: een eigen pagina voor
- * elke plaats levert tientallen teksten op die alleen in de plaatsnaam
- * verschillen, en dat is precies het sjabloon dat de acht bestaande
- * stadspagina's nu al zijn. De kiezer geeft het antwoord in plaats daarvan
- * direct op de pagina. Blijkt uit de meting dat een stad vaak gevraagd wordt
- * (event `stad_gekozen`), dan krijgt die alsnog een echte eigen pagina.
+ * Welke steden een eigen pagina krijgen: de twaalf provinciehoofdsteden, plus
+ * Amsterdam, Rotterdam, Eindhoven en Nijmegen omdat die er al een hadden en
+ * verkeer trekken. Zestien in totaal, en ze staan hier met `pagina` erbij.
+ *
+ * Een pagina per stad is alleen zinvol als die pagina ook iets eigens zegt.
+ * Dat was eerder niet zo: de acht oude stadspagina's waren hetzelfde verhaal
+ * met een andere plaatsnaam, en dan concurreren ze met elkaar in plaats van
+ * met de rest. Daarom heeft elke stadspagina nu een eigen onderwerp
+ * (Amsterdam de afhaalvraag, Haarlem nepmiddelen, Zwolle bijwerkingen, en zo
+ * verder) en is de gemeten overlap tussen de zestien teksten teruggebracht
+ * tot 0,2% gemiddeld.
+ *
+ * Alle overige plaatsen lopen via de stadskiezer. Blijkt uit de meting dat
+ * daar veel op gezocht wordt (event `stad_gekozen`, en de plaatsnamen in
+ * Search Console), dan kan er alsnog een eigen pagina bij. Amersfoort staat
+ * daarvoor als eerste in de rij: 46 vertoningen in 16 maanden zonder pagina.
  *
  * Per stad staan alleen harde, naslaanbare gegevens: provincie, en voor de
- * acht steden met een eigen pagina het inwonertal van CBS (zie
- * INWONERS_BRON). Alles wat niet te controleren is blijft eruit. Er bestaat
- * bijvoorbeeld geen cijfer over hoeveel mensen per gemeente dit middel
- * gebruiken, en dat terugrekenen uit een landelijk percentage zou betekenen
- * dat we een gezondheidsstatistiek verzinnen.
+ * steden met een eigen pagina het inwonertal van CBS (zie INWONERS_BRON).
+ * Alles wat niet te controleren is blijft eruit. Er bestaat bijvoorbeeld geen
+ * cijfer over hoeveel mensen per gemeente dit middel gebruiken, en dat
+ * terugrekenen uit een landelijk percentage zou betekenen dat we een
+ * gezondheidsstatistiek verzinnen.
  */
 
 export type Land = "NL" | "BE";
@@ -48,15 +58,15 @@ export const STEDEN: Stad[] = [
   { naam: "Almere", provincie: "Flevoland", land: "NL" },
   { naam: "Breda", provincie: "Noord-Brabant", land: "NL" },
   { naam: "Apeldoorn", provincie: "Gelderland", land: "NL" },
-  { naam: "Arnhem", provincie: "Gelderland", land: "NL" },
-  { naam: "Haarlem", provincie: "Noord-Holland", land: "NL" },
+  { naam: "Arnhem", provincie: "Gelderland", land: "NL", inwoners: 171841, pagina: "kamagra-arnhem" },
+  { naam: "Haarlem", provincie: "Noord-Holland", land: "NL", inwoners: 169141, pagina: "kamagra-haarlem" },
   { naam: "Enschede", provincie: "Overijssel", land: "NL" },
   { naam: "Amersfoort", provincie: "Utrecht", land: "NL" },
   { naam: "Zaandam", provincie: "Noord-Holland", land: "NL", alias: ["Zaanstad"] },
   { naam: "Hoofddorp", provincie: "Noord-Holland", land: "NL", alias: ["Haarlemmermeer"] },
-  { naam: "Zwolle", provincie: "Overijssel", land: "NL" },
+  { naam: "Zwolle", provincie: "Overijssel", land: "NL", inwoners: 134993, pagina: "kamagra-zwolle" },
   { naam: "Leiden", provincie: "Zuid-Holland", land: "NL" },
-  { naam: "Maastricht", provincie: "Limburg", land: "NL" },
+  { naam: "Maastricht", provincie: "Limburg", land: "NL", inwoners: 126584, pagina: "kamagra-maastricht" },
   { naam: "Dordrecht", provincie: "Zuid-Holland", land: "NL" },
   { naam: "Ede", provincie: "Gelderland", land: "NL" },
   { naam: "Alphen aan den Rijn", provincie: "Zuid-Holland", land: "NL" },
@@ -74,11 +84,11 @@ export const STEDEN: Stad[] = [
   { naam: "Purmerend", provincie: "Noord-Holland", land: "NL" },
   { naam: "Schiedam", provincie: "Zuid-Holland", land: "NL" },
   { naam: "Spijkenisse", provincie: "Zuid-Holland", land: "NL", alias: ["Nissewaard"] },
-  { naam: "Lelystad", provincie: "Flevoland", land: "NL" },
+  { naam: "Lelystad", provincie: "Flevoland", land: "NL", inwoners: 86514, pagina: "kamagra-lelystad" },
   { naam: "Hengelo", provincie: "Overijssel", land: "NL" },
   { naam: "Vlaardingen", provincie: "Zuid-Holland", land: "NL" },
   { naam: "Gouda", provincie: "Zuid-Holland", land: "NL" },
-  { naam: "Assen", provincie: "Drenthe", land: "NL" },
+  { naam: "Assen", provincie: "Drenthe", land: "NL", inwoners: 70775, pagina: "kamagra-assen" },
   { naam: "Hoorn", provincie: "Noord-Holland", land: "NL" },
   { naam: "Bergen op Zoom", provincie: "Noord-Brabant", land: "NL" },
   { naam: "Capelle aan den IJssel", provincie: "Zuid-Holland", land: "NL" },
@@ -86,11 +96,11 @@ export const STEDEN: Stad[] = [
   { naam: "Katwijk", provincie: "Zuid-Holland", land: "NL" },
   { naam: "Zeist", provincie: "Utrecht", land: "NL" },
   { naam: "Nieuwegein", provincie: "Utrecht", land: "NL" },
-  { naam: "Den Bosch", provincie: "Noord-Brabant", land: "NL", alias: ["s-Hertogenbosch", "Hertogenbosch"] },
+  { naam: "Den Bosch", provincie: "Noord-Brabant", land: "NL", alias: ["s-Hertogenbosch", "Hertogenbosch"], inwoners: 162972, pagina: "kamagra-den-bosch" },
   { naam: "Sittard", provincie: "Limburg", land: "NL", alias: ["Sittard-Geleen", "Geleen"] },
   { naam: "Doetinchem", provincie: "Gelderland", land: "NL" },
   { naam: "Kerkrade", provincie: "Limburg", land: "NL" },
-  { naam: "Middelburg", provincie: "Zeeland", land: "NL" },
+  { naam: "Middelburg", provincie: "Zeeland", land: "NL", inwoners: 50690, pagina: "kamagra-middelburg" },
   { naam: "Vlissingen", provincie: "Zeeland", land: "NL" },
   { naam: "Terneuzen", provincie: "Zeeland", land: "NL" },
   { naam: "Harderwijk", provincie: "Gelderland", land: "NL" },
@@ -180,4 +190,13 @@ export const INWONERS_BRON = {
   peilmoment: "september 2026",
 } as const;
 
-export const STEDEN_MET_PAGINA = STEDEN.filter((s) => s.pagina);
+/**
+ * De zestien steden met een eigen pagina, op alfabet.
+ *
+ * In STEDEN staan ze ruwweg op inwonertal, want zo is die lijst gegroeid. Voor
+ * een uitklapmenu is dat de verkeerde volgorde: wie Maastricht zoekt gaat niet
+ * nadenken over hoe groot Maastricht is.
+ */
+export const STEDEN_MET_PAGINA = STEDEN.filter((s) => s.pagina).sort((a, b) =>
+  a.naam.localeCompare(b.naam, "nl"),
+);
