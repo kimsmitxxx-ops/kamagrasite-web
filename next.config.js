@@ -27,6 +27,39 @@ module.exports = {
   // en een Cache-Control die niet te overschrijven is.
   async redirects() {
     return [
+      // www naar non-www, permanent.
+      //
+      // De oude WordPress-site draaide op kamagrasite.nl zonder www: alle 56
+      // links in de backup van 20 nov 2026 schrijven zichzelf zo, en de
+      // canonical op deze site doet dat ook. Twee hostnamen die dezelfde
+      // pagina serveren splitst je linkwaarde, dus www gaat hier permanent
+      // naar de kale variant.
+      //
+      // Dit staat bewust ook in de code en niet alleen in het Vercel-dashboard
+      // als domeinomleiding: zo is de richting zichtbaar voor wie de repo
+      // leest en hangt hij niet aan een instelling die iemand per ongeluk
+      // omzet. Let op: www.kamagrasite.nl moet in Vercel wel als domein
+      // bestaan, anders komt een verzoek hier nooit aan en geeft Cloudflare
+      // een 525 omdat er geen certificaat voor die hostnaam is.
+      // Twee regels in plaats van een. Met een enkele `/:pad*` landt je
+      // bezoeker op /nijmegen zonder slash, waarna trailingSlash er nog een
+      // omleiding overheen gooit naar /nijmegen/. Twee hops voor iets wat in
+      // een kan, en een link uit Google hoort zo min mogelijk te stuiteren.
+      // Daarom hier de slash er meteen aan, met `+` zodat de homepage niet in
+      // deze regel valt en een dubbele slash krijgt.
+      {
+        source: "/",
+        has: [{ type: "host", value: "www.kamagrasite.nl" }],
+        destination: "https://kamagrasite.nl/",
+        permanent: true,
+      },
+      {
+        source: "/:pad+",
+        has: [{ type: "host", value: "www.kamagrasite.nl" }],
+        destination: "https://kamagrasite.nl/:pad+/",
+        permanent: true,
+      },
+
       // Blogs die van shop-dash 'buildInternalLinks' onderzoek/-slug krijgen: op deze
       // site heten ze /kennisbank/*. Redirect zodat oude bodies niet 404 geven.
       { source: "/onderzoek/:slug", destination: "/kennisbank/:slug/", permanent: true },
