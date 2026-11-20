@@ -10,9 +10,9 @@ import { MapPin, ArrowRight } from "lucide-react";
 export const revalidate = 86400;
 
 export const metadata: Metadata = {
-  title: "Kamagra per stad - waar je het wel en niet koopt",
+  title: "Kamagra per stad: afhalen, winkels en bezorging",
   description:
-    "Kies je stad en zie wat er in jouw plaats mogelijk is. Over de toonbank is kamagra in Nederland nergens te koop; online bestellen en laten bezorgen kan wel.",
+    "Kun je kamagra ergens afhalen of in een winkel kopen? Het volledige antwoord per situatie, plus wat er in jouw stad wel kan. Kies je plaats en zie het meteen.",
   alternates: alternatesNL("/steden/"),
 };
 
@@ -54,12 +54,58 @@ export default async function StedenPage() {
             dat beweert het over de toonbank te verkopen, dan is dat per definitie buiten de regels
             om. Wij hebben geen winkel en geen afhaaladres, en we noemen er ook geen.
           </p>
+          {/* Afhalen is de meestgestelde vraag die we hadden en de slechtst
+              beantwoorde: "kamagra afhalen amsterdam", "kamagra kopen winkel
+              amsterdam" en varianten daarop zijn samen goed voor 762
+              vertoningen in 16 maanden, en daar stond alleen "kan niet"
+              tegenover. Het volledige antwoord is genuanceerder dan dat, en
+              het staat hier een keer goed zodat de zestien stadspagina's
+              ernaar kunnen verwijzen in plaats van het allemaal te herhalen. */}
+          <h2 id="afhalen" className="font-display text-2xl text-text pt-2 scroll-mt-24">
+            Kan ik het ergens afhalen?
+          </h2>
+          <p>
+            Niet bij ons, en nergens anders over de toonbank. Maar "afhalen" betekent voor de een
+            iets anders dan voor de ander, dus de drie varianten los van elkaar.
+          </p>
+          <p>
+            <strong>Bij ons langskomen</strong> kan niet. We hebben geen winkel, geen balie en geen
+            magazijn waar je aan kunt bellen, en dat gaat ook niet veranderen. Je ziet ons adres
+            daarom nergens als ophaalpunt staan.
+          </p>
+          <p>
+            <strong>Een afhaalpunt als bezorgadres kiezen</strong> kan ook niet. In onze branche
+            krijgen we geen contract bij de vervoerders, dus we kunnen niet rechtstreeks naar een
+            PostNL-punt of een pakketautomaat versturen. Bij het afrekenen vul je een vast huisadres
+            in; een postbus werkt evenmin.
+          </p>
+          <p>
+            <strong>Wat wel gebeurt:</strong> mis je het pakket thuis, dan biedt PostNL of DPD het
+            nog een keer aan en gaat het daarna naar het dichtstbijzijnde afhaalpunt. Daar heb je
+            zeven dagen om het op te halen met je legitimatie. Dat is de enige manier waarop een
+            bestelling bij ons op een afhaalpunt belandt, en daar hoef je niets voor te regelen.
+          </p>
+          <p>
+            Kom je zoekend naar een winkel toch een adres tegen, kijk dan goed wat je voor je hebt.
+            Meestal is het een webshop die de stadsnaam in de titel heeft gezet omdat daarop gezocht
+            wordt. Soms is het iemand die je op straat iets meegeeft zonder bijsluiter, zonder
+            dosering op de strip en zonder dat er iemand aanspreekbaar is als het misgaat. Bij dit
+            middel is de dosering het enige dat telt, dus dat is precies het verkeerde moment om het
+            niet te weten.
+          </p>
+
           <h2 className="font-display text-2xl text-text pt-2">Wat er wel kan</h2>
           <p>
             Online bestellen en thuis laten bezorgen. Wij verzenden zelf vanuit Nederland met PostNL
             of DPD, voor EUR 5 per bestelling. Je pakket gaat de deur uit zodra je betaling binnen
             is: daarna is het in Nederland 1 tot 2 werkdagen onderweg en in Belgie 1 tot 3. De doos
             is neutraal, zonder logo of productnaam, en we bezorgen alleen op een vast huisadres.
+          </p>
+          <p>
+            Vaak zit achter de vraag om af te halen iets anders: je wilt niet dat er een pakket op
+            de mat ligt waar iemand iets uit kan opmaken. Daar is aan gedacht. Er staat geen logo en
+            geen productnaam op de doos, alleen je adres, en past het door de brievenbus dan wordt
+            er niet eens aangebeld.
           </p>
         </div>
       </section>

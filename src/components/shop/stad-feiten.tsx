@@ -60,8 +60,15 @@ export function StadFeiten({ slug }: { slug: string }) {
           <Store size={16} className="mt-0.5 shrink-0 text-accent" />
           <div>
             <dt className="text-xs uppercase tracking-wider text-text-subtle">Afhalen</dt>
+            {/* Dit is de meestgestelde vraag op de stadspagina's, dus niet
+                alleen "nee" maar ook de weg naar het volledige antwoord. Dat
+                staat een keer uitgeschreven op /steden/, zodat zestien
+                stadspagina's hetzelfde verhaal niet zestien keer herhalen. */}
             <dd className="text-sm text-text">
-              Niet mogelijk; wij hebben geen winkel of afhaaladres
+              Niet mogelijk; wij hebben geen winkel of afhaaladres.{" "}
+              <Link href="/steden/#afhalen" className="text-accent hover:underline">
+                Wat dan wel
+              </Link>
             </dd>
           </div>
         </div>
