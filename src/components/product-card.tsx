@@ -1,5 +1,6 @@
 "use client";
 import { cn } from "@/lib/utils";
+import { Afbeelding } from "@/components/afbeelding";
 import { PriceTag } from "./price-tag";
 import { Stars } from "./stars";
 import { Badge } from "./badge";
@@ -92,7 +93,16 @@ export function ProductCard({
       )}
     >
       <div className="relative aspect-square bg-muted overflow-hidden shrink-0">
-        <img loading="lazy" decoding="async" src={image} alt={name} className="w-full h-full object-cover transition-transform group-hover:scale-[1.02]" />
+        <Afbeelding
+          src={image}
+          alt={name}
+          width={400}
+          height={400}
+          /* Twee kolommen op mobiel, ongeveer 300px op desktop. */
+          sizes="(max-width: 640px) 50vw, 300px"
+          maxBreedte={400}
+          className="w-full h-full object-cover transition-transform group-hover:scale-[1.02]"
+        />
         {category && (
           <span className="absolute top-3 left-3 inline-flex items-center rounded-sm bg-primary/90 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-primary-foreground backdrop-blur-sm">
             {category}

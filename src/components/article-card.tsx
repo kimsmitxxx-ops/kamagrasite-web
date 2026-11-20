@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { Afbeelding } from "@/components/afbeelding";
 import { Tag } from "./tag";
 
 export type ArticleCardVariant = "sm" | "md" | "featured";
@@ -60,7 +61,16 @@ export function ArticleCard({
           className,
         )}
       >
-        <img loading="lazy" decoding="async" src={image} alt={title} className="h-20 w-28 rounded object-cover shrink-0" />
+        <Afbeelding
+          src={image}
+          alt={title}
+          width={112}
+          height={80}
+          /* Vast vakje van 112 pixels; hier zat de grootste verspilling. */
+          sizes="112px"
+          maxBreedte={112}
+          className="h-20 w-28 rounded object-cover shrink-0"
+        />
         <div className="flex-1 min-w-0">
           <Tag>{kindTag}</Tag>
           <h3 className="mt-1.5 font-display text-base text-text leading-snug line-clamp-2">{title}</h3>
