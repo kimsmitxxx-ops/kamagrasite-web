@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getBlogPost, listBlogPosts } from "@/lib/queries";
 import { ArrowLeft, BadgeCheck } from "lucide-react";
 import type { Metadata } from "next";
+import { Afbeelding } from "@/components/afbeelding";
 import { MedicalDisclaimer } from "@/components/medical-disclaimer";
 import { highlightGlossary } from "@/lib/glossary-highlight";
 import { alternatesNL } from "@/lib/geo-nl";
@@ -143,8 +144,19 @@ export default async function KennisbankDetail(props: { params: Promise<{ slug: 
       </div>
 
       {p.image_url && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img loading="lazy" decoding="async" src={p.image_url} alt={p.image_alt || p.title} className="mt-8 aspect-[16/9] w-full rounded-2xl object-cover" />
+        // Dit is op een artikelpagina vrijwel altijd de LCP: het grootste
+        // beeld, direct na de titel, nog voor de leestekst. Stond eerder op
+        // loading="lazy", en dat is precies de instelling die een LCP traag
+        // maakt (zie de toelichting in afbeelding.tsx).
+        <Afbeelding
+          src={p.image_url}
+          alt={p.image_alt || p.title}
+          width={1200}
+          height={675}
+          sizes="(max-width: 768px) 100vw, 768px"
+          boven
+          className="mt-8 aspect-[16/9] w-full rounded-2xl object-cover"
+        />
       )}
 
       {p.excerpt && <p className="mt-8 text-lg text-text-muted leading-relaxed">{p.excerpt}</p>}

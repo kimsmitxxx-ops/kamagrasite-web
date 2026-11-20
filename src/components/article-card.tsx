@@ -2,6 +2,11 @@ import { cn } from "@/lib/utils";
 import { Afbeelding } from "@/components/afbeelding";
 import { Tag } from "./tag";
 
+/** Avatars zijn klein en nooit boven de vouw als enig beeld; altijd lazy, geen srcset nodig op 24px. */
+function Avatar({ src }: { src: string }) {
+  return <Afbeelding src={src} alt="" width={24} height={24} sizes="24px" maxBreedte={24} className="h-6 w-6 rounded-full object-cover" />;
+}
+
 export type ArticleCardVariant = "sm" | "md" | "featured";
 
 export interface ArticleAuthor {
@@ -28,7 +33,7 @@ function Meta({ author, publishedAt, updatedAt }: Pick<ArticleCardProps, "author
   return (
     <div className="flex items-center gap-2 text-xs text-text-muted">
       {author.avatar && (
-        <img loading="lazy" decoding="async" src={author.avatar} alt="" className="h-6 w-6 rounded-full object-cover" />
+        <Avatar src={author.avatar} />
       )}
       <span className="font-medium text-text">{author.name}</span>
       {author.credentials && <span className="text-text-subtle">· {author.credentials}</span>}
@@ -90,7 +95,14 @@ export function ArticleCard({
           className,
         )}
       >
-        <img loading="lazy" decoding="async" src={image} alt={title} className="absolute inset-0 h-full w-full object-cover" />
+        <Afbeelding
+          src={image}
+          alt={title}
+          width={800}
+          height={450}
+          sizes="(max-width: 768px) 100vw, 800px"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-text/85 via-text/40 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 p-6 text-surface">
           <span className="inline-block rounded-sm border border-surface/60 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-widest">
@@ -111,7 +123,14 @@ export function ArticleCard({
       )}
     >
       <div className="aspect-[16/9] bg-primary-soft">
-        <img loading="lazy" decoding="async" src={image} alt={title} className="h-full w-full object-cover opacity-95" />
+        <Afbeelding
+          src={image}
+          alt={title}
+          width={400}
+          height={225}
+          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          className="h-full w-full object-cover opacity-95"
+        />
       </div>
       <div className="p-5 space-y-3">
         <Tag>{kindTag}</Tag>
@@ -119,7 +138,7 @@ export function ArticleCard({
         {excerpt && <p className="text-sm text-primary-foreground/70 line-clamp-3">{excerpt}</p>}
         <div className="flex items-center gap-2 text-xs text-primary-foreground/60">
           {author.avatar && (
-            <img loading="lazy" decoding="async" src={author.avatar} alt="" className="h-6 w-6 rounded-full object-cover" />
+            <Avatar src={author.avatar} />
           )}
           <span className="font-medium text-primary-foreground/90">{author.name}</span>
           {author.credentials && <span>· {author.credentials}</span>}

@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import type { BlogPost } from "@/lib/supabase";
+import { Afbeelding } from "@/components/afbeelding";
 
 export type TabKey = "alle" | "kennis" | "onderzoek" | "nieuws";
 
@@ -72,8 +73,14 @@ export function KennisbankTabs({ articles, initialTab = "alle" }: Props) {
               className="group block overflow-hidden rounded-2xl border border-paper-border bg-paper-soft transition hover:shadow-md"
             >
               {a.image_url && (
-                /* eslint-disable-next-line @next/next/no-img-element */
-                <img loading="lazy" decoding="async" src={a.image_url} alt={a.title} className="aspect-[16/9] w-full object-cover" />
+                <Afbeelding
+                  src={a.image_url}
+                  alt={a.title}
+                  width={400}
+                  height={225}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  className="aspect-[16/9] w-full object-cover"
+                />
               )}
               <div className="p-5">
                 <p className="text-[10px] uppercase tracking-wider text-accent">{a.category || "Kennis"}</p>

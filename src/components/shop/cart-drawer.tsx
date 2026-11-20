@@ -11,6 +11,7 @@ import { formatEUR } from "@/lib/format";
 import { computeShipping } from "@/lib/shipping";
 import { unitDiscountPct, calcTotals } from "@/lib/bulk-discount";
 import { usePreorderMand } from "@/lib/use-preorder";
+import { Afbeelding } from "@/components/afbeelding";
 
 export function CartDrawer() {
   const { isOpen, setOpen, items, setQty, remove, coupon } = useCart();
@@ -96,9 +97,13 @@ export function CartDrawer() {
                       className="shrink-0"
                       aria-label={`Open ${it.name}`}
                     >
-                      <img
+                      <Afbeelding
                         src={it.image}
                         alt={it.name}
+                        width={64}
+                        height={64}
+                        sizes="64px"
+                        maxBreedte={64}
                         className="h-16 w-16 rounded object-cover shrink-0 hover:opacity-80 transition"
                       />
                     </Link>

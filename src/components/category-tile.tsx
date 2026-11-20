@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import type { LucideIcon } from "lucide-react";
+import { Afbeelding } from "@/components/afbeelding";
 
 export type CategoryTileVariant = "default" | "featured";
 
@@ -32,7 +33,16 @@ export function CategoryTile({
           className,
         )}
       >
-        {image && <img loading="lazy" decoding="async" src={image} alt={name} className="absolute inset-0 w-full h-full object-cover" />}
+        {image && (
+          <Afbeelding
+            src={image}
+            alt={name}
+            width={600}
+            height={400}
+            sizes="(max-width: 768px) 100vw, 50vw"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/30 to-transparent" />
         <div className="absolute bottom-0 left-0 p-5">
           <h3 className="font-display text-2xl text-text">{name}</h3>

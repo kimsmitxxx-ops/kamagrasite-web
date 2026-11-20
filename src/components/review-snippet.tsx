@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
 import { Stars } from "./stars";
+import { Afbeelding } from "@/components/afbeelding";
 
 export type ReviewSnippetVariant = "compact" | "full";
 
@@ -47,7 +48,7 @@ export function ReviewSnippet({
     <article className={cn("rounded-lg border border-primary-muted bg-primary p-5 shadow-card text-primary-foreground", className)}>
       <header className="flex items-start gap-3">
         {avatar ? (
-          <img loading="lazy" decoding="async" src={avatar} alt="" className="h-10 w-10 rounded-full object-cover" />
+          <Afbeelding src={avatar} alt="" width={40} height={40} sizes="40px" maxBreedte={40} className="h-10 w-10 rounded-full object-cover" />
         ) : (
           <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-accent/15 text-accent ring-1 ring-accent/30 font-medium">
             {name.charAt(0)}
