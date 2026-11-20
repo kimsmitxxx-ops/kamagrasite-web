@@ -19,3 +19,19 @@ export const CartDrawer = dynamic(() => import("@/components/shop/cart-drawer").
 export const WhatsAppFab = dynamic(() => import("@/components/whatsapp-fab").then((m) => m.WhatsAppFab), {
   ssr: false,
 });
+
+export const AnalyticsTracker = dynamic(() => import("@/components/analytics-tracker").then((m) => m.AnalyticsTracker), {
+  ssr: false,
+});
+
+export const CartAbandonTracker = dynamic(() => import("@/components/cart-abandon-tracker").then((m) => m.CartAbandonTracker), {
+  ssr: false,
+});
+
+export const GA4 = dynamic(() => import("@/components/ga4").then((m) => m.GA4), {
+  ssr: false,
+});
+
+export const ConsentNotice = dynamic(() => import("@/components/consent-notice").then((m) => m.ConsentNotice), {
+  ssr: false,
+});
