@@ -19,6 +19,24 @@ import { isMaatVariant, zoekOrigineel, CACHE_TERUGVAL } from "./afbeelding-terug
 // foto komt er een nieuwe bestandsnaam. Dus mag dit lang blijven staan.
 const CACHE = "public, max-age=86400, s-maxage=31536000, stale-while-revalidate=604800";
 
+/**
+ * Bestaat het object niet (meer)?
+ *
+ * Supabase Storage antwoordt op een ontbrekend object met **HTTP 400**, en zet
+ * de 404 alleen in de JSON-body: `{"statusCode":"404","error":"not_found"}`.
+ * De terugval hieronder keek op `status === 404` en sloeg daardoor nooit aan.
+ *
+ * Gevolg op 20 nov 2026, de dag van de domeinomzetting: 78 van de 129
+ * afbeeldingen op de live site gaven een 502. De maatvarianten (`-320w.webp`,
+ * `-640w.webp`) bestaan voor deze shop namelijk nog niet, want de foto's zijn
+ * geupload voordat die werden klaargezet. Het origineel stond er gewoon
+ * (`sildamax.jpg` gaf 200), maar de terugval kwam er niet aan toe.
+ *
+ * Daarom hier op betekenis controleren en niet op een statuscode: elke
+ * mislukte lees telt als ontbrekend, en dan mag de terugval het proberen.
+ */
+const ontbreekt = (r: Response | null): boolean => !r || r.status === 404 || r.status === 400 || !r.ok;
+
 export async function proxyStorage(bucketPad: string, segmenten: string[]): Promise<Response> {
   const pad = (segmenten || []).map(encodeURIComponent).join("/");
   if (!pad || pad.includes("..")) return new Response("Niet gevonden", { status: 404 });
@@ -39,7 +57,7 @@ export async function proxyStorage(bucketPad: string, segmenten: string[]): Prom
   // deze terugval breekt elk van die beelden zodra de browser een variant
   // kiest, en dat zie je pas op de pagina's die niemand toevallig opent.
   let terugval = false;
-  if ((!upstream || upstream.status === 404) && isMaatVariant(pad)) {
+  if (ontbreekt(upstream) && isMaatVariant(pad)) {
     const origineel = await zoekOrigineel(pad, haal);
     if (origineel) {
       upstream = origineel;
@@ -50,7 +68,10 @@ export async function proxyStorage(bucketPad: string, segmenten: string[]): Prom
   // Geen detail uit het antwoord van de bron doorgeven: een foutpagina van
   // Supabase noemt zichzelf, en dat is precies wat hier niet naar buiten mag.
   if (!upstream || !upstream.ok || !upstream.body) {
-    return new Response("Niet gevonden", { status: upstream?.status === 404 ? 404 : 502 });
+    // Een ontbrekend bestand is een 404 en geen 502. Dat verschil is niet
+    // cosmetisch: een 502 leest als "onze server is stuk" en zet je op het
+    // verkeerde spoor, precies zoals hierboven gebeurde.
+    return new Response("Niet gevonden", { status: ontbreekt(upstream) ? 404 : 502 });
   }
 
   const headers = new Headers();
