@@ -34,8 +34,8 @@ const TOPBAR_ITEMS = [
 ];
 
 // De vier merken die los in de balk staan, en de rest die onder "Meer"
-// valt. Vier is wat er past naast Steden, Kennisbank, Kwaliteit en Contact
-// zonder dat de balk op een telefoonformaat omvalt.
+// valt. Vier is wat er past naast Steden en Contact zonder dat de balk op
+// een telefoonformaat omvalt.
 const NAV_MERK_SLUGS = ["kamagra", "cenforce", "vidalista", "vilitra"];
 const NAV_MERKEN = mainCategories.filter((c) => NAV_MERK_SLUGS.includes(c.slug));
 const NAV_OVERIG = mainCategories.filter((c) => !NAV_MERK_SLUGS.includes(c.slug));
@@ -244,14 +244,6 @@ export function Header(_props: HeaderProps = {}) {
             )}
           </div>
 
-          <Link
-            href="/lab/"
-            onMouseEnter={() => setOpenMega(null)}
-            className="h-11 inline-flex items-center px-4 font-medium text-text hover:text-accent border-b-2 border-transparent hover:border-accent transition-colors"
-          >
-            Kwaliteit
-          </Link>
-
           {/* Steden. De stadspagina's waren weespagina's: ze stonden in de
               sitemap maar geen enkele pagina linkte ernaar, terwijl ze samen
               goed zijn voor ruim een kwart van de kliks. Vandaar een eigen
@@ -294,35 +286,14 @@ export function Header(_props: HeaderProps = {}) {
             )}
           </div>
 
-          {/* Kennisbank */}
-          <div className="relative" onMouseEnter={() => setOpenMega("kennisbank")}>
-            <button
-              className={`h-11 inline-flex items-center gap-1 px-4 font-medium text-text hover:text-accent border-b-2 transition-colors ${openMega === "kennisbank" ? "border-accent text-accent" : "border-transparent"}`}
-            >
-              Kennisbank <ChevronDown size={13} />
-            </button>
-            {openMega === "kennisbank" && (
-              <div className="absolute top-full left-0 mt-px bg-background border border-border shadow-lift text-text rounded-b-lg p-4 w-[260px] z-50">
-                <p className="text-xs uppercase tracking-wider text-accent-soft font-semibold mb-3 inline-flex items-center gap-1.5 px-2">
-                  <BookOpen size={12} /> Kennisbank
-                </p>
-                <div className="space-y-1 text-sm">
-                  <Link href="/kennisbank/" onClick={() => setOpenMega(null)} className="block rounded px-2 py-1.5 text-text-muted hover:bg-veil hover:text-accent">
-                    Alle artikelen
-                  </Link>
-                  <Link href="/kennisbank/?cat=kennis" onClick={() => setOpenMega(null)} className="block rounded px-2 py-1.5 text-text-muted hover:bg-veil hover:text-accent">
-                    Kennis
-                  </Link>
-                  <Link href="/kennisbank/?cat=onderzoek" onClick={() => setOpenMega(null)} className="block rounded px-2 py-1.5 text-text-muted hover:bg-veil hover:text-accent">
-                    Onderzoek
-                  </Link>
-                  <Link href="/kennisbank/?cat=nieuws" onClick={() => setOpenMega(null)} className="block rounded px-2 py-1.5 text-text-muted hover:bg-veil hover:text-accent">
-                    Nieuws
-                  </Link>
-                </div>
-              </div>
-            )}
-          </div>
+          {/* Kennisbank en Kwaliteit (/lab/) stonden hier als volwaardige
+              menu-items met een eigen uitklapmenu, inclusief een verdeling in
+              Kennis/Onderzoek/Nieuws. Dat bestond niet op de oude site: die
+              had helemaal geen blog of kennisbank, alleen de koop-pagina's en
+              een enkele infopagina (erectiepillen). Het is dus zelfverzonnen
+              structuur die de balk drukker maakte dan nodig. Beide staan nog
+              gewoon op hun URL en in de footer ("Alle artikelen", "Herkomst &
+              kwaliteit"); alleen de prominente plek in het hoofdmenu is weg. */}
 
           <Link
             href="/contact/"
