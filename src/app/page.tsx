@@ -145,7 +145,7 @@ export default async function HomePage() {
                 Bekijk producten <ArrowRight size={16} />
               </Link>
               <Link href="/kennisbank/" className="inline-flex items-center gap-2 rounded border border-border-strong px-6 h-12 text-text font-medium hover:bg-veil transition-colors">
-                Kennisbank
+                Vergelijk merken
               </Link>
             </div>
           </div>
@@ -256,16 +256,20 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Kennisbank blogs */}
+      {/* Vergelijkingen: welk merk, welke stof. Hette eerder "Kennisbank
+          blogs" met een eyebrow "Kennisbank" en de kop "Onderbouwd & scherp",
+          maar dat framede dit als een blog in plaats van als keuzehulp. De
+          oude site had geen blog; wat hier staat is drie vergelijkingen met
+          koopintentie, dus de kop zegt nu ook dat. */}
       {dbArticles.length > 0 && (
         <section className="mx-auto max-w-7xl px-4 py-16">
           <div className="flex items-baseline justify-between">
             <div>
-              <p className="text-xs uppercase tracking-[0.15em] text-accent font-semibold">Kennisbank</p>
-              <h2 className="mt-2 font-display text-3xl md:text-4xl">Onderbouwd &amp; scherp</h2>
+              <p className="text-xs uppercase tracking-[0.15em] text-accent font-semibold">Welk merk, welke stof</p>
+              <h2 className="mt-2 font-display text-3xl md:text-4xl">Vergelijkingen die helpen kiezen</h2>
             </div>
             <Link href="/kennisbank/" className="text-sm text-accent hover:text-accent-muted inline-flex items-center gap-1">
-              Alle artikelen <ArrowRight size={14} />
+              Alle vergelijkingen <ArrowRight size={14} />
             </Link>
           </div>
           <div className="mt-8 grid gap-6 md:grid-cols-3">
@@ -281,7 +285,7 @@ export default async function HomePage() {
                 title={a.title}
                 image={a.image_url || "/assets/cat-kamagra.jpg"}
                 excerpt={a.excerpt || ""}
-                kindTag={a.category || "Kennis"}
+                kindTag="Vergelijking"
                 publishedAt={new Date(a.published_at).toLocaleDateString("nl-NL", { day: "numeric", month: "short", year: "numeric" })}
                 author={{ name: a.author || "Redactie", credentials: "" }}
               />

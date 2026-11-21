@@ -5,11 +5,15 @@ import { Mail, Pill, PackageCheck, Clock } from "lucide-react";
 import { mainCategories, STOF_FILTERS } from "./data";
 import { listStadPaginas } from "@/lib/queries";
 
+// Alleen de vergelijkingen die echt een aankoopbeslissing sturen (welk merk,
+// welke stof). De twee puur klinische stukken (dapoxetine-mechanisme,
+// wisselwerkingen) staan nu op is_published=false: dat was informatie zonder
+// koopintentie, en de oude site had sowieso geen kennisbank of blog. Zie
+// shop-dash/_blog-curate.mjs.
 const KENNISBANK_LINKS = [
-  { href: "/kennisbank/kamagra-vs-viagra-verschil-uitleg", label: "Kamagra vs Viagra" },
-  { href: "/kennisbank/sildenafil-tadalafil-vardenafil-welke-past-bij-jou", label: "Welke stof past bij jou" },
-  { href: "/kennisbank/wisselwerkingen-ed-medicatie-nitraten-alfablokkers", label: "Wisselwerkingen" },
-  { href: "/kennisbank/dapoxetine-uitgestelde-ejaculatie-hoe-werkt-het", label: "Dapoxetine bij PE" },
+  { href: "/kennisbank/kamagra-vs-viagra-verschil-uitleg/", label: "Kamagra vs Viagra" },
+  { href: "/kennisbank/cenforce-vs-kamagra-verschil/", label: "Cenforce vs Kamagra" },
+  { href: "/kennisbank/sildenafil-tadalafil-vardenafil-welke-past-bij-jou/", label: "Welke stof past bij jou" },
 ];
 
 export async function Footer() {

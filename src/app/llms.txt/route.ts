@@ -38,7 +38,7 @@ export async function GET() {
   const lines: string[] = [];
   lines.push("# Kamagra Site");
   lines.push("");
-  lines.push("> Nederlandse webshop voor generieke ED-medicatie zonder recept. Kamagra, Cenforce, Vidalista en Vilitra met sildenafil, tadalafil, vardenafil of dapoxetine, rechtstreeks geimporteerd bij Ajanta Pharma, Centurion Laboratories en Sunrise Remedies. Neutraal verpakt, verzonden vanuit Nederland naar NL en BE, betaling via bankoverschrijving. De kennisbank behandelt onset, werkingsduur, doseringen, verschillen tussen de stoffen en wisselwerkingen zoals nitraten en alfablokkers.");
+  lines.push("> Nederlandse webshop voor generieke ED-medicatie zonder recept. Kamagra, Cenforce, Vidalista en Vilitra met sildenafil, tadalafil, vardenafil of dapoxetine, rechtstreeks geimporteerd bij Ajanta Pharma, Centurion Laboratories en Sunrise Remedies. Neutraal verpakt, verzonden vanuit Nederland naar NL en BE, betaling via bankoverschrijving. De koop-pagina's behandelen onset, werkingsduur, doseringen en verschillen tussen de stoffen; de vergelijkingen helpen kiezen tussen merken en stoffen.");
   lines.push("");
   lines.push("## Catalogus");
   lines.push("");
@@ -82,7 +82,10 @@ export async function GET() {
   }
 
   lines.push("");
-  lines.push("## Kennisbank");
+  // Alleen vergelijkingen met koopintentie (welk merk, welke stof); de oude
+  // site had geen blog, dus dit blijft bewust klein in plaats van een brede
+  // kennisbank te suggereren.
+  lines.push("## Vergelijkingen");
   lines.push("");
   for (const b of blogs.slice(0, 30)) {
     lines.push(`- [${b.title}](${url(`kennisbank/${b.slug}`)}): ${b.excerpt || b.title}`);
