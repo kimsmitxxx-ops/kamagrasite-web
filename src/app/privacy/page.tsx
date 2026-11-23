@@ -1,11 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHero } from "@/components/shop/page-hero";
+import { alternatesNL } from "@/lib/geo-nl";
 
 export const metadata: Metadata = {
   title: "Privacyverklaring - Kamagra Site",
   description:
     "Hoe Kamagra Site persoonsgegevens verwerkt, opslaat en beschermt onder de AVG. Lees welke data we vastleggen en hoe lang.",
+  // Zie de toelichting in voorwaarden/page.tsx: zonder dit wees de canonical
+  // naar de homepage.
+  alternates: alternatesNL("/privacy/"),
 };
 
 export const revalidate = 86400;

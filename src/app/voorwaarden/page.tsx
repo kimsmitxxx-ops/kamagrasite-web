@@ -1,11 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHero } from "@/components/shop/page-hero";
+import { alternatesNL } from "@/lib/geo-nl";
 
 export const metadata: Metadata = {
   title: "Algemene voorwaarden - Kamagra Site",
   description:
     "De algemene voorwaarden van Kamagra Site: bestelproces, betaling, levering, garantie, aansprakelijkheid en herroepingsrecht.",
+  // Zonder deze regel valt de pagina terug op de canonical uit de
+  // root-layout, en die wijst naar de homepage. Daarmee vertelde deze pagina
+  // aan Google dat hij een dubbele van / is, en dat is precies de reden om
+  // hem niet te indexeren. Gevonden bij de sitemapcontrole voor de
+  // GSC-indiening; /privacy/ had hetzelfde.
+  alternates: alternatesNL("/voorwaarden/"),
 };
 
 export const revalidate = 86400;
