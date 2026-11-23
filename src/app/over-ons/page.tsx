@@ -37,12 +37,15 @@ const pillars = [
   {
     icon: Truck,
     h: "De deur uit zodra je betaald hebt",
-    p: "Zodra de betaling binnen is gaat het pakket via PostNL de deur uit. Nederland doorgaans de volgende werkdag, Belgie een dag later.",
+    // Stond hier als "doorgaans de volgende werkdag". Dat is een snellere
+    // belofte dan we overal elders doen (1 tot 2 werkdagen) en dan we kunnen
+    // waarmaken; PostNL geeft daar geen garantie op.
+    p: "Zodra de betaling binnen is gaat het pakket via PostNL of DPD de deur uit. Daarna is het in Nederland 1 tot 2 werkdagen onderweg, in Belgie 1 tot 3.",
   },
   {
     icon: BookOpen,
     h: "Uitleg zonder verkooppraat",
-    p: "Onze kennisbank legt uit wanneer je iets juist niet moet gebruiken. Dat kost ons af en toe een bestelling, en dat is precies de bedoeling.",
+    p: "Op de koop-pagina's staat ook wanneer je iets juist niet moet nemen, en bij welke medicijnen je eerst een arts spreekt. Dat kost ons af en toe een bestelling, en dat is precies de bedoeling.",
   },
   {
     icon: ShieldCheck,
@@ -52,7 +55,10 @@ const pillars = [
   {
     icon: Users,
     h: "Vragen gaan naar een mens",
-    p: "Mail en contactformulier worden door onze eigen klantenservice beantwoord, doorgaans binnen een werkdag. Geen chatbot die in cirkels praat.",
+    // "Binnen een werkdag" stond hier, maar de belofte op alle shops is 48
+    // uur. Een snellere toezegging die je niet altijd haalt is erger dan een
+    // ruimere die je wel haalt.
+    p: "Mail en contactformulier worden door onze eigen klantenservice beantwoord, binnen 48 uur. Geen chatbot die in cirkels praat.",
   },
 ];
 
@@ -188,6 +194,93 @@ export default async function OverOnsPage() {
                 <p className="mt-1.5 text-sm text-text-muted leading-relaxed">{p.p}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Waarom er stadspagina's zijn. Dit stond nergens uitgelegd, terwijl
+          het wel de helft van de site beslaat en de meeste bezoekers via zo'n
+          pagina binnenkomen. Eerlijk houden: wij bezorgen overal, maar we
+          hebben nergens een winkel, en dat staat hier dus ook met zoveel
+          woorden. */}
+      <section className="mx-auto max-w-7xl px-4 py-14">
+        <div className="grid gap-10 lg:grid-cols-2 items-start">
+          <div className="space-y-5 text-text-muted leading-relaxed">
+            <p className="text-xs uppercase tracking-[0.15em] text-accent font-semibold">
+              Waarom wij per stad schrijven
+            </p>
+            <h2 className="font-display text-3xl text-text">
+              De vraag is lokaal, het antwoord is dat eigenlijk niet
+            </h2>
+            <p>
+              Mensen zoeken naar &quot;kamagra kopen Nijmegen&quot; of &quot;afhalen in
+              Amsterdam&quot;. Logisch, want zo zoek je ook naar een fietsenmaker of een
+              kapper. Alleen klopt de aanname eronder hier niet: er is in Nederland geen
+              enkele stad waar dit over de toonbank gaat. Het middel is niet geregistreerd
+              en sildenafil is receptplichtig, dus de apotheek geeft het alleen mee op
+              recept en een gewone winkel mag het helemaal niet verkopen.
+            </p>
+            <p>
+              Je kunt die zoeker twee dingen geven. Een pagina die doet alsof er wel een
+              afhaalpunt om de hoek zit, of het echte antwoord. Wij doen het tweede. Op elke
+              stadspagina staat dat afhalen niet kan, waarom dat zo is, en wat er dan wel
+              kan: bestellen en thuis laten bezorgen, vanuit Nederland, in een doos waar
+              niets op staat.
+            </p>
+            <p>
+              Dat wij nergens een pand hebben, verandert niets aan waar we bezorgen. Van
+              Maastricht tot Leeuwarden, van Middelburg tot Assen: zelfde levertijd, zelfde
+              neutrale verpakking, zelfde prijs. Een postcode in Zeeland is voor PostNL geen
+              bijzonderheid.
+            </p>
+            <p>
+              Per stad schrijven we bovendien over iets anders, omdat zestien keer hetzelfde
+              verhaal niemand verder helpt. De ene pagina gaat over het verschil tussen de
+              werkzame stoffen, de andere over bijwerkingen, over dosering opbouwen, of over
+              hoe je namaak herkent. Zo heeft elke pagina een reden om te bestaan, ook als
+              je toevallig net niet in die stad woont.
+            </p>
+            <Link
+              href="/steden/"
+              className="inline-flex items-center gap-2 text-accent hover:text-accent-muted font-medium"
+            >
+              Bekijk alle steden en hoe de bezorging werkt &rarr;
+            </Link>
+          </div>
+
+          <div className="rounded-md border border-border bg-surface p-6 lg:p-8">
+            <p className="text-xs uppercase tracking-[0.15em] text-accent font-semibold">
+              Waar we bezorgen
+            </p>
+            <p className="mt-4 text-sm text-text-muted leading-relaxed">
+              Overal in Nederland en Belgie, op elk vast huisadres. Geen afhaalpunt en geen
+              pakketautomaat, want in onze branche krijgen we daar geen contract voor. Mis je
+              het pakket thuis, dan biedt de vervoerder het opnieuw aan en gaat het daarna
+              alsnog naar het dichtstbijzijnde afhaalpunt.
+            </p>
+            <dl className="mt-6 space-y-4 text-sm">
+              <div className="flex gap-3">
+                <dt className="w-32 shrink-0 text-text-muted">Nederland</dt>
+                <dd className="text-text">1 tot 2 werkdagen nadat je betaling binnen is</dd>
+              </div>
+              <div className="flex gap-3">
+                <dt className="w-32 shrink-0 text-text-muted">Belgie</dt>
+                <dd className="text-text">1 tot 3 werkdagen</dd>
+              </div>
+              <div className="flex gap-3">
+                <dt className="w-32 shrink-0 text-text-muted">Vervoerder</dt>
+                <dd className="text-text">PostNL of DPD, in een neutrale doos</dd>
+              </div>
+              <div className="flex gap-3">
+                <dt className="w-32 shrink-0 text-text-muted">Afhalen</dt>
+                <dd className="text-text">
+                  Nergens mogelijk.{" "}
+                  <Link href="/steden/#afhalen" className="text-accent hover:underline">
+                    Zo zit dat precies
+                  </Link>
+                </dd>
+              </div>
+            </dl>
           </div>
         </div>
       </section>

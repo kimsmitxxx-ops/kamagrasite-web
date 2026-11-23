@@ -8,6 +8,11 @@ export const metadata: Metadata = {
   description:
     "Kamagra Site gebruikt alleen functionele en optionele analytische cookies. Geen tracking voor advertenties. Lees welke cookies wij plaatsen en hoe je ze beheert.",
   alternates: alternatesNL("/cookies/"),
+  // Verplichte juridische tekst zonder zoekwaarde: niemand zoekt hierop en
+  // er valt niets mee te ranken. Noindex, maar wel gewoon bereikbaar via de
+  // footer. Hoort samen te gaan met weglaten uit de sitemap, anders meldt
+  // Search Console "Submitted URL marked noindex".
+  robots: { index: false, follow: true },
 };
 
 export const revalidate = 86400;
