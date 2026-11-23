@@ -27,10 +27,28 @@ function lijnScore(name: string): number {
   return best;
 }
 
-// Sorteer producten: eerst op productlijn, daarna op de handmatige sort_order
-// uit shop-dash, en binnen dezelfde lijn van lage naar hoge dosering/prijs.
-export function sortProducts<T extends { name: string; sort_order?: number | null; price_cents?: number }>(products: T[]): T[] {
+// Sorteer producten: uitverkocht altijd onderaan, dan op productlijn, dan op
+// de handmatige sort_order uit shop-dash, en binnen dezelfde lijn van lage
+// naar hoge dosering/prijs.
+//
+// Uitverkocht zakt naar beneden omdat een bezoeker die bovenaan een rij
+// "niet op voorraad" ziet staan afhaakt voordat hij bij de producten komt die
+// hij wél kan bestellen. Van de 39 producten staat ruim een derde op
+// OutOfStock, dus dat is geen theoretisch geval.
+//
+// PreOrder zakt bewust NIET mee: dat is besteld-en-onderweg en gewoon te
+// kopen, zie het pre-order-model in shop-dash. Die hoort dus tussen de
+// normale producten te blijven staan.
+export function sortProducts<T extends {
+  name: string;
+  sort_order?: number | null;
+  price_cents?: number;
+  availability?: string | null;
+}>(products: T[]): T[] {
   return [...products].sort((a, b) => {
+    const ua = a.availability === "OutOfStock" ? 1 : 0;
+    const ub = b.availability === "OutOfStock" ? 1 : 0;
+    if (ua !== ub) return ua - ub;
     const la = lijnScore(a.name);
     const lb = lijnScore(b.name);
     if (la !== lb) return la - lb;
