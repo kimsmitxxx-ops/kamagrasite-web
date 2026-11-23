@@ -27,6 +27,32 @@ module.exports = {
   // en een Cache-Control die niet te overschrijven is.
   async redirects() {
     return [
+      // Dode adressen uit het 404-logboek, naar de pagina die er het dichtst
+      // bij komt. Gevonden door elk pad dat echte bezoekers in 30 dagen
+      // opvroegen na te trekken (shop-dash/_404check.mjs).
+      //
+      // De drie sitemap-varianten zijn bots die gokken op een andere naam.
+      // Kost niets om ze naar de echte sitemap te sturen, en het houdt het
+      // 404-logboek leesbaar voor de keren dat er wel iets echt stuk is.
+      { source: "/sitemap-index.xml", destination: "/sitemap.xml", permanent: true },
+      { source: "/news-sitemap.xml", destination: "/sitemap.xml", permanent: true },
+      { source: "/news_sitemap.xml", destination: "/sitemap.xml", permanent: true },
+
+      // Stond niet op de oude site (die had /verzenden-retourneren/, en die
+      // leidt al door), maar iemand typt of linkt het wel.
+      { source: "/betaling-verzending/", destination: "/bezorging/", permanent: true },
+
+      // Twee kennisbank-artikelen die we bewust offline hebben gezet omdat ze
+      // geen koopintentie hadden. Ze stonden kort live nadat de index
+      // openging, dus liever doorsturen naar wat er nog wel staat dan een 404.
+      { source: "/kennisbank/dapoxetine-uitgestelde-ejaculatie-hoe-werkt-het/", destination: "/kennisbank/", permanent: true },
+      { source: "/kennisbank/wisselwerkingen-ed-medicatie-nitraten-alfablokkers/", destination: "/kennisbank/", permanent: true },
+
+      // Komt nergens in onze code voor, niet in de Paytail-config en in geen
+      // enkele bestelling; puur extern geraden. Geen bedankpagina zonder
+      // ordernummer, dus naar de homepage.
+      { source: "/order-confirmed/iban/", destination: "/", permanent: true },
+
       // www naar non-www, permanent.
       //
       // De oude WordPress-site draaide op kamagrasite.nl zonder www: alle 56
