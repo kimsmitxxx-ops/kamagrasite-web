@@ -223,7 +223,13 @@ export async function POST(req: NextRequest) {
     shipping_street: fullStreet, shipping_postal: postal, shipping_city: city, shipping_country: country,
     subtotal_cents: subtotal, shipping_cents: shipping, total_cents: total,
     coupon_code: couponCode, discount_cents: discountCents,
-    status: "pending_payment",
+    // "awaiting_payment", niet "pending_payment": de constraint
+    // orders_status_check laat alleen pending, awaiting_payment, paid,
+    // processing, shipped, delivered, cancelled en refunded toe. Met de oude
+    // waarde weigerde de database elke bestelling en zag de klant alleen
+    // "Bestelling kon niet worden aangemaakt" - van de livegang op 20 nov
+    // tot 24 nov 2026 kwam er daardoor geen enkele bestelling binnen.
+    status: "awaiting_payment",
     reference,
   }).select().single();
 
