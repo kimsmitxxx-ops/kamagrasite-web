@@ -36,12 +36,19 @@ export async function POST(req: NextRequest) {
     if (file.size > MAX_BYTES) return NextResponse.json({ error: "Bestand te groot (max 5MB)" }, { status: 400 });
 
     // Verifieer dat order bestaat + bij deze shop hoort
-    const { data: order } = await sb
+    const { data: order, error: orderFout } = await sb
       .from("orders")
-      .select("id, email")
+      // customer_email, niet email: die kolom bestaat niet op orders. PostgREST
+      // gaf daardoor een fout in plaats van een rij, en omdat alleen `data`
+      // werd gelezen kreeg elke klant "Order niet gevonden" te zien.
+      .select("id, customer_email")
       .eq("id", orderId)
       .eq("shop_id", SHOP_ID)
       .maybeSingle();
+    if (orderFout) {
+      console.error("betaalbewijs: bestelling opzoeken mislukte", orderFout);
+      return NextResponse.json({ error: "Uploaden lukte niet. Probeer het later opnieuw." }, { status: 500 });
+    }
     if (!order) return NextResponse.json({ error: "Order niet gevonden" }, { status: 404 });
 
     // Optionele extra check: email matcht (niet kritiek want we vertrouwen orderId)
@@ -82,8 +89,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Opslaan lukte niet. Probeer het later opnieuw." }, { status: 500 });
     }
 
-    // Update order status (optioneel) - markeer dat klant heeft betaald
-    await sb.from("orders").update({ status: "payment_proof_received" }).eq("id", orderId);
+    // Update order status (optioneel) - markeer dat klant heeft betaald.
+    // "payment_proof_received" bestaat niet in orders_status_check en liet
+    // deze update altijd stil mislukken; "processing" is wel een geldige
+    // waarde en groepeert in het dashboard terecht bij "Betaald, nog
+    // verzenden". Gelijk aan kamagrashop.
+    const { error: statusFout } = await sb.from("orders").update({ status: "processing" }).eq("id", orderId);
+    if (statusFout) console.error("betaalbewijs: status bijwerken mislukte", statusFout);
 
     return NextResponse.json({ ok: true });
   } catch (e) {

@@ -42,6 +42,37 @@
  * echt kleiner, maar niets gaat stuk zolang dat nog niet gebeurd is.
  */
 
+/**
+ * Een merkteken achter de variant-URL's, om een vastgelopen CDN-cache te
+ * omzeilen. Leeg laten betekent: geen merkteken.
+ *
+ * WAAROM DIT BESTAAT
+ * Op anabolen.is gaf elke maatvariant een 502 zolang de terugval kapot was
+ * (zie afbeelding-terugval.ts). Die 502 kreeg via de `headers()` in
+ * next.config.js een Cache-Control van s-maxage=604800 mee, dus bleef hij een
+ * week in de cache staan nadat de code al gefixt en uitgerold was. Meetbaar:
+ *
+ *   /media/products/dianabol-10-mg-ml-utinon-320w.webp        502
+ *   /media/products/dianabol-10-mg-ml-utinon-320w.webp?n=1    200, 7.952 bytes
+ *   een variant die nog nooit was opgevraagd, kaal             200
+ *
+ * Die laatste regel is het bewijs dat het de cache is en niet de route: zelfde
+ * vorm, zelfde handler, enige verschil is of de URL eerder is opgevraagd toen
+ * de bug nog live was. Zonder Cloudflare-credentials op de machine (en zonder
+ * zekerheid of de entry bij Cloudflare of bij Vercel vastzit) is de URL
+ * veranderen de enige weg die niet van iemand anders afhangt.
+ *
+ * WAAROM ALLEEN DE VARIANTEN
+ * Het merkteken komt niet achter het origineel. Dat is de `src`, en die staat
+ * in Google Afbeeldingen en in overgenomen teksten; die URL laat je met rust.
+ * De varianten staan alleen in de srcset en hebben geen eigen geschiedenis.
+ *
+ * WEGHALEN
+ * Zet dit terug op "" zodra de cache echt leeg is. Het kost niets om het te
+ * laten staan, maar een merkteken dat niemand meer kan uitleggen is rommel.
+ */
+export const VARIANT_MERK = "2";
+
 /** De breedtes die we klaarzetten. Bewust kort: elke maat kost opslag. */
 export const BREEDTES = [320, 640, 960, 1280] as const;
 
@@ -88,7 +119,10 @@ export function srcSet(src: string, maxBreedte?: number): string {
   const delen = bruikbaar
     .map((b) => {
       const p = maatPad(src, b);
-      return p ? `${p} ${b}w` : null;
+      if (!p) return null;
+      // Het merkteken erachter, en netjes achter een query die er al staat.
+      const merk = VARIANT_MERK ? (p.includes("?") ? `&v=${VARIANT_MERK}` : `?v=${VARIANT_MERK}`) : "";
+      return `${p}${merk} ${b}w`;
     })
     .filter(Boolean);
   return delen.join(", ");

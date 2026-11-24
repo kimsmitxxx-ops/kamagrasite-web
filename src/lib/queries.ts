@@ -260,16 +260,34 @@ export async function getShopPaymentInstructions(): Promise<PaymentInstructions 
   }
 }
 
+/**
+ * De bestelling achter de bedankt-pagina.
+ *
+ * Twee dingen die hier fout stonden en samen elke bestelling op een 404 lieten
+ * eindigen (de pagina doet `notFound()` als dit null teruggeeft):
+ *
+ *  * `email` bestaat niet op orders, de kolom heet `customer_email`. PostgREST
+ *    geeft dan een foutobject in plaats van een rij.
+ *  * de lees-client op de anon-sleutel mag orders niet zien: anon heeft alleen
+ *    een insert-policy (`orders_public_insert`), geen select. Dit moet dus via
+ *    de shopsleutel, net als bij kamagrashop.
+ *
+ * De fout wordt gelogd en niet geslikt, anders is een kapotte query straks weer
+ * niet van een onbekende bestelling te onderscheiden.
+ */
 export async function getOrderForConfirmation(orderId: string) {
   try {
-    const { data } = await supabase
+    const sb = createServiceClient();
+    const { data, error } = await sb
       .from("orders")
-      .select("id, email, customer_name, total_cents, subtotal_cents, shipping_cents, created_at")
+      .select("id, reference, customer_email, customer_name, total_cents, subtotal_cents, shipping_cents, created_at")
       .eq("id", orderId)
       .eq("shop_id", SHOP_ID)
       .maybeSingle();
+    if (error) console.error("bestelling voor de bedankt-pagina ophalen mislukte", error);
     return data;
-  } catch {
+  } catch (e) {
+    console.error("bestelling voor de bedankt-pagina ophalen mislukte", e);
     return null;
   }
 }

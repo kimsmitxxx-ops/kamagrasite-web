@@ -40,7 +40,10 @@ export default async function BedanktPage(
 
   if (!order) notFound();
 
-  const ref = `ORDER-${order.id.slice(0, 8).toUpperCase()}`;
+  // Het echte bestelnummer (KSI-...) staat in de rij; dat moet de klant bij de
+  // overboeking vermelden en daarop zoeken wij in het dashboard. De terugval op
+  // het id is alleen voor eventuele historie zonder reference.
+  const ref = order.reference || `ORDER-${order.id.slice(0, 8).toUpperCase()}`;
   // Paytail stuurt na een afgeronde betaling hierheen terug met ?paytail=1.
   const viaPaytail = searchParams.paytail === "1";
 
@@ -58,8 +61,8 @@ export default async function BedanktPage(
         </p>
         <p className="mt-1 text-xs text-text-subtle">
           {mailroute
-            ? `Bevestiging gestuurd naar ${order.email}`
-            : `We hebben je bestelling op ${order.email} staan`}
+            ? `Bevestiging gestuurd naar ${order.customer_email}`
+            : `We hebben je bestelling op ${order.customer_email} staan`}
         </p>
       </div>
 
@@ -158,7 +161,7 @@ export default async function BedanktPage(
           </div>
         </div>
         <div className="mt-4">
-          <PaymentScreenshotForm orderId={order.id} customerEmail={order.email} />
+          <PaymentScreenshotForm orderId={order.id} customerEmail={order.customer_email} />
         </div>
       </section>
 

@@ -68,8 +68,12 @@ export async function POST(req: Request) {
   const code = String(body?.code ?? "").replace(/\D/g, "");
   const wachtwoord = String(body?.wachtwoord ?? "");
 
-  if (!email || code.length < 6) {
-    return NextResponse.json({ error: "Vul de code van zes cijfers in." }, { status: 400 });
+  // Ook een wachtwoord is genoeg: wie bij het afrekenen een account aanmaakte
+  // koos daar een wachtwoord en hoort daarmee binnen te komen. De controle
+  // eiste hier altijd een code van zes cijfers, waardoor de code eronder
+  // (logInMetWachtwoord) nooit werd bereikt. Gelijk aan kamagrashop.
+  if (!email || (code.length < 6 && !wachtwoord)) {
+    return NextResponse.json({ error: "Vul de code van zes cijfers of je wachtwoord in." }, { status: 400 });
   }
 
   const tokens = wachtwoord
