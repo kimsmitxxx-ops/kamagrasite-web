@@ -107,10 +107,13 @@ export default async function KennisbankDetail(props: { params: Promise<{ slug: 
       {/* Byline-row met auteur + credentials + datum */}
       <div className="mt-5 flex items-center gap-3 text-sm text-text-muted">
         {authorInfo?.avatar_url ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Afbeelding
             src={authorInfo.avatar_url}
             alt={`Profielfoto ${authorInfo.name}`}
+            width={40}
+            height={40}
+            sizes="40px"
+            maxBreedte={40}
             className="h-10 w-10 rounded-full object-cover ring-2 ring-paper-border"
           />
         ) : authorName ? (
@@ -180,10 +183,13 @@ export default async function KennisbankDetail(props: { params: Promise<{ slug: 
           <p className="text-[10px] uppercase tracking-wider text-accent font-semibold">Over de schrijver</p>
           <div className="mt-3 flex items-start gap-4">
             {authorInfo.avatar_url ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
+              <Afbeelding
                 src={authorInfo.avatar_url}
                 alt={`Profielfoto ${authorInfo.name}`}
+                width={64}
+                height={64}
+                sizes="64px"
+                maxBreedte={64}
                 className="h-16 w-16 rounded-full object-cover ring-2 ring-paper-border shrink-0"
               />
             ) : (

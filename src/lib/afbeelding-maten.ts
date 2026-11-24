@@ -103,7 +103,31 @@ export function maatPad(src: string, breedte: number): string | null {
  * `maxBreedte` snijdt maten af die groter zijn dan het beeld ooit getoond
  * wordt; een kaartje van 300 pixels heeft niets aan een 1280-variant.
  */
+/**
+ * Alleen onze eigen beeldproxy heeft maatvarianten, en alleen daar is een
+ * ontbrekende variant ongevaarlijk.
+ *
+ * WAAROM DIT ER IS
+ * `maatPad` rekent blind: geef hem /assets/logo.png en hij maakt er
+ * /assets/logo-320w.webp van. Dat bestand staat niet in /public en komt niet
+ * langs de proxy, dus is er ook geen terugval naar het origineel: de browser
+ * kiest die variant uit de srcset en je houdt een gat over. Hetzelfde geldt
+ * voor een avatar op een vreemde host.
+ *
+ * Zolang <Afbeelding> alleen productfoto's kreeg viel dat niemand op. Bij het
+ * omzetten van de kale <img>-tags (artikelkaarten, winkelmand, categorie-
+ * tegels, avatars) komt daar van alles langs, en dan moet dit kloppen.
+ *
+ * /media, /img en /bestand gaan alle drie langs proxyStorage en hebben dus de
+ * terugval van afbeelding-terugval.ts achter zich.
+ */
+export function heeftMaten(src: string): boolean {
+  return /^\/(media|img|bestand)\//.test(src);
+}
+
 export function srcSet(src: string, maxBreedte?: number): string {
+  if (!heeftMaten(src)) return "";
+
   let bruikbaar: number[] = BREEDTES.filter((b) => !maxBreedte || b <= maxBreedte * 2);
 
   // Altijd minstens de kleinste maat aanbieden, ook als die groter is dan de

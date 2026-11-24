@@ -4,6 +4,7 @@ import { preorder } from "@/lib/preorder";
 import { useRouter } from "next/navigation";
 import { Search, Loader2 } from "lucide-react";
 import { formatEUR } from "@/lib/format";
+import { Afbeelding } from "@/components/afbeelding";
 
 interface Hit {
   name: string;
@@ -126,10 +127,13 @@ export function SearchAutocomplete({ placeholder }: { placeholder: string }) {
                     onClick={() => goToProduct(h.slug)}
                     className="w-full flex items-center gap-3 px-3 py-2.5 text-left hover:bg-paper-soft"
                   >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
+                    <Afbeelding
                       src={h.image_url || "/assets/cat-erectie.webp"}
                       alt={h.name}
+                      width={44}
+                      height={44}
+                      sizes="44px"
+                      maxBreedte={44}
                       className="h-11 w-11 rounded object-cover shrink-0 bg-muted"
                     />
                     <span className="flex-1 min-w-0">

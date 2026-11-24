@@ -13,6 +13,7 @@ import {
   BadgeCheck,
 } from "lucide-react";
 import { alternatesNL } from "@/lib/geo-nl";
+import { Afbeelding } from "@/components/afbeelding";
 
 export const metadata: Metadata = {
   title: "Over Kamagra Site - wie wij zijn en hoe wij werken",
@@ -145,10 +146,13 @@ export default async function OverOnsPage() {
                 >
                   <header className="flex items-start gap-4">
                     {a.avatar_url ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
+                      <Afbeelding
                         src={a.avatar_url}
                         alt={`Profielfoto ${a.name}`}
+                        width={64}
+                        height={64}
+                        sizes="64px"
+                        maxBreedte={64}
                         className="h-16 w-16 rounded-full object-cover ring-2 ring-paper-border shrink-0"
                       />
                     ) : (

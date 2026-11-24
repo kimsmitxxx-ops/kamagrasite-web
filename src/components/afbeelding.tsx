@@ -38,6 +38,7 @@ export function Afbeelding({
   boven = false,
   className,
   maxBreedte,
+  title,
 }: {
   src: string;
   /** Leeg alleen voor puur decoratieve beelden; dan ook echt alt="" laten staan. */
@@ -50,6 +51,13 @@ export function Afbeelding({
   className?: string;
   /** De breedste weergave in pixels; maten daarboven worden niet aangeboden. */
   maxBreedte?: number;
+  /**
+   * De tooltip. Staat hier omdat een aantal plekken die al had als kale <img>
+   * (productgalerij, zoeksuggesties) en zonder deze prop niet om te zetten was.
+   * Geen vervanging voor alt: alt is wat een screenreader voorleest, title is
+   * wat je ziet als je blijft hangen met de muis.
+   */
+  title?: string;
 }) {
   const set = srcSet(src, maxBreedte);
   return (
@@ -58,6 +66,7 @@ export function Afbeelding({
       {...(set ? { srcSet: set } : {})}
       {...(set && sizes ? { sizes } : {})}
       alt={alt}
+      {...(title ? { title } : {})}
       width={width}
       height={height}
       className={className}
