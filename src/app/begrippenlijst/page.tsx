@@ -103,7 +103,6 @@ const TERMS: Term[] = [
     short: "SSRI tegen vroegtijdige zaadlozing",
     body: "Kortwerkende SSRI die is ontwikkeld voor gebruik vlak voor de seks, niet als dagelijks antidepressivum. Je neemt hem een tot drie uur van tevoren met een glas water. In onderzoek verlengt dapoxetine de tijd tot ejaculatie gemiddeld twee tot drie keer. Veelvoorkomende bijwerkingen: misselijkheid, duizeligheid en hoofdpijn. Combineer dapoxetine niet met andere SSRI-antidepressiva, MAO-remmers of partydrugs.",
     related: ["premature-ejaculatie", "super-p-force"],
-    link: "/kennisbank/dapoxetine-uitgestelde-ejaculatie-hoe-werkt-het",
   },
   {
     id: "ed",
@@ -175,7 +174,7 @@ const TERMS: Term[] = [
     short: "Hartmedicatie die nooit samen met PDE5-remmers mag",
     body: "Isosorbidemononitraat, isosorbidedinitraat, nitroglycerinespray en de nitraatpleister worden voorgeschreven bij angina pectoris. Samen met een PDE5-remmer kan de bloeddruk zo ver wegzakken dat het levensgevaarlijk wordt. Dit is geen voorzorgsadvies maar een absolute contra-indicatie. Poppers met amylnitriet vallen in dezelfde categorie.",
     related: ["poppers", "contra-indicatie", "hypotensie"],
-    link: "/kennisbank/wisselwerkingen-ed-medicatie-nitraten-alfablokkers",
+    link: "/kennisbank/sildenafil-tadalafil-vardenafil-welke-past-bij-jou/",
   },
   {
     id: "onset",
@@ -318,7 +317,7 @@ const TERMS: Term[] = [
     short: "Andere middelen die de werking beinvloeden",
     body: "De gevaarlijke combinaties zijn nitraten, poppers en riociguat. Oppassen geblazen bij alfablokkers en bij sterke CYP3A4-remmers zoals ketoconazol, claritromycine en ritonavir: die verhogen je bloedspiegel flink, waardoor een halve dosis vaak al genoeg is. Grapefruitsap doet hetzelfde, zij het milder. Alcohol maakt een erectie juist slapper en versterkt de duizeligheid.",
     related: ["nitraten", "alfablokker", "poppers"],
-    link: "/kennisbank/wisselwerkingen-ed-medicatie-nitraten-alfablokkers",
+    link: "/kennisbank/sildenafil-tadalafil-vardenafil-welke-past-bij-jou/",
   },
   {
     id: "zuigtablet",

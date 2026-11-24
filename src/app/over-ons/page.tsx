@@ -330,12 +330,12 @@ export default async function OverOnsPage() {
             <p className="mt-3 text-sm text-text-muted leading-relaxed">
               Gebruik je nitraten of poppers, dan is een PDE5-remmer levensgevaarlijk. Heb je
               hartklachten, een lage bloeddruk of gebruik je alfablokkers, overleg dan eerst met een
-              arts. Wat die combinaties precies doen staat in onze{" "}
+              arts. Wat die combinaties per middel doen staat in onze{" "}
               <Link
-                href="/kennisbank/wisselwerkingen-ed-medicatie-nitraten-alfablokkers/"
+                href="/kennisbank/sildenafil-tadalafil-vardenafil-welke-past-bij-jou/"
                 className="text-accent hover:underline"
               >
-                gids over wisselwerkingen
+                gids over sildenafil, tadalafil en vardenafil
               </Link>
               .
             </p>

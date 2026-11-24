@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { SB_URL } from "@/lib/supabase-config";
 import { schoonFetch } from "@/lib/media";
 
 export const dynamic = "force-dynamic";
@@ -13,7 +14,11 @@ const ACCEPTED = ["image/jpeg", "image/png", "image/webp"];
 const BUCKET = "payment-screenshots";
 
 function getServiceClient() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL || "";
+  // SB_URL en niet alleen de env-variabele: NEXT_PUBLIC_SUPABASE_URL staat niet
+  // in de Vercel-omgeving van de shops (de rest van de code heeft daarom een
+  // vaste terugval). Zonder dit gooide deze functie, en die throw stond
+  // buiten de try-catch: elke upload kreeg een leeg 500-antwoord.
+  const url = SB_URL;
   const key = process.env.SUPABASE_SHOP_KEY || "";
   if (!url || !key) throw new Error("Supabase env vars ontbreken (URL of service key)");
   // schoonFetch haalt de storage-URL's uit het antwoord; zie lib/media.ts. De
@@ -23,7 +28,15 @@ function getServiceClient() {
 }
 
 export async function POST(req: NextRequest) {
-  const sb = getServiceClient();
+  let sb;
+  try {
+    sb = getServiceClient();
+  } catch (e) {
+    // Een ontbrekende sleutel is onze fout, niet die van de bezoeker, maar
+    // hij moet wel een antwoord krijgen dat zijn upload niet lukte.
+    console.error("betaalbewijs: server-config onvolledig", e);
+    return NextResponse.json({ error: "Uploaden lukte niet. Probeer het later opnieuw." }, { status: 500 });
+  }
   try {
     const form = await req.formData();
     const file = form.get("file") as File | null;

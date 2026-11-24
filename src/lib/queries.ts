@@ -615,14 +615,23 @@ export async function heeftMailroute(): Promise<boolean> {
     const inst = data?.settings as {
       smtp?: { host?: string };
       smtp_transactioneel?: { host?: string };
-      kingsmtp?: { api_key?: string };
+      kingsmtp?: { api_key?: string; api_host?: string; from?: string };
     } | null;
     // Drie wegen, en eentje is genoeg. De orderbevestiging is bij shop-dash een
     // transactioneel sjabloon, en daarvoor gaat de KingSMTP-API voor op een
     // mailbox: een shop met alleen kingsmtp verstuurt die mail dus wel. Keek
     // deze functie alleen naar settings.smtp, dan zei de bedankt-pagina
     // onterecht dat er geen bevestiging komt.
-    return Boolean(inst?.kingsmtp?.api_key || inst?.smtp_transactioneel?.host || inst?.smtp?.host);
+    //
+    // Niet op api_key kijken: die staat sinds migratie 107 in de Vault en niet
+    // meer in settings. Deze shop mailt wel degelijk via KingSMTP, maar zei
+    // daardoor op de bedankt-pagina "we hebben je bestelling op <adres> staan"
+    // in plaats van "bevestiging gestuurd naar <adres>". Een afzender plus een
+    // api_host is het bewijs dat de route is ingericht; of de sleutel klopt
+    // weet alleen shop-dash, en dat is daar ook de juiste plek.
+    const kingsmtp = inst?.kingsmtp;
+    const viaKing = Boolean(kingsmtp?.api_key || (kingsmtp?.from && kingsmtp?.api_host));
+    return Boolean(viaKing || inst?.smtp_transactioneel?.host || inst?.smtp?.host);
   } catch (e) {
     console.error("mailroute uitlezen gooide", e);
     return false;
