@@ -55,8 +55,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // Alleen index-baar (UT-merk) producten in sitemap. noindex=true wordt
   // expliciet uitgesloten zodat Google ze niet via sitemap ontdekt.
+  //
+  // Ook eruit: producten met een canonical_url die naar een andere pagina
+  // wijst. Een paar slugs bestaan twee keer, als product en als koop-pagina
+  // (super-p-force en super-kamagra), en die vochten in Search Console om
+  // dezelfde zoekterm: de koop-pagina stond op plek 17 en de productpagina op
+  // 48. De productpagina verwijst nu via canonical_url naar de koop-pagina,
+  // en dan hoort hij niet meer in de sitemap, want je vraagt Google niet om
+  // een pagina op te halen waarvan je zelf zegt dat een andere de echte is.
   const productRoutes = products
     .filter((p: any) => p.noindex !== true)
+    .filter((p: any) => {
+      const c = String(p.canonical_url || "").trim();
+      if (!c) return true;
+      const eigen = `/product/${p.slug || p.sku}`;
+      return c === eigen || c === `${eigen}/` || c === `${BASE}${eigen}` || c === `${BASE}${eigen}/`;
+    })
     .map((p) => ({
       url: `${BASE}/product/${p.slug || p.sku}/`,
       changeFrequency: "weekly" as const,

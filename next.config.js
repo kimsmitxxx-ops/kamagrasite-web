@@ -31,10 +31,21 @@ module.exports = {
       // bij komt. Gevonden door elk pad dat echte bezoekers in 30 dagen
       // opvroegen na te trekken (shop-dash/_404check.mjs).
       //
-      // De drie sitemap-varianten zijn bots die gokken op een andere naam.
-      // Kost niets om ze naar de echte sitemap te sturen, en het houdt het
-      // 404-logboek leesbaar voor de keren dat er wel iets echt stuk is.
+      // De sitemap-varianten zijn bots die gokken op een andere naam, plus de
+      // namen die Yoast op de oude WordPress-site gebruikte. Kost niets om ze
+      // naar de echte sitemap te sturen, en het houdt het 404-logboek leesbaar
+      // voor de keren dat er wel iets echt stuk is.
+      //
+      // /sitemap_index.xml met een underscore is de naam van Yoast, en die
+      // stond op 25 nov 2026 nog aangemeld in Search Console terwijl hij
+      // 404'de. Hier stond alleen de variant met een streepje, dus die ene
+      // viel er precies tussendoor.
+      { source: "/sitemap_index.xml", destination: "/sitemap.xml", permanent: true },
       { source: "/sitemap-index.xml", destination: "/sitemap.xml", permanent: true },
+      { source: "/post-sitemap.xml", destination: "/sitemap.xml", permanent: true },
+      { source: "/page-sitemap.xml", destination: "/sitemap.xml", permanent: true },
+      { source: "/product-sitemap.xml", destination: "/sitemap.xml", permanent: true },
+      { source: "/product_cat-sitemap.xml", destination: "/sitemap.xml", permanent: true },
       { source: "/news-sitemap.xml", destination: "/sitemap.xml", permanent: true },
       { source: "/news_sitemap.xml", destination: "/sitemap.xml", permanent: true },
 
