@@ -171,31 +171,33 @@ export async function getBlogPost(slug: string): Promise<(BlogPost & { author_in
 }
 
 /**
- * Bestaat deze blogslug, los van of hij gepubliceerd is?
+ * Bestond deze blogslug ooit, los van of hij gepubliceerd is?
  *
- * WAAROM DIT ER IS
- * `getBlogPost` filtert op is_published, dus een uitgezet artikel komt als
- * null terug en de pagina doet notFound(). Dat betekent dat netjes uitzetten
- * een URL stilletjes op een 404 zet. En uitzetten is precies wat je hoort te
- * doen met een artikel dat niet klopt.
+ * WAAROM DIT EEN RPC IS EN GEEN SELECT
+ * De eerste versie deed een gewone select op blog_posts. Die werkte niet, en
+ * dat was juist goed: RLS laat de sleutel van een shop alleen gepubliceerde
+ * rijen zien, dus kwam een uitgezet artikel als leeg terug en bleef de 404
+ * staan. Nagemeten met de sleutel van de site: de rij kwam als [] terug terwijl
+ * hij wel bestaat. De fix was dus dode code, en typecheck en build merkten dat
+ * niet.
  *
- * Gemeten op anabolendoktor.com: /kennisbank/harm-reduction-bij-anabole-
- * steroiden-rct-onthult-nieuwe-inzichten stond op positie 7,8 in Google en gaf
- * een 404, terwijl de rij netjes op is_published=false stond. Niets merkte dat:
- * de sitemap noemt alleen wat er wel is en een 404 komt niet in de foutenlog.
+ * De RLS-regel verruimen zou betekenen dat de publieke sleutel de titels en
+ * teksten van concepten kan lezen, en dat is precies het lek dat migratie 054
+ * dichtte. blog_slug_bestaat (migratie 126) geeft daarom alleen een boolean
+ * terug: dat de URL bestaat weet de bezoeker al, want hij vraagt hem op.
  *
- * Met deze functie kan de route onderscheid maken tussen "bestaat niet"
- * (404, terecht) en "bestaat wel maar staat uit" (301 naar het overzicht, zodat
- * het verkeer ergens landt en Google de URL netjes kan vervangen).
+ * WAARVOOR
+ * Zodat de route onderscheid kan maken tussen "bestaat niet" (404, terecht) en
+ * "bestaat wel maar staat uit" (301 naar het overzicht). Een artikel uitzetten
+ * zette daarvoor stil een rankende URL op een 404.
  */
 export async function blogSlugBestaat(slug: string): Promise<boolean> {
   try {
-    const { data } = await supabase.from("blog_posts")
-      .select("id")
-      .eq("shop_id", SHOP_ID)
-      .eq("slug", slug)
-      .maybeSingle();
-    return !!data;
+    const { data } = await supabase.rpc("blog_slug_bestaat", {
+      p_shop_id: SHOP_ID,
+      p_slug: slug,
+    });
+    return data === true;
   } catch { return false; }
 }
 
