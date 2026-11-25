@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { getBlogPost, listBlogPosts } from "@/lib/queries";
+import { notFound, permanentRedirect } from "next/navigation";
+import { getBlogPost, listBlogPosts, blogSlugBestaat } from "@/lib/queries";
 import { ArrowLeft, BadgeCheck } from "lucide-react";
 import type { Metadata } from "next";
 import { Afbeelding } from "@/components/afbeelding";
@@ -36,7 +36,17 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
 export default async function KennisbankDetail(props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
   const p = await getBlogPost(params.slug);
-  if (!p) notFound();
+  if (!p) {
+    /*
+     * Bestaat de slug wel maar staat het artikel uit, dan is een 404 het
+     * verkeerde antwoord: die URL staat mogelijk in Google en dat verkeer
+     * landt dan op een foutpagina. Een 301 naar het overzicht laat het ergens
+     * aankomen en laat Google de URL netjes vervangen. Bestaat de slug
+     * helemaal niet, dan is een 404 juist wel correct.
+     */
+    if (await blogSlugBestaat(params.slug)) permanentRedirect("/kennisbank");
+    notFound();
+  }
 
   const authorInfo = (p as any).author_info as
     | { id: string; slug: string; name: string; role: string | null; bio_short: string | null; bio_long: string | null; avatar_url: string | null; expertise: string[] | null; credentials: string[] | null }

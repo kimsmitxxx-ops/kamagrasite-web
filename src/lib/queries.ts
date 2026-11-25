@@ -170,6 +170,35 @@ export async function getBlogPost(slug: string): Promise<(BlogPost & { author_in
   } catch { return null; }
 }
 
+/**
+ * Bestaat deze blogslug, los van of hij gepubliceerd is?
+ *
+ * WAAROM DIT ER IS
+ * `getBlogPost` filtert op is_published, dus een uitgezet artikel komt als
+ * null terug en de pagina doet notFound(). Dat betekent dat netjes uitzetten
+ * een URL stilletjes op een 404 zet. En uitzetten is precies wat je hoort te
+ * doen met een artikel dat niet klopt.
+ *
+ * Gemeten op anabolendoktor.com: /kennisbank/harm-reduction-bij-anabole-
+ * steroiden-rct-onthult-nieuwe-inzichten stond op positie 7,8 in Google en gaf
+ * een 404, terwijl de rij netjes op is_published=false stond. Niets merkte dat:
+ * de sitemap noemt alleen wat er wel is en een 404 komt niet in de foutenlog.
+ *
+ * Met deze functie kan de route onderscheid maken tussen "bestaat niet"
+ * (404, terecht) en "bestaat wel maar staat uit" (301 naar het overzicht, zodat
+ * het verkeer ergens landt en Google de URL netjes kan vervangen).
+ */
+export async function blogSlugBestaat(slug: string): Promise<boolean> {
+  try {
+    const { data } = await supabase.from("blog_posts")
+      .select("id")
+      .eq("shop_id", SHOP_ID)
+      .eq("slug", slug)
+      .maybeSingle();
+    return !!data;
+  } catch { return false; }
+}
+
 export type BlogAuthor = {
   id: string;
   slug: string;

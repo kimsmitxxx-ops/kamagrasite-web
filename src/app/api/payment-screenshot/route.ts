@@ -102,13 +102,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Opslaan lukte niet. Probeer het later opnieuw." }, { status: 500 });
     }
 
-    // Update order status (optioneel) - markeer dat klant heeft betaald.
-    // "payment_proof_received" bestaat niet in orders_status_check en liet
-    // deze update altijd stil mislukken; "processing" is wel een geldige
-    // waarde en groepeert in het dashboard terecht bij "Betaald, nog
-    // verzenden". Gelijk aan kamagrashop.
-    const { error: statusFout } = await sb.from("orders").update({ status: "processing" }).eq("id", orderId);
-    if (statusFout) console.error("betaalbewijs: status bijwerken mislukte", statusFout);
+    // Bewust geen statuswijziging. Een screenshot is een bewering van de
+    // klant, geen betaling: "processing" heet in het dashboard "Betaald, nog
+    // verzenden" en telt in de omzet mee, en zo zijn op 24 november 2026 twee
+    // bestellingen verzonden zonder dat iemand geld had gezien. Het bewijs
+    // staat nu in shop-dash bij de bestelling, met een eigen tab erboven, en
+    // een mens vinkt de betaling af tegen het bankafschrift. De database
+    // weigert deze update sinds migratie 125 trouwens ook.
+    //
+    // De betaalherinnering blijft bewust aan staan: die gaat pas na vijf
+    // dagen, en als een geupload bewijs zo lang blijft liggen is een
+    // herinnering precies wat er moet gebeuren.
 
     return NextResponse.json({ ok: true });
   } catch (e) {
