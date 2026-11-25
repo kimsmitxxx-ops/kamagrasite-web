@@ -3,9 +3,10 @@
 // elkaar konden lopen zonder dat iets klaagde.
 import { SHIPPING_FEE_CENTS } from "./shipping";
 
-// Bulk-korting matrix. Per item-qty.
-// 5+ items = 10%, 10+ items = 15%. Server (orders API) en client
-// (winkelmand/checkout) gebruiken dezelfde logica.
+// Bulk-korting matrix, per aantal van dezelfde regel: 3+ = 10%, 5+ = 15%,
+// 10+ = 20%. Server (orders API) en client (winkelmand/checkout) gebruiken
+// dezelfde logica. De teksten op winkel, categorie en hero noemen deze zelfde
+// staffel en moeten dus meeveranderen als deze lijst verandert.
 export const BULK_TIERS = [
   { qty: 10, pct: 20 },
   { qty: 5, pct: 15 },
@@ -15,6 +16,31 @@ export const BULK_TIERS = [
 export function unitDiscountPct(qty: number): number {
   for (const t of BULK_TIERS) if (qty >= t.qty) return t.pct;
   return 0;
+}
+
+/**
+ * De volgende staffel voor één regel: hoeveel stuks er nog bij moeten, welk
+ * percentage dat oplevert en hoe ver je er al bent.
+ *
+ * Bewust per regel en niet over de hele mand, want zo werkt de korting hier
+ * ook: `unitDiscountPct` kijkt naar het aantal van één product. Een balk over
+ * het mandtotaal (zoals op kamagrashop, waar de staffel op het bedrag zit) zou
+ * hier een belofte doen die de rekenmachine niet nakomt.
+ *
+ * Null = de hoogste staffel is al gehaald.
+ */
+export function nextTier(qty: number): { pct: number; remaining: number; progressPct: number } | null {
+  const oplopend = [...BULK_TIERS].sort((a, b) => a.qty - b.qty);
+  let vorige = 0;
+  for (const t of oplopend) {
+    if (qty < t.qty) {
+      const span = t.qty - vorige;
+      const progressPct = span > 0 ? Math.min(100, Math.max(0, Math.round(((qty - vorige) / span) * 100))) : 0;
+      return { pct: t.pct, remaining: t.qty - qty, progressPct };
+    }
+    vorige = t.qty;
+  }
+  return null;
 }
 
 export function lineSubtotalCents(priceCents: number, qty: number): number {

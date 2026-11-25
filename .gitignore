@@ -15,3 +15,6 @@ tsconfig.tsbuildinfo
 # controle-builds (NEXT_DIST_DIR)
 .next-check
 .next-run
+
+# Schermafdrukken van de visuele controle (scripts/schermafdruk.mjs)
+data/shots/

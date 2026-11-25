@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { ProductCard } from "@/components/product-card";
+import { Voorraadmelding } from "@/components/shop/voorraadmelding";
 import { isPreorder, preorder } from "@/lib/preorder";
 
 /**
@@ -71,6 +72,10 @@ export function CatalogClientGrid({ products }: { products: GridProduct[] }) {
           </div>
         ) : (
           <>
+            {/* Alleen als er echt uitverkochte artikelen in de lijst staan. Een
+                pre-order telt niet mee: daar staat de levertijd op de kaart en
+                die kan de klant gewoon bestellen. */}
+            {zichtbaar.some((p) => p.availability === "OutOfStock") && <Voorraadmelding />}
             <p className="text-sm text-text-muted">{zichtbaar.length} producten</p>
             <div className="mt-4 grid gap-5 grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {zichtbaar.map((p) => (

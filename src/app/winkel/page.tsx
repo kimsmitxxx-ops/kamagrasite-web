@@ -2,6 +2,7 @@ import Link from "next/link";
 import { isPreorder, preorder } from "@/lib/preorder";
 import { listCategories, listProducts, sortProducts } from "@/lib/queries";
 import { ProductCard } from "@/components/product-card";
+import { Voorraadmelding } from "@/components/shop/voorraadmelding";
 import { CatalogFilters } from "@/components/shop/catalog-filters";
 import type { Metadata } from "next";
 import { BookOpen, Truck, ShieldCheck, PackageCheck, Sparkles } from "lucide-react";
@@ -102,6 +103,9 @@ export default async function WinkelIndexPage(
         </aside>
 
         <div className="min-w-0">
+          {/* Alleen als er echt uitverkochte artikelen in de lijst staan; een
+              pre-order telt niet mee, die kan de klant gewoon bestellen. */}
+          {products.some((p) => p.availability === "OutOfStock" && !isPreorder(p as never)) && <Voorraadmelding />}
           <h2 className="font-display text-xl">{products.length} producten</h2>
           <div className="mt-5 grid gap-5 grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {products.map((p) => (

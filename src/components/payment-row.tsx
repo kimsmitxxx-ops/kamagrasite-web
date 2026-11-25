@@ -41,17 +41,13 @@ function CryptoCoin({ label, color }: { label: string; color: string }) {
 }
 
 export function PaymentRow({ variant = "full", className }: PaymentRowProps) {
-  const items =
-    variant === "compact"
-      ? [<Bank key="b" />, <BankApp key="a" />, <Crypto key="c" />]
-      : [
-          <Bank key="b" />,
-          <BankApp key="a" />,
-          <Crypto key="c" />,
-          <CryptoCoin key="btc" label="BTC" color="#F7931A" />,
-          <CryptoCoin key="eth" label="ETH" color="#627EEA" />,
-          <CryptoCoin key="usdt" label="USDT" color="#26A17B" />,
-        ];
+  // Alleen wat deze winkel echt aanneemt. Hier stonden ook Crypto, BTC, ETH en
+  // USDT, terwijl er in shops.payment_instructions geen enkel crypto-adres
+  // staat: wie daarop klikte kreeg nooit een adres te zien. De bedankt-pagina
+  // toont het crypto-blok wel zodra die adressen er zijn, dus dan horen deze
+  // merktekens ook terug - op dezelfde voorwaarde.
+  const items = [<Bank key="b" />, <BankApp key="a" />];
+  void variant;
   return (
     <div className={cn("flex flex-wrap items-center gap-2", className)} aria-label="Betaalmethoden">
       {items}

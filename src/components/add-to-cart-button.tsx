@@ -3,13 +3,23 @@ import { Plus, Minus, ShoppingCart, Sparkles, ShieldCheck, Smartphone, Bitcoin }
 import { useEffect, useState } from "react";
 import { useCart } from "@/lib/cart-context";
 import { formatEUR } from "@/lib/format";
+import { BULK_TIERS } from "@/lib/bulk-discount";
 import { track } from "@/lib/analytics";
 import type { Product } from "@/lib/supabase";
 
-const BULK_TIERS = [
+/**
+ * De staffels zoals de kassa ze rekent, met één stuk als basisregel erboven.
+ *
+ * Hier stond een eigen lijstje (1/5/10 met 0/10/15%) naast de echte staffel in
+ * lib/bulk-discount (3/5/10 met 10/15/20%). De productpagina liet dus andere
+ * prijzen per stuk zien dan de mand erna afrekende, en de eerste trede - drie
+ * stuks, de enige die de meeste klanten halen - stond er helemaal niet bij.
+ * Nu komt de lijst uit één bron, dus een wijziging aan de staffel werkt
+ * vanzelf door op de productpagina.
+ */
+const STAFFELS = [
   { qty: 1, discountPct: 0 },
-  { qty: 5, discountPct: 10 },
-  { qty: 10, discountPct: 15 },
+  ...[...BULK_TIERS].sort((a, b) => a.qty - b.qty).map((t) => ({ qty: t.qty, discountPct: t.pct })),
 ];
 
 export function AddToCartButton({ product }: { product: Product }) {
@@ -93,12 +103,12 @@ export function AddToCartButton({ product }: { product: Product }) {
           <Sparkles size={14} className="text-accent" /> Bulk-korting - klik om aantal te kiezen
         </p>
         <div className="mt-2 space-y-2">
-          {BULK_TIERS.map((t, i) => {
+          {STAFFELS.map((t, i) => {
             const unit = Math.round(product.price_cents * (1 - t.discountPct / 100));
             const lineSubtotal = unit * t.qty;
             const baseSubtotal = product.price_cents * t.qty;
             const savings = baseSubtotal - lineSubtotal;
-            const next = BULK_TIERS[i + 1];
+            const next = STAFFELS[i + 1];
             const active = qty >= t.qty && (!next || qty < next.qty);
             return (
               <button
@@ -151,9 +161,6 @@ export function AddToCartButton({ product }: { product: Product }) {
           </span>
           <span className="inline-flex items-center gap-1 rounded border border-border bg-background px-2 py-0.5 text-text">
             IBAN
-          </span>
-          <span className="inline-flex items-center gap-1 rounded border border-border bg-background px-2 py-0.5 text-text">
-            <Bitcoin size={11} className="text-accent" /> Crypto
           </span>
         </div>
       </div>

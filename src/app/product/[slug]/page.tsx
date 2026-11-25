@@ -9,6 +9,8 @@ import { MedicalDisclaimer } from "@/components/medical-disclaimer";
 import { ProductGallery } from "@/components/shop/product-gallery";
 import { PaymentRow } from "@/components/payment-row";
 import { RestockNotifyForm } from "@/components/shop/restock-notify-form";
+import { AlternatievenBlok } from "@/components/shop/alternatieven-blok";
+import { alternatievenVoor } from "@/lib/alternatieven";
 import { ShieldCheck, Truck, Factory, ArrowLeft, MapPin } from "lucide-react";
 import { vormLabel } from "@/components/shop/data";
 import type { Metadata } from "next";
@@ -65,10 +67,15 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
   // zo uitzien; een categoriesegment zou ze allemaal laten doodlopen.
   const catSlug = p.categories?.slug || "";
 
-  const [related, reviews] = await Promise.all([
+  // Het derde verzoek is de hele catalogus: daaruit komen de alternatieven
+  // voor een artikel dat niet op de plank ligt. Zonder dat is zo'n pagina een
+  // doodlopende weg met alleen een veld voor je mailadres.
+  const [related, reviews, catalogus] = await Promise.all([
     listProducts({ categorySlug: catSlug, limit: 4 }),
     listProductReviews(p.id, 20),
+    listProducts({}),
   ]);
+  const alternatieven = p.availability === "InStock" ? [] : alternatievenVoor(p, catalogus);
   // De hoofdafbeelding uit products.image_url blijft de eerste en dus de
   // afbeelding die in de lijsten, de sitemap en het Product-schema staat.
   // product_media komt daar achter als extra gallerijbeeld.
@@ -180,6 +187,11 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
                 <div className="mt-4">
                   <AddToCartButton product={p} />
                 </div>
+                <AlternatievenBlok
+                  producten={alternatieven}
+                  titel="Liever niet wachten?"
+                  toelichting="Deze liggen nu op de plank en gaan de deur uit zodra je betaling binnen is."
+                />
               </>
             ) : p.availability === "OutOfStock" ? (
               <>
@@ -189,6 +201,11 @@ export default async function ProductDetailPage(props: { params: Promise<{ slug:
                     Dit product is op dit moment niet leverbaar. Zet je e-mail hieronder achter - je hoort het direct zodra de nieuwe batch binnen is.
                   </p>
                 </div>
+                <AlternatievenBlok
+                  producten={alternatieven}
+                  titel="Dit is wel direct leverbaar"
+                  toelichting="Zelfde werkzame stof, wel op voorraad. Of laat hieronder je mailadres achter voor dit artikel."
+                />
                 <RestockNotifyForm productId={p.id} productName={p.name} />
               </>
             ) : (

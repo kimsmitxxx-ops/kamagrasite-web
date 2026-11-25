@@ -18,7 +18,7 @@ export const nl = {
     verzending: "Verzending",
     totaal: "Totaal",
     naarCheckout: "Naar checkout",
-    verzendkosten: "Verzending €10 per bestelling, ongeacht het aantal items.",
+    verzendkosten: "Verzending €5 per bestelling, ongeacht het aantal items.",
   },
 
   afrekenen: {

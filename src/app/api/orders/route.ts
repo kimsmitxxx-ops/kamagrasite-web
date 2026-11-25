@@ -152,7 +152,8 @@ export async function POST(req: NextRequest) {
     return { ...it, applied_price_cents: unitAdj, discount_pct: pct };
   });
 
-  // Shipping = EUR 10 per bestelling; alles gaat als een zending de deur uit.
+  // Verzending = SHIPPING_FEE_CENTS (EUR 5) per bestelling; alles gaat als een
+  // zending de deur uit.
   // Kortingscode. Wat de browser meestuurt is een claim; de database bepaalt
   // of de code bestaat, nog geldig is, aan het minimumbedrag komt en wat hij
   // oplevert, en zet in dezelfde stap de gebruiksteller omhoog. Een code met

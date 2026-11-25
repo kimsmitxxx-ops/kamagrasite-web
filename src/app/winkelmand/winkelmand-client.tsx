@@ -4,6 +4,7 @@ import type { Teksten } from "@/lib/teksten/nl";
 import { useCart } from "@/lib/cart-context";
 import { formatEUR } from "@/lib/format";
 import { calcTotals, unitDiscountPct } from "@/lib/bulk-discount";
+import { BulkVoortgang } from "@/components/shop/bulk-voortgang";
 import { CouponField } from "@/components/shop/coupon-field";
 import { Trash2, Minus, Plus, ShoppingBag, Sparkles, Truck } from "lucide-react";
 import { usePreorderMand } from "@/lib/use-preorder";
@@ -69,6 +70,8 @@ export function WinkelmandClient({ t }: { t: Teksten }) {
                     <button onClick={() => cart.setQty(it.id, it.qty + 1)} className="rounded border border-paper-border p-1"><Plus className="h-3 w-3" /></button>
                     <button onClick={() => cart.remove(it.id)} className="ml-auto text-text-subtle hover:text-danger"><Trash2 className="h-4 w-4" /></button>
                   </div>
+                  {/* Direct onder de plus-knop, want daar is die korting te halen. */}
+                  <BulkVoortgang qty={it.qty} />
                 </div>
                 <p className="font-display text-lg tabular">{formatEUR(lineTotal)}</p>
               </div>

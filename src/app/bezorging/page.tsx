@@ -104,7 +104,7 @@ export default function BezorgingPage() {
       <section className="mx-auto max-w-7xl px-4 pb-14">
         <h2 className="font-display text-2xl text-text">Bezorgopties &amp; tarieven</h2>
         <p className="mt-2 text-sm text-text-muted">
-          Verzending is altijd €10 (NL) of €15 (BE/EU). Wij rekenen deze kosten altijd door - geen gratis-verzending drempel.
+          Verzending is altijd €5, waar het pakket ook heen gaat. Wij rekenen die kosten altijd door - er is geen drempel waarboven het gratis wordt.
         </p>
         <div className="mt-6 overflow-hidden rounded-md border border-border">
           <table className="w-full text-sm">

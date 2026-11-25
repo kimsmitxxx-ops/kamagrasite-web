@@ -10,6 +10,7 @@ import { track } from "@/lib/analytics";
 import { formatEUR } from "@/lib/format";
 import { computeShipping } from "@/lib/shipping";
 import { unitDiscountPct, calcTotals } from "@/lib/bulk-discount";
+import { BulkVoortgang } from "@/components/shop/bulk-voortgang";
 import { usePreorderMand } from "@/lib/use-preorder";
 import { Afbeelding } from "@/components/afbeelding";
 
@@ -171,6 +172,9 @@ export function CartDrawer() {
                         <p className="text-sm font-semibold text-primary tabular">{formatEUR(lineSubtotal)}</p>
                       </div>
                     </div>
+                    {/* Hoeveel er nog bij moet voor de volgende staffel; in de
+                        lade zonder balk, daar is de ruimte te smal. */}
+                    <BulkVoortgang qty={it.qty} compact />
                   </div>
                 </article>
               );
