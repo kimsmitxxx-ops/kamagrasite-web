@@ -8,6 +8,7 @@ import { haalBetaalgegevens } from "@/lib/paytail";
 import { meldFout } from "@/lib/fout-melden";
 import { Betaalgegevens } from "@/components/shop/betaalgegevens";
 import { PaytailStep2Button } from "@/components/shop/paytail-step2-button";
+import { PaymentScreenshotForm } from "@/components/shop/payment-screenshot-form";
 
 // De pagina wacht tot 22 seconden op de bankgegevens (lib/paytail.ts).
 // Zonder dit kapt Vercel de functie na tien seconden af en ziet de klant een
@@ -204,6 +205,24 @@ export default async function BetalenPage(props: { params: Promise<{ orderId: st
             {order.shipping_country && order.shipping_country !== "NL" ? ` (${order.shipping_country})` : ""}
           </p>
           {order.customer_email && <p className="mt-1">Bevestiging gaat naar {order.customer_email}</p>}
+        </div>
+      </section>
+
+      {/* Optioneel: een screenshot van de overboeking, zodat we de betaling
+          sneller kunnen terugvinden. Dit veld stond alleen op de bedanktpagina,
+          die je eenmaal ziet en waar de bevestigingsmail niet naar linkt (die
+          wijst hierheen). Wie die pagina wegklikte kon er dus nooit meer bij.
+
+          Het verandert de status van de bestelling niet: een foto is een
+          bewering van de klant en geen betaling (zie shop-dash migratie 125).
+          Het bewijs komt in het dashboard bij de bestelling te staan. */}
+      <section className="mt-6 rounded-xl border border-border bg-paper-soft p-6">
+        <h2 className="font-display text-lg text-text">Al betaald? Stuur je bewijs</h2>
+        <p className="mt-1 text-sm text-text-muted">
+          Hoeft niet, maar het helpt. Met een screenshot van je overboeking kunnen we je betaling meteen aan deze bestelling koppelen zodra die op de rekening staat, ook als de omschrijving niet klopt.
+        </p>
+        <div className="mt-4">
+          <PaymentScreenshotForm orderId={order.id} customerEmail={order.customer_email || ""} />
         </div>
       </section>
 

@@ -55,9 +55,15 @@ export function PaymentScreenshotForm({ orderId, customerEmail }: { orderId: str
       <div className="rounded-lg border border-success/40 bg-success-soft/30 p-4 flex items-start gap-2.5">
         <CheckCircle2 size={18} className="text-success shrink-0 mt-0.5" />
         <div>
-          <p className="font-medium text-text">Screenshot ontvangen - dank je</p>
+          <p className="font-medium text-text">Screenshot ontvangen, dank je</p>
+          {/* Stond hier als "wij zetten je bestelling in behandeling". Dat
+              gebeurde ook letterlijk: de upload zette de bestelling op een
+              betaald-stand zonder dat iemand geld had gezien. Dat is eruit
+              (shop-dash migratie 125), dus deze tekst belooft het ook niet
+              meer. */}
           <p className="mt-1 text-xs text-text-muted">
-            Wij gaan je betaling alvast verifiëren en zetten je bestelling in behandeling.
+            We koppelen je betaling eraan zodra die op de rekening staat. Je pakket
+            gaat weg als het geld binnen is.
           </p>
         </div>
       </div>
@@ -111,8 +117,13 @@ export function PaymentScreenshotForm({ orderId, customerEmail }: { orderId: str
           <AlertCircle size={12} /> {err}
         </p>
       )}
+      {/* "Versleuteld opgeslagen" stond hier en dat is meer dan we kunnen
+          hardmaken. Wat wel klopt en nagekeken is: de opslag staat op privé en
+          is alleen met een tijdelijke link te openen, dus niemand komt erbij
+          buiten onze klantenservice. */}
       <p className="text-[11px] text-text-subtle">
-        Screenshot wordt versleuteld opgeslagen en alleen door onze klantenservice gezien voor verificatie.
+        Je screenshot staat niet openbaar en is alleen voor onze klantenservice, om je
+        betaling terug te vinden.
       </p>
     </form>
   );
