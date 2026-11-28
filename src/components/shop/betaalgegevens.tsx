@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { Check, Copy, Loader2, HelpCircle } from "lucide-react";
+import { AlertTriangle, Check, Copy, Loader2, HelpCircle } from "lucide-react";
 import { track } from "@/lib/analytics";
 import { formatEUR } from "@/lib/format";
 import type { PaytailBetaalgegevens } from "@/lib/paytail";
@@ -79,18 +79,18 @@ function Stap({
   label,
   waarde,
   kopieer,
-  extra,
+  waarschuwing,
 }: {
   n: number;
   label: string;
   waarde: string;
   kopieer: string;
-  extra?: string;
+  waarschuwing?: string;
 }) {
   return (
     <li className="flex gap-3 border-b border-border py-3 last:border-b-0">
       <Nummer n={n} />
-      <div className="flex min-w-0 flex-1 items-center justify-between gap-3">
+      <div className={`flex min-w-0 flex-1 justify-between gap-3 ${waarschuwing ? "items-start" : "items-center"}`}>
         <div className="min-w-0">
           <p className="text-xs text-text-muted">{label}</p>
           {/* Naam, IBAN, bedrag en omschrijving zijn alle vier even
@@ -98,7 +98,16 @@ function Stap({
               sprong het bedrag eruit en werd de omschrijving over het hoofd
               gezien, en juist die moet kloppen. */}
           <p className="mt-0.5 break-words font-mono text-lg leading-snug text-text">{waarde}</p>
-          {extra && <p className="mt-1 text-xs text-text-muted">{extra}</p>}
+          {/* Een eigen rood kader, want als grijze bijregel werd dit gelezen
+              als een tip in plaats van een voorwaarde. Het rood zit in de rand
+              en de achtergrond; de tekst zelf blijft text-text, want rood op
+              danger-soft haalt op 12px de contrasteis niet. */}
+          {waarschuwing && (
+            <p className="mt-2 flex items-start gap-2 rounded-lg border-2 border-danger bg-danger-soft px-3 py-2 text-xs leading-relaxed text-text">
+              <AlertTriangle size={14} aria-hidden="true" className="mt-0.5 shrink-0 text-danger" />
+              <span>{waarschuwing}</span>
+            </p>
+          )}
         </div>
         <KopieerKnop tekst={kopieer} ariaLabel={`Kopieer ${label}`} />
       </div>
@@ -190,7 +199,7 @@ export function Betaalgegevens({
             label="Omschrijving"
             waarde={gegevens.omschrijving}
             kopieer={gegevens.omschrijving}
-            extra="Zet hier alleen dit nummer. Typ er niets bij, anders weigert de bank de betaling."
+            waarschuwing="Zet hier alleen dit nummer. Geen productnaam, geen winkelnaam en geen eigen opmerking erbij, anders wordt de betaling geweigerd."
           />
           <StapTekst n={6}>Verstuur de overboeking en klik hieronder op &quot;Ik heb betaald&quot;.</StapTekst>
         </ol>

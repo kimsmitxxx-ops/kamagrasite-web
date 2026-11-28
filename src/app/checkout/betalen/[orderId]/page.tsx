@@ -142,7 +142,7 @@ export default async function BetalenPage(props: { params: Promise<{ orderId: st
               <strong className="text-text tabular">{formatEUR(order.total_cents)}</strong> en de omschrijving. Op het
               betaalscherm staan je naam, postcode, land en bestelnummer al ingevuld; controleer dat het bestelnummer{" "}
               <strong className="font-mono text-text">{ref}</strong> is. Zet bij de omschrijving van je overboeking
-              alleen dat bestelnummer en verder niets, anders weigert de bank de betaling.
+              alleen dat bestelnummer: geen productnaam, geen winkelnaam en geen eigen opmerking erbij, anders wordt de betaling geweigerd.
             </p>
           </div>
           )}
